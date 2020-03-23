@@ -6,11 +6,20 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{minted}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{natbib}
+
+\def\bl{\begin{minted}[texcl,mathescape]{sql}}
+\def\el{\end{minted}}
+
 \begin{document}
 \title{OpenPattern}
 \author{F. Métivier}
 \date{\today}
+\maketitle
+
+\tableofcontents
 
 \section{TODO}
 
@@ -38,7 +47,75 @@ GUI:\\
 - Everything !!!\\
 
 
-\section{Measurements}
+\section{Introduction}
+
+OpenPattern  est une librairie python, orientée objet,  dont l'objectif est de permettre le tracé de patrons de vêtements à l'échelle 1:1. 
+Les patrons peuvent être sur-mesures, à  partir d'un ensemble de mesures prises sur le corps de la personne dont vous voulez tracer un patron, ou
+correspondre à des mesures de prêt à porter classique. 
+ 
+Les sources que j'ai utilisé pour tracer les patrons proviennent d'ouvrage de patronnages classiques. Ces ouvrages, destinés au couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat c'est-à-dire  la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini). J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux. 
+En premier lieu j'ai utilisé quatre tomes la série Le modélisme de mode de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiapetta  \cite{Chiappetta1999}. Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc...
+OpenPattern reprend ces techniques en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
+
+\section{Structure}
+
+OpenPattern est organisée autour de classes qui héritent les unes des autres. Cette structure présente l'avantage de coller aux techniques de coupe. En effet une chemise, une veste ou un gilet sont des adaptations d'un body, une robe dérive de l'assemblage d'une jupe et d'un body, enfin les jupes et les pantalons dérivent de formes génériques dites de bases.
+
+OpenPattern présente pour l'instant deux niveaux d'héritage.
+\begin{itemize}
+\item La classe parente Pattern : C'est la classe générale qui définit ce qu'est un patron et les méthodes permettant de le dessiner et de le manipuler
+\item Les classes de bases dérivées de Pattern: Basic\_Bodice, Basic\_Trousers, Cuffs, Collars
+\item Les classes dérivées des classes de base: shirt, pyjamas qui héritent de Basic\_Bodice ou de Basic\_Trousers. Normalement, in fine ce sont celles que les utilisateurs «verront» ou utiliseront	
+\end{itemize}
+
+
+\subsection{Classe Pattern}
+La liste des méthodes de cette classe est donnée ci-dessous. ces méthodes sont de quatre types dont seuls les trois premiers sont implémentés.
+
+\begin{enumerate}
+\item Les méthodes liées aux mesures qui permettent de charger ou d'enregistrer les modifications des mesures. Le choix pour l'instant est fait d'enregistrer les mesures dans des fichiers json.
+\item Les méthodes de calculs couramment effectués en patronnage, mesurer une distance, un angle, chercher le point milieu d'un segment ou encore tracer une courbe. Ici le choix est fait d'utiliser des b-spline pour approximer le sacro-saint pistolet (on reviendra sur ce choix guidé au départ par la simplicité).
+\item Les méthodes de dessin avec matplotlib.
+\item Les méthodes d'altération de patrons qui permettent de déplacer des points des patrons de base et de recalculer les courbes.
+\end{enumerate}
+
+
+
+\begin{minted}{python}
+class Pattern:
+
+	def __init__(self, pname="sophie", gender='w'):
+			
+	# Catégorie 1		
+	def get_measurements(self, pname="sophie"):
+		
+	def save_measurements(self, ofname=None):
+
+	# Catégorie 2
+	def intersec_manches(self, A, B, C, theta):
+
+	def segment_angle(self, A, B):
+
+	def middle(self, A, B):
+
+	def distance(self, A, B):
+
+	def pistolet(self, points, kval, ax=None, kwargs = {'color':'blue','linestyle':'solid'}, tot=False):
+		
+	# Catégorie 3	
+	def draw_pattern(self, dic_list, vertices_list):
+
+	def paper_cut(self, fig, ax, name='patternA4', paper='A4'):	
+
+	def print_info(self, ax, model=None):
+
+	def segment(self, A, B, ax, kwargs={'color':'blue'}):
+
+\end{minted}
+\section{Mesures}
+
+Les mesures sont enregistrées dans des fichiers json dans la répertoire measurements.
+
 \begin{itemize}
 
 \item Différences H/F
@@ -185,6 +262,7 @@ Styles availabel from Gilewska men : Simple and French
 
 
 
-
+\bibliographystyle{plain}
+\bibliography{OpenPattern.bib}
 
 \end{document}

@@ -14,9 +14,9 @@ import OpenPattern as OP
 
 # Men
 p = OP.Basic_Bodice(pname = "M44G", gender = 'm', style = 'Gilewska')
-#~ p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', ease = 24, paper='A4')
+p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')
 #~ p.save_measurements()
-#~ p.draw_sleeves()
+p.draw_sleeves()
 c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
 c.draw_cuffs(save=True)
 

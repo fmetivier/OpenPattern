@@ -52,22 +52,26 @@ class Pattern:
 	Attributes:
 		m: dictionnary of size measurements
 		pname:  name of size measurements
-		gender: gender...
+		gender: gender
 	
 	"""
 
 	############################################################
 	
 	def __init__(self, pname="sophie", gender='w'):
+		"""
+		Initializes class instance
 		
-		# initialize variables because not defined in measures	
-
-		# if pname given loads the measurements
-		# else creates measurement dic
+		Args:
+			pname : measurement file if given
+			gender: gender of pattern to be drafted
+			
+		"""
 		if pname:
 			self.m  =  self.get_measurements(pname)
 			self.pname = pname
 		else:
+			# in the end it should be able to store new measurements.
 			pass # create measures
 
 		self.gender=gender
@@ -123,7 +127,7 @@ class Pattern:
 			A,B,C: points given as array([x,y])
 			theta: angle in radians
 		
-		returns:
+		Returns:
 			(x,y) tuple of coordinates
 		"""
 	
@@ -180,7 +184,7 @@ class Pattern:
 		Args:
 			A,B: points given as array([x,y])
 			ax: axis on which to plot
-			kwargs: dictionnary of arguments			
+			kwargs: dictionnary of drawing porperties			
 		"""
 		
 		ax.plot([A[0], B[0]], [A[1], B[1]],  **kwargs)	
@@ -214,7 +218,7 @@ class Pattern:
 			points: array of tuples
 			kval: int
 			ax: matplotlib axis
-			kwargs: dictionnary of points
+			kwargs: dictionnary of drawing properties
 			tot: boolean deciding whether the entire curve is returned
 			
 		Returns:
@@ -257,6 +261,8 @@ class Pattern:
 				with label
 			vertices_list: list of vertices_list to be plotted as lines
 			
+		Returns:
+			fig, ax
 		"""
 
 		####################################################
@@ -352,6 +358,9 @@ class Pattern:
 			ax: the axis on which to plot
 			name: the output filename
 			paper: the paper format for the cut
+			
+		Returns:
+			fig, ax
 		"""
 		
 		paper_dic = {'A4': (19, 27.7), 'A3': (27, 40), 'Legal' : (19.6, 33.6), 'Letter' : (19.6, 25.9), 'Tabloid': (25.9, 41.2), 'Ledger': (25.9, 41.2)}
@@ -415,6 +424,13 @@ class Pattern:
 
 		"""
 		print generic info on each graph.
+		
+		Args:
+			ax: ax on which to print info
+			model: a dictionnary of informations to be printed
+		
+		Returns:
+			ax
 		
 		"""
 		xmin, xmax = ax.get_xlim()
@@ -702,6 +718,18 @@ class Basic_Bodice(Pattern):
 	"""	
 	
 	def __init__(self, pname="sophie", gender='m', style='Donnanno', age=12):
+		"""
+		Initilizes parent class &  attributes
+		launches the calculation of bodice and sleeve
+		saves measurements performed like armscye depth in the json measurements file for further processing in other classes
+		
+		Args:
+			pname: size measurements
+			gender: ..
+			style: style to be used for drafting
+			age: used if for a child and style = Chiappetta.
+			
+		"""
 		Pattern.__init__(self, pname, gender)
 		
 		self.style=style
@@ -750,8 +778,18 @@ class Basic_Bodice(Pattern):
 	############################################################
 
 
-	def draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False, fname = None, ease = 8, paper='FullSize'):
-
+	def draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False, fname = None, paper='FullSize'):
+		""" Draws Basic Bodice with legends and save it if asked for	 
+		
+		Args:
+			dic: dictionnary of informations to be printed
+			save: if true save to file
+			fname: filename
+			paper: paper size on which to save (for cuts)
+			
+		Returns:
+			fig, ax
+		"""
 	
 		# 1 draw
 		fig, ax = self.draw_pattern([self.Bodice_points_dic], [self.Bodice_Front_vertices, self.Bodice_Back_vertices])
@@ -781,7 +819,16 @@ class Basic_Bodice(Pattern):
 		return fig, ax
 
 	def draw_sleeves(self, save=False, fname=None, paper='FullSize'):
-	
+		"""draws the basic sleeve
+		
+		Args:
+			save: if true save to file
+			fname: filename
+			paper: paper size on which to save (for cuts)
+		
+		Returns:
+			fig, ax
+		"""
 			
 		#1 draw
 		fig, ax = self.draw_pattern([self.Sleeve_points_dic], [self.Sleeve_vertices])
@@ -842,6 +889,14 @@ class Basic_Bodice(Pattern):
 		
 		
 	def add_legends(self, ax):
+		"""Adds common legends to the Bodice pattern
+		
+		Args:
+			ax on which to plot
+			
+		Returns:
+			ax
+		"""
 		
 		bpd = self.Bodice_points_dic
 		fs=14
@@ -869,6 +924,13 @@ class Basic_Bodice(Pattern):
 		return ax
 		
 	def Donnanno_bodice_without_dart_w(self, bust_ease=8):
+		""" Calculation of bodice with no dart
+			for Women using Donnanno technique
+			This Bodice comes with ease applied
+		
+		Args:
+			ease: ease to be applied.
+		"""
 		
 		
 		m=self.m
@@ -983,7 +1045,13 @@ class Basic_Bodice(Pattern):
 		self.Bodice_Back_vertices = [C, D] + col_dos + [O] + emmanchure_dos + [Q, E]
 		
 	def Donnanno_bodice_without_dart_m(self, bust_ease=8):
+		""" Calculation of bodice with no dart
+			for Men using Donnanno technique
+			This Bodice comes with ease applied
 		
+		Args:
+			ease: ease to be applied.
+		"""
 		m=self.m
 
 
@@ -1133,6 +1201,15 @@ class Basic_Bodice(Pattern):
 
 
 	def chiappetta_basic_bodice(self, age=14, d_FB = 5):
+		""" Calculation of bodice with no dart
+			for children using Chiapetta technique
+			
+					
+		Args:
+			age: age of the child, the pattern drafting depends on the age
+			d_FB: distance between front and back patterns on the draft
+			
+		"""
 		
 		if age >=2 and age <= 16:
 			# front on the left back on the right
@@ -1217,12 +1294,15 @@ class Basic_Bodice(Pattern):
 
 
 
-
-
-
-
 	def Gilewska_basic_bodice_m(self, BF_space=10):
+		""" Calculation of bodice with no dart
+			for Men using Gilewska technique
+			
 		
+		Args:
+			BF_space: distance between front and back patterns on the draft
+		"""
+				
 		#################################################
 		# Back Frame
 		#################################################
@@ -1394,8 +1474,10 @@ class Basic_Bodice(Pattern):
 		
 	
 	def Gilewska_basic_sleeve_m(self):
-				
-		
+		""" Calculation of basic sleeve
+			for Men using Gilewska technique			
+		"""
+						
 		#########################################
 		#squeleton
 		#########################################
@@ -1457,8 +1539,10 @@ class Basic_Bodice(Pattern):
 
 		
 	def Gilewska_basic_bodice_w(self, sep=10):
-		"""
-		trying to get standard
+		"""Basic Bodice for woment
+		using Gilewska technique
+		
+		Trying to get standard
 		first letter Caps [then minor]
 		W: waist
 		Sl: sleeve
@@ -1477,6 +1561,8 @@ class Basic_Bodice(Pattern):
 		
 		CP: Control Point
 
+		Args:
+			sep: distance between front and back patterns on draft
 		"""
 
 		########################################
@@ -1610,7 +1696,8 @@ class Basic_Bodice(Pattern):
 		
 	
 	def add_bust_dart(self):
-	
+		""" Add darts to dartless Bodice
+		"""
 		bfd  = self.Bodice_points_dic
 		
 		if self.style == 'Gilewska':
@@ -1676,6 +1763,8 @@ class Basic_Bodice(Pattern):
 			pass
 	
 	def add_waist_dart(self):
+		"""Add waist darts to basic Bodice
+		"""
 		
 		sbp = self.Bodice_points_dic
 		
@@ -1740,6 +1829,9 @@ class Basic_Bodice(Pattern):
 			pass
 		
 	def Gilewska_basic_sleeve_w(self):
+		"""Basic sleeve for Women
+		using Gilewska technique
+		"""
 		
 		#########################################
 		# squeleton
@@ -1812,6 +1904,7 @@ class Basic_Bodice(Pattern):
 		self.Sleeve_vertices = [S, W0, E] + front_curve_points + [A] + back_curve_points + [D, W1, V]
 
 class shirt(Basic_Bodice):
+	
 
 	def __init__(self, collar_ease = 1, sleeve_lowering = 4, side_ease=4):
 		pass

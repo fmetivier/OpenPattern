@@ -1,0 +1,70 @@
+From OpenPattern import *
+
+class Pants_block(Basic_Trousers):
+		"""
+		Adapted from Pants_block for things like jogging or pyjamas.
+		Donnanno. I used it to make baggy pyjamas to my teenage son...
+		
+		the front and back measurements at the bottom are calculated on the 
+		basis of the ankle measurement.
+		
+		"""
+		def __init__(self, pname = "gregoire", gender = 'm', save=False, paper='FullSize'):
+			
+			style='Donnanno'
+			Basic_Trousers.__init__(self, pname, gender, style)
+		
+			self.Donnanno_back_trousers(delta=6)
+			
+			pbf=self.Trousers_Front_points_dic
+			pbb=self.Trousers_Back_points_dic
+			
+			AF = np.array(pbf['A']) + [0, 6]
+			AB = np.array(pbb['A']) + [0, 6]
+			
+			
+			V = np.array(self.middle(AF, AB))
+			Z = V + [0, -V[1]]
+			B1 = Z - [self.m["tour_cheville"] * 3/4 -2, 0]
+			C1 = Z + [self.m["tour_cheville"] * 3/4 +2, 0]
+
+			print('front leg:', self.distance(pbf['E1'], B1) )
+			print('back leg:', self.distance(pbb['E2'], C1) )
+			
+			pants_points_dic={'B1':B1, 'E1':pbf['E1'], 'AF':AF, 'V':V, 'AB':AB, 'E2':pbb['E2'], 'C1':C1, 'Z':Z}
+			
+			pants_bloc_vertices = [B1, pbf['E1']] + self.fourche_avant + [AF, AB] + self.fourche_arriere + [C1, B1]
+			
+			
+			fig, ax=self.draw_pattern([pants_points_dic], [pants_bloc_vertices])
+
+			# Dictionnary for plot kwargs
+			ldic={'color':'black', 'linestyle':'dashed'}
+			
+			self.segment(V, Z, ax, ldic)
+			self.segment(pbf['A'], pbb['A'], ax, ldic)			
+			
+			#Fold line
+			Fof = self.middle(AF, pbf['A'])
+			Fob = self.middle(AB, pbb['A'])
+
+			
+			ldic={'color':'blue', 'marker':'s', 'linestyle':'dashed'}
+			self.segment(Fof, Fob, ax, ldic)
+			mfold = self.middle(Fof, Fob)
+			ax.text(mfold[0], mfold[1]+0.1, 'Fold Line')
+
+			d=np.abs(pbf['E1'][0]-pbb['E1'][0])
+			ankle=self.distance(B1, C1)
+			
+			ax = self.print_info(ax, {"Pattern":"Pyjama", "Max width":d, "Height": V[1], "Ankle": ankle})
+			
+			
+			fname='../patterns/' + self.style + '_Block_pants_' + self.pname + '.pdf'
+			
+			
+			if save:
+				plt.savefig(fname)
+				
+				if paper != 'FullSize':
+					self.paper_cut(fig, ax, name='Block_pants', paper=paper)

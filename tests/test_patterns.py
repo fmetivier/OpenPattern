@@ -2,7 +2,9 @@ import sys
 sys.path.append('./..')
 
 import matplotlib.pyplot as plt
+#~ from OpenPattern.Points import Point
 import OpenPattern as OP
+
 
 
 # Women
@@ -17,16 +19,17 @@ import OpenPattern as OP
 #~ p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')
 #~ p.save_measurements()
 #~ p.draw_sleeves()
+
 c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
 c.draw_cuffs(save=True)
 
-col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'OnePiece', overlap=2, collar_height=3)
+col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'Officer', overlap=2, collar_height=5)
 col.draw_collar(save=True)
 
 #~ pans = OP.Basic_Trousers()
 
 # Grégoire's pyjama
-#~ pans= OP.pyjama()
+#~ pans= OP.Pants_block(pname="gregoire")
 #~ pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers', paper='A4')
 
 

@@ -1,4 +1,8 @@
+import sys
+sys.path.append('./..')
+
 from OpenPattern.Pattern import *
+from OpenPattern.Points import *
 
 class Collars(Pattern):
 	"""
@@ -41,7 +45,7 @@ class Collars(Pattern):
 		
 		if self.Collar_style == 'Officer':
 			print('Officer Collar')
-			Cld = np.array([0,0.5])
+			Cld = Point([0,0.5])
 			C1 = Cld + [2,0]
 			Cmd = Cld + [self.m['longueur_col_dos']+0.5,-0.5]
 			C2 = Cmd - [1,0]
@@ -79,12 +83,12 @@ class Collars(Pattern):
 			self.Collar_dic.append( {'Cld': Cld, 'Cmd': Cmd, 'Crd': Crd, 'Cmu': Cmu, 'Clu': Clu, 'Cru': Cru, 'C7': C7, 'C8': C8, 'C3': C3, 'C6': C6} )
 			self.Collar_vertices.append( back_curve_d + front_curve_d + front_collar_curve + front_curve_u  + back_curve_u )
 			
-			self.Collar_segments = {'Middle Back': [np.array([0,0]),np.array([0,10])],\
+			self.Collar_segments = {'Middle Back': [Point([0,0]),Point([0,10])],\
 				'Shoulder': [Cmd,Cmd+[0,10]], 'Middle Front': [Crd-[0,4],Crd+[0,6]], 'Overlap Line': [Crd,Cru]}
 
 			
 		if self.Collar_style == 'OnePiece':
-			Cld = np.array([0,0.5])
+			Cld = Point([0,0.5])
 			C1 = Cld + [2,0]
 			Cmd = Cld + [self.m['longueur_col_dos']+0.5,-0.5]
 			C2 = Cmd - [1,0]
@@ -105,7 +109,7 @@ class Collars(Pattern):
 			Cru = Crd + [collar_height*np.cos(a+np.pi/2),collar_height*np.sin(a+np.pi/2)]
 			C6 = Cru - [np.sqrt(0.3),np.sqrt(0.3)] # 1.5 cm of offset from Cru.
 			
-			A =	np.array([self.m['longueur_col_dos']+self.m['longueur_col_devant']+1,0])			
+			A =	Point([self.m['longueur_col_dos']+self.m['longueur_col_devant']+1,0])			
 			C7 = A+[0, 3+ collar_height]
 			C7 = C7 - [0, np.tan(a)*self.distance(C7,Cru)]
 			b = self.segment_angle(Cru,Crd)
@@ -132,7 +136,7 @@ class Collars(Pattern):
 			self.Collar_vertices.append( back_curve_d + front_curve_d + front_collar_curve + upper_curve )
 			self.Collar_polylines.append(  front_curve_u + back_curve_u )
 		
-			self.Collar_segments = {'Middle Back': [np.array([0,0]),np.array([0,10])],\
+			self.Collar_segments = {'Middle Back': [Point([0,0]), Point([0,10])],\
 				'Shoulder': [Cmd,Cmd+[0,10]], 'Middle Front': [A,A+[0,10]],\
 				'Overlap Line': [C7,C7bis]}
 
@@ -150,7 +154,7 @@ class Collars(Pattern):
 			self.segment(val[0], val[1], ax, kwdic)
 			a = self.segment_angle(val[0],val[1])
 			angle = a*180/np.pi
-			ax.text(lbl_pos[0]+0.2*np.cos(a+np.pi/2), lbl_pos[1]+0.2*np.sin(a+np.pi/2), key, rotation = angle, ha='center')
+			ax.text(lbl_pos.x+0.2*np.cos(a+np.pi/2), lbl_pos.y+0.2*np.sin(a+np.pi/2), key, rotation = angle, ha='center')
 			
 		if save:
 				

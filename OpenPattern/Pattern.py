@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*- 
 # librairies
-from matplotlib.pylab import *
+import sys
+sys.path.append('./..')
+
+import matplotlib.pyplot as plt
 import numpy as np
+import json
+
 from scipy.interpolate import splprep,  splev
 from matplotlib.patches import Polygon, PathPatch
 from matplotlib.path import Path
 from matplotlib.backends.backend_pdf import PdfPages
-import json
 
+from OpenPattern.Points import Point
 
 """
 TODO:  20/12
@@ -125,26 +130,42 @@ class Pattern:
 		Does not work if AB is vertical !!!
 				
 		Args:
-			A,B,C: points given as array([x,y])
+			A,B,C: points given as Points or  array([x,y])
 			theta: angle in radians
 		
 		Returns:
-			(x,y) tuple of coordinates
+			Point([x,y]) or	(x,y) tuple of coordinates
 		"""
-	
-		# coefficient de AB
-		aD1  =  (B[1]-A[1])/(B[0]-A[0])
-		bD1  =  A[1] - aD1*A[0]
 		
-		#coefficients de CG
-		aD2 = np.tan(theta*np.pi/180)
-		bD2 = C[1] - aD2*C[0]
+		if isinstance(A, Point) and isinstance(B, Point) and isinstance(C, Point):
+			# coefficient de AB
+			aD1  =  (B.y-A.y)/(B.x-A.x)
+			bD1  =  A.y - aD1*A.x
+			
+			#coefficients de CG
+			aD2 = np.tan(theta*np.pi/180)
+			bD2 = C.y - aD2*C.x
+			
+			#intersection
+			x = (bD2-bD1)/(aD1-aD2)
+			y = aD1*x+bD1
 		
-		#intersection
-		x = (bD2-bD1)/(aD1-aD2)
-		y = aD1*x+bD1
+			return Point([x, y])
 		
-		return (x, y)
+		else:
+			# coefficient de AB
+			aD1  =  (B[1]-A[1])/(B[0]-A[0])
+			bD1  =  A[1] - aD1*A[0]
+			
+			#coefficients de CG
+			aD2 = np.tan(theta*np.pi/180)
+			bD2 = C[1] - aD2*C[0]
+			
+			#intersection
+			x = (bD2-bD1)/(aD1-aD2)
+			y = aD1*x+bD1
+		
+			return (x, y)
 		
 	############################################################
 		
@@ -158,7 +179,17 @@ class Pattern:
 		Returns:
 			angle in radians
 		"""
-		return np.arctan((B[1]-A[1])/(B[0]-A[0]))
+
+		if isinstance(A, Point) and isinstance(B, Point):
+			if B.x-A.x == 0:
+				return(np.pi/2)
+			else:
+				return np.arctan((B.y-A.y)/(B.x-A.x))
+		else:
+			if B[0]-A[0] == 0:
+				return(np.pi/2)
+			else:
+				return np.arctan((B[1]-A[1])/(B[0]-A[0]))
 		
 	############################################################
 
@@ -173,8 +204,10 @@ class Pattern:
 		Returns:
 			x,y as an array
 				"""
-		
-		return np.array([0.5*(A[0]+B[0]), 0.5*(A[1]+B[1])])
+		if isinstance(A, Point) and isinstance(B, Point):
+			return Point([0.5*(A.x+B.x), 0.5*(A.y+B.y)])
+		else:
+			return np.array([0.5*(A[0]+B[0]), 0.5*(A[1]+B[1])])
 	
 	############################################################
 
@@ -188,7 +221,10 @@ class Pattern:
 			kwargs: dictionnary of drawing porperties			
 		"""
 		
-		ax.plot([A[0], B[0]], [A[1], B[1]],  **kwargs)	
+		if isinstance(A, Point) and isinstance(B, Point):
+			ax.plot([A.x, B.x], [A.y, B.y],  **kwargs)	
+		else:
+			ax.plot([A[0], B[0]], [A[1], B[1]],  **kwargs)	
 		
 	############################################################
 
@@ -197,14 +233,17 @@ class Pattern:
 		returns distance [AB]
 		
 		Args:
-			A,B: points given as array([x,y])
+			A,B: points given as Points or array([x,y])
 		
 		
 		Returns:
 			distance as a float
 		"""
 		
-		return np.sqrt((A[0]-B[0])**2+(A[1]-B[1])**2)
+		if isinstance(A, Point) and isinstance(B, Point):
+			return np.sqrt((A.x-B.x)**2+(A.y-B.y)**2)
+		else:
+			return np.sqrt((A[0]-B[0])**2+(A[1]-B[1])**2)
 		
 	############################################################
 
@@ -216,7 +255,7 @@ class Pattern:
 		if tot returns a list of 30 points to draw the spline curve.
 		
 		Args:
-			points: array of tuples
+			points: array of tuples or list of points
 			kval: int
 			ax: matplotlib axis
 			kwargs: dictionnary of drawing properties
@@ -226,7 +265,16 @@ class Pattern:
 			Total distance if tot = False
 			Total distance and list of interpolated points if tot = True 
 		"""
-		tck, u  =  splprep([points.transpose()[0], points.transpose()[1]], k = kval, s=0)
+		if isinstance(points[0], Point): # test on the first point of the list
+			xlist, ylist = [], []
+			for p in points:
+				xlist.append(p.x)
+				ylist.append(p.y)
+			tck, u  =  splprep([xlist, ylist], k = kval, s=0)
+		
+		else:
+			tck, u  =  splprep([points.transpose()[0], points.transpose()[1]], k = kval, s=0)
+
 		us  =  np.linspace(u.min(),  u.max(),  30)
 		new_points  =  splev(us,  tck)
 		if ax:
@@ -239,10 +287,10 @@ class Pattern:
 			point_vertices = []
 			for i in range(len(new_points[0])):
 				point_vertices.append([new_points[0][i], new_points[1][i]])
-			return  np.sum(sqrt(dx**2+dy**2)), point_vertices
+			return  np.sum(np.sqrt(dx**2+dy**2)), point_vertices
 			
 		else:
-			return  np.sum(sqrt(dx**2+dy**2))
+			return  np.sum(np.sqrt(dx**2+dy**2))
 
 	############################################################
 			
@@ -299,14 +347,24 @@ class Pattern:
 
 		for dic in dic_list:
 			for key, val in dic.items():
-				if int(val[0]) < xmin:
-					xmin = int(val[0])
-				if int(val[0]) > xmax:
-					xmax = int(val[0])
-				if int(val[1]) < ymin:
-					ymin = int(val[1])
-				if int(val[1]) > ymax:
-					ymax = int(val[1])
+				if isinstance(val, Point):
+					if int(val.x) < xmin:
+						xmin = int(val.x)
+					if int(val.x) > xmax:
+						xmax = int(val.x)
+					if int(val.y) < ymin:
+						ymin = int(val.y)
+					if int(val.y) > ymax:
+						ymax = int(val.y)
+				else:
+					if int(val[0]) < xmin:
+						xmin = int(val[0])
+					if int(val[0]) > xmax:
+						xmax = int(val[0])
+					if int(val[1]) < ymin:
+						ymin = int(val[1])
+					if int(val[1]) > ymax:
+						ymax = int(val[1])
 
 		offset=5
 		
@@ -314,7 +372,7 @@ class Pattern:
 		W=xmax-xmin+2*offset
 		
 		fig = plt.figure(figsize = (W/2.54, H/2.54))		
-		ax = axes([0, 0, 1, 1])
+		ax = plt.axes([0, 0, 1, 1])
 		ax.axis('square')
 
 		####################################################
@@ -323,8 +381,13 @@ class Pattern:
 
 		for dic in dic_list:
 			for key, val in dic.items():
-				ax.plot(val[0], val[1], 'ro')
-				ax.text(val[0]+0.2, val[1], key, ha = 'left')
+				if isinstance(val, Point):
+					ax.plot(val.x, val.y, 'ro')
+					ax.text(val.x + 0.2, val.y, key, ha = 'left')
+				else:
+					ax.plot(val[0], val[1], 'ro')
+					ax.text(val[0] + 0.2, val[1], key, ha = 'left')
+					
 		
 		for vertices in vertices_list:
 			poly  =  Polygon(vertices,  facecolor = '0.9',  edgecolor = '0.5')

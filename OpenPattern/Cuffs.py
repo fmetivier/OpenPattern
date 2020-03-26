@@ -1,4 +1,17 @@
-from OpenPattern.Pattern import *
+import sys
+sys.path.append('./..')
+
+import matplotlib.pyplot as plt
+import numpy as np
+import json
+
+from scipy.interpolate import splprep,  splev
+from matplotlib.patches import Polygon, PathPatch
+from matplotlib.path import Path
+from matplotlib.backends.backend_pdf import PdfPages
+
+from OpenPattern.Pattern import Pattern
+from OpenPattern.Points import Point
 
 
 class Cuffs(Pattern):
@@ -38,7 +51,7 @@ class Cuffs(Pattern):
 		
 		"""
 		if self.Cuff_style == 'Simple':
-			Cld = np.array([0,0])
+			Cld = Point([0,0])
 			Clm = Cld + [0,width]
 			Clu = Cld + [0,2*width]
 			Olu = Clu + [self.m["tour_poignet"] + ease, 0] 
@@ -52,14 +65,14 @@ class Cuffs(Pattern):
 			Brd = Orm + [-overlap/2,-width/2]
 			
 			self.Cuffs_dic.append( {'Cld': Cld, 'Clu': Clu, 'Olu': Olu, 'Oru': Oru, 'Ord': Ord, 'Old': Old} )
-			self.Cuffs_vertices.append( [Cld, Clu, Oru, Ord, Cld] )
+			self.Cuffs_vertices.append( [Cld.pos, Clu.pos, Oru.pos, Ord.pos, Cld.pos] )
 			#~ print(self.Cuffs_vertices)
 			self.Cuffs_segments = {'Fold': [Clm, Olm], 'Overlap': [Olu, Old], 'Bru': [Bru, Bru - [0,1]],\
 			'Brd': [Brd, Brd + [0,1]]}
 
 		elif self.Cuff_style == 'French':
 			
-			Cld = np.array([0,0])
+			Cld = Point([0,0])
 			Clm = Cld + [0, width+2]
 			Clu = Clm + [0, width]
 			Olu = Clu + [overlap, 0]
@@ -76,7 +89,7 @@ class Cuffs(Pattern):
 			Brd = Crm + [-overlap/2, -width/2]
 			
 			self.Cuffs_dic.append( {'Cld': Cld, 'Clu': Clu, 'Olu': Olu, 'Oru': Oru, 'Ord': Ord, 'Old': Old, 'Crd': Crd, 'Cru': Cru } )
-			self.Cuffs_vertices.append( [Cld, Clu, Cru, Crd, Cld] )
+			self.Cuffs_vertices.append( [Cld.pos, Clu.pos, Cru.pos, Crd.pos, Cld.pos] )
 			self.Cuffs_segments = {'Cuff_Fold': [Clm, Crm], 'L_Overlap': [Olu, Old], 'R_Overlap': [Oru, Ord], 'Fabric_Fold': [Cld,Crd],\
 			'Blu': [Blu, Blu - [0,1]], 'Bru': [Bru, Bru - [0,1]], 'Bld': [Bld, Bld + [0,1]], 'Brd': [Brd, Brd + [0,1]]}
 
@@ -89,7 +102,7 @@ class Cuffs(Pattern):
 			kwdic = {'color': 'blue', 'linestyle':'dashed', 'alpha':0.5}
 			self.segment(val[0], val[1], ax, kwdic)
 			angle = self.segment_angle(val[0],val[1])*180/np.pi
-			ax.text(lbl_pos[0], lbl_pos[1], key, rotation = angle)
+			ax.text(lbl_pos.x, lbl_pos.y, key, rotation = angle)
 			
 		if save:
 				

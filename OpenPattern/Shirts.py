@@ -1,3 +1,8 @@
+import sys
+sys.path.append('./..')
+
+from OpenPattern.Pattern import *
+from OpenPattern.Points import *
 from OpenPattern.Bodices import *
 
 class shirt(Basic_Bodice):

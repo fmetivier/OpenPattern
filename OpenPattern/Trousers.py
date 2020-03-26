@@ -1,4 +1,8 @@
+import sys
+sys.path.append('./..')
+
 from OpenPattern.Pattern import *
+from OpenPattern.Points import *
 
 ###############################################################
 # Basic Trousers templates
@@ -61,23 +65,23 @@ class Basic_Trousers(Pattern):
 		"""
 
 		#Front
-		A = np.array([0, self.m["longueur_tot"]])
-		B = np.array([self.m["tour_bassin"]/4, self.m["longueur_tot"]])
-		C = np.array([0, 0])
-		D = np.array([B[0], 0])
-		E = np.array([0, A[1] - self.m["montant"]])
-		F = np.array([B[0], E[1]])
+		A = Point([0, self.m["longueur_tot"]])
+		B = Point([self.m["tour_bassin"]/4, self.m["longueur_tot"]])
+		C = Point([0, 0])
+		D = Point([B.x, 0])
+		E = Point([0, A.y - self.m["montant"]])
+		F = Point([B.x, E.y])
 		G = A - [0, self.m["hauteur_bassin"]]
-		H = np.array([B[0], G[1]] )
+		H = Point([B.x, G.y] )
 		E1 = E - [self.m["tour_bassin"]/20, 0]
 		I = E - [0, self.m["montant"]]
-		L = np.array([B[0], I[1]])
-		X = np.array([0.5 * (E1[0] + F[0]), E1[1]])
-		M = np.array([X[0], A[1] - 0.5])
-		N = np.array([X[0], C[1]])
-		O = np.array([X[0], M[1] - self.m["hauteur_genou"]])
+		L = Point([B.x, I.y])
+		X = Point([0.5 * (E1.x + F.x), E1.y])
+		M = Point([X.x, A.y - 0.5])
+		N = Point([X.x, C.y])
+		O = Point([X.x, M.y - self.m["hauteur_genou"]])
 		M2 = M + [6, 0]
-		X1 = np.array([X[0], I[1]])
+		X1 = Point([X.x, I.y])
 		L1 = X1 + [self.m["tour_cuisse"]/4 - 1, 0] # Originally 12.5 ?
 		I1 = X1 - [self.m["tour_cuisse"]/4 - 1, 0]
 		N1 = N + [0, 1.5] # provenance ?
@@ -86,7 +90,7 @@ class Basic_Trousers(Pattern):
 		A1 = A + [1, 0]
 				
 		# points en plus
-		E1G = np.array([E[0] + (E1[0]-E[0])/5, E[1] + (G[1]-E[1])/3]) # permet une jolie courbe de fourche avant
+		E1G = Point([E.x + (E1.x-E.x)/5, E.y + (G.y-E.y)/3]) # permet une jolie courbe de fourche avant
 
 		ONC1 = C1 + [0, 10] # permettent un tombé droit sous le genou.
 		OND1 = D1 + [0, 10]
@@ -102,7 +106,7 @@ class Basic_Trousers(Pattern):
 		for i in range(len(Front_Points_Names)):
 			self.Trousers_Front_points_dic[Front_Points_Names[i]] = Front_Points_List[i]
 			
-		self.Trousers_Front_vertices = self.interieur_avant + self.fourche_avant + self.ceinture_avant + self.exterieur_avant + [N1, C1]
+		self.Trousers_Front_vertices = self.interieur_avant + self.fourche_avant + self.ceinture_avant + self.exterieur_avant + [N1.pos, C1.pos]
 		
 		self.front_width=self.distance(E1, F)
 		print(self.front_width)
@@ -119,29 +123,29 @@ class Basic_Trousers(Pattern):
 
 		dx = self.m["tour_bassin"]/4+ delta 
 		
-		A = np.array([dx + self.m["tour_bassin"]/4 + 2, self.m["longueur_tot"]])
-		B = np.array([dx, A[1]])
-		C = np.array([A[0], 0])
-		D = np.array([dx, 0])
+		A = Point([dx + self.m["tour_bassin"]/4 + 2, self.m["longueur_tot"]])
+		B = Point([dx, A.y])
+		C = Point([A.x, 0])
+		D = Point([dx, 0])
 		
 		E = A - [0, self.m["montant"]]  #crotch line
-		F = np.array([B[0], E[1]])
+		F = Point([B.x, E.y])
 		
 		G = A - [0, self.m["hauteur_bassin"]] # hip line
-		H = np.array([B[0], G[1]])
+		H = Point([B.x, G.y])
 
 		E1 = E + [self.distance(E, F)/3 + 1.5, 0]
 		E2 = E1 - [0, 2]
 		
 		I = E - [0, self.m["montant"]]
-		L = np.array([F[0], I[1]])
+		L = Point([F.x, I.y])
 
 		X = self.middle(E1, F)
-		M = np.array([X[0], A[1]])
-		N = np.array([X[0], C[1]])
-		X1 = np.array([X[0], I[1]])
+		M = Point([X.x, A.y])
+		N = Point([X.x, C.y])
+		X1 = Point([X.x, I.y])
 		
-		O = np.array([X[0], M[1] - self.m["hauteur_genou"]])
+		O = Point([X.x, M.y - self.m["hauteur_genou"]])
 		A1 = A - [4.5, 0]
 		A2 = A1 + [0, 2] 
 		B1 = B - [0, 0.5]
@@ -160,11 +164,11 @@ class Basic_Trousers(Pattern):
 		
 		# points supplémentaires
 		
-		CC1 = C1 + (0, 10)
-		DD1 = D1 + (0, 10)
+		CC1 = C1 + [0, 10]
+		DD1 = D1 + [0, 10]
 		
 
-		E3 = E2 - (2, 0)
+		E3 = E2 - [2, 0]
 		EG = self.middle(E, G)
 		
 		dfa, self.fourche_arriere = self.pistolet(np.array([EG, E3, E2]), 2, tot = True)
@@ -177,7 +181,7 @@ class Basic_Trousers(Pattern):
 		for i in range(len(Back_Points_Names)):
 			self.Trousers_Back_points_dic[Back_Points_Names[i]] = Back_Points_List[i]
 			
-		self.Trousers_Back_vertices = self.exterieur_arriere + [B4, A2] + self.fourche_arriere + self.interieur_arriere + [N1, D1]
+		self.Trousers_Back_vertices = self.exterieur_arriere + [B4.pos, A2.pos] + self.fourche_arriere + self.interieur_arriere + [N1.pos, D1.pos]
 		
 		self.back_width=self.distance(B3, A)+self.distance(E, E1)
 		print(self.back_width)
@@ -262,12 +266,12 @@ class Pants_block(Basic_Trousers):
 			pbf=self.Trousers_Front_points_dic
 			pbb=self.Trousers_Back_points_dic
 			
-			AF = np.array(pbf['A']) + [0, 6]
-			AB = np.array(pbb['A']) + [0, 6]
+			AF = pbf['A'] + [0, 6]
+			AB = pbb['A'] + [0, 6]
 			
 			
-			V = np.array(self.middle(AF, AB))
-			Z = V + [0, -V[1]]
+			V = self.middle(AF, AB)
+			Z = V + [0, -V.y]
 			B1 = Z - [self.m["tour_cheville"] * 3/4 -2, 0]
 			C1 = Z + [self.m["tour_cheville"] * 3/4 +2, 0]
 
@@ -276,7 +280,7 @@ class Pants_block(Basic_Trousers):
 			
 			pants_points_dic={'B1':B1, 'E1':pbf['E1'], 'AF':AF, 'V':V, 'AB':AB, 'E2':pbb['E2'], 'C1':C1, 'Z':Z}
 			
-			pants_bloc_vertices = [B1, pbf['E1']] + self.fourche_avant + [AF, AB] + self.fourche_arriere + [C1, B1]
+			pants_bloc_vertices = [B1.pos, pbf['E1'].pos] + self.fourche_avant + [AF.pos, AB.pos] + self.fourche_arriere + [C1.pos, B1.pos]
 			
 			
 			fig, ax=self.draw_pattern([pants_points_dic], [pants_bloc_vertices])
@@ -295,12 +299,12 @@ class Pants_block(Basic_Trousers):
 			ldic={'color':'blue', 'marker':'s', 'linestyle':'dashed'}
 			self.segment(Fof, Fob, ax, ldic)
 			mfold = self.middle(Fof, Fob)
-			ax.text(mfold[0], mfold[1]+0.1, 'Fold Line')
+			ax.text(mfold.x, mfold.y + 0.1, 'Fold Line')
 
-			d=np.abs(pbf['E1'][0]-pbb['E1'][0])
+			d=np.abs(pbf['E1'].x-pbb['E1'].x)
 			ankle=self.distance(B1, C1)
 			
-			ax = self.print_info(ax, {"Pattern":"Pyjama", "Max width":d, "Height": V[1], "Ankle": ankle})
+			ax = self.print_info(ax, {"Pattern":"Pyjama", "Max width":d, "Height": V.y, "Ankle": ankle})
 			
 			
 			fname='../patterns/' + self.style + '_Block_pants_' + self.pname + '.pdf'

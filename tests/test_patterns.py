@@ -20,10 +20,10 @@ import OpenPattern as OP
 #~ p.save_measurements()
 #~ p.draw_sleeves()
 
-c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
-c.draw_cuffs(save=True)
+#~ c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
+#~ c.draw_cuffs(save=True)
 
-col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'Officer', overlap=2, collar_height=5)
+col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'OnePiece', overlap=2, collar_height=2)
 col.draw_collar(save=True)
 
 #~ pans = OP.Basic_Trousers()

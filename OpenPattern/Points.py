@@ -12,20 +12,34 @@ from matplotlib.backends.backend_pdf import PdfPages
 from  copy import copy, deepcopy
 
 class Point(object):
+	"""Generic  point class
+	
+	2D implementation for now
+	
+	Attributes:
+		x,y : floats and pos [x,y] for position
+		point_type : str  generic type of point for seaches
+		comment : str comments on the point
+		pname_ori : str original point name in cas of pattern points. Not really used for now.
+	
+	"""
 
-	def __init__(self, pos = [0,0], comment=None, pname_ori=None):
+	def __init__(self, pos = [0,0], point_type='Pattern', comment=None, pname_ori=None):
 		"""Initialize
 		
 		Args:
-		# two mandatory args
+			# one mandatory arg
 			pos : its position
 		
+			#
 		"""
 				
 		# coordinates
 		self.x = pos[0]
 		self.y = pos[1]
 		self.pos = [self.x, self.y]
+		
+		self.point_type = point_type
 		
 		self.track=[(pos[0],pos[1])] # recods all changes made si they can be cancelled on demand
 
@@ -69,6 +83,7 @@ class Point(object):
 			P = Point( [ self.x + a[0], self.y + a[1]]  ) 
 			return P
 		
+	##################################################################
 	
 	def __iadd__(self,*args):
 		"""
@@ -88,7 +103,9 @@ class Point(object):
 		if self.track_changes:
 			self.track.append((self.x,self.y))
 		return self
-		
+				
+	##################################################################
+
 	def __sub__(self,*args):
 		"""
 		A = self - Y
@@ -103,8 +120,9 @@ class Point(object):
 		elif isinstance(a, np.ndarray) or isinstance(a, list) or isinstance(a, tuple):
 			P = Point( [ self.x - a[0], self.y - a[1]]  ) 
 			return P
-
 	
+	##################################################################
+
 	def __isub__(self,*args):
 		"""
 		self -= Y
@@ -124,6 +142,8 @@ class Point(object):
 			self.track.append((self.x,self.y))
 		return self
 		
+	##################################################################
+	
 	def __mul__(self, *args):
 		"""Scalar product a P
 		
@@ -191,6 +211,8 @@ class Point(object):
 		if change and self.track_changes:
 			self.track.append((self.x,self.y))
 
+	##################################################################
+
 	def sub(self,*args):
 		""" Substraction
 		
@@ -233,6 +255,8 @@ class Point(object):
 		if change and self.track_changes:
 			self.track.append((self.x,self.y))
 
+	##################################################################
+
 	def scal(self, *args):
 		"""Scalar product 
 		   Different from * because it can also be a scalar product of vectors
@@ -264,6 +288,8 @@ class Point(object):
 		if change and self.track_changes:
 			self.track.append((self.x,self.y))
 
+	##################################################################
+
 	def vec(self, *args):
 		"""Vector product
 		
@@ -288,6 +314,7 @@ class Point(object):
 		else:
 			print("vec: Arg format error")
 
+	##################################################################
 		
 	def mat(self, *args):
 		"""Matrix product 
@@ -316,6 +343,8 @@ class Point(object):
 		#track change
 		if change and self.track_changes:
 			self.track.append((self.x,self.y))
+
+	##################################################################
 
 	def mat_out(self, *args):
 		"""Matrix product of self with A -> new point
@@ -387,7 +416,9 @@ class Point(object):
 		if change and self.track_changes:
 			self.track.append((self.x,self.y))
 			
-	def move(self, mtype='dxdy', mlist = [0,0], unit='deg'):
+	##################################################################
+
+	def move(self, mlist = [0,0], mtype='dxdy', unit='deg'):
 		"""Move point by  a certain amount
 		
 		Can either be done in cartesian coordinates 
@@ -401,7 +432,7 @@ class Point(object):
 			
 		"""
 		change=True
-		if mtype == 'dydy':
+		if mtype == 'dxdy':
 			self.x += mlist[0]
 			self.y += mlist[1]
 			
@@ -426,6 +457,8 @@ class Point(object):
 		if change and self.track_changes:
 			self.track.append((self.x,self.y))
 			
+	##################################################################
+
 	def rotate(self, rot_center=[0,0], theta = 0, unit = 'deg' ):
 		"""rotate a point from theta around rot_center
 		
@@ -452,6 +485,8 @@ class Point(object):
 		self.add(rot_center)
 
 			
+	##################################################################
+
 	def angle_to(self, B):
 		"""Returns slope of segment to B
 		
@@ -470,6 +505,8 @@ class Point(object):
 		else:
 			print("segment_angle: arg must be a Point")
 
+	##################################################################
+
 	def middle(self, B):
 		"""
 		returns the middle point of [self B]
@@ -485,6 +522,8 @@ class Point(object):
 			return Point([0.5*(self.x + B.x), 0.5*(self.y + B.y)])
 		else:
 			print("Middle: arg must be a Point. Nothing done")
+
+	##################################################################
 
 	def distance_to(self,B):
 		"""
@@ -515,6 +554,8 @@ class Point(object):
 		else:
 			return self.track
 			
+	##################################################################
+
 	def reset(self):
 		"""Go back to original
 		"""
@@ -538,6 +579,8 @@ class Point(object):
 		if name:
 			ax.text(self.x + offset,self.y,name)
 
+	##################################################################
+
 	def segment_to(self, B, ax, kwargs={'color':'blue'}):
 		"""
 		plots [self B] segment on ax
@@ -553,42 +596,8 @@ class Point(object):
 		else:
 			plot("segment_to: args error") 
 
-if __name__ == '__main__':
-	
-	A=Point([0,1])
-	B=Point([1,1])
-
-	print("========================")
-	print(A.x, A.y)
-	print(B.x, B.y)
-	print("========================")
-
-	C = A+B
-	print('somme de deux points', C.x, C.y)
-
-	C = C+[0,1]
-	print("somme d'un point et d'une liste", C.x, C.y)
-
-	C += [5,0]
-	print("+= liste", C.x, C.y)
-
-	D = C*2
-	print("produit D=C*2" , D.x, D.y)
-	print("produit C", C.x, C.y)
-	print("distance", C.distance_to(D))
-
-	print(C.angle_to(D), D.angle_to(C))
-	print("========================")
-	print(A.x, A.y)
-	print(B.x, B.y)
-	print("========================")
-
-	pdic={'A':A,'B':B,'C':C,'D':D}
-
-	f = plt.figure()
-	ax = f.add_subplot(111)
-
-	for key,val in pdic.items():
-		val.plot(ax,name=key)
 		
-	plt.show()
+	
+if __name__ == '__main__':
+	pass
+	

@@ -431,7 +431,8 @@ class Point(object):
 			deg: tells the unit of theta deg: degrees, rad: radians
 			
 		"""
-		change=True
+		
+		change = True
 		if mtype == 'dxdy':
 			self.x += mlist[0]
 			self.y += mlist[1]

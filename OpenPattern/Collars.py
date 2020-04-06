@@ -11,7 +11,9 @@ class Collars(Pattern):
 	Collars must be called or instanciated after shirt or bodice instances so that 
 	the back and front collar lengths are stored on a json measurement file.
 	
-	styles available : Officer, OnePiece
+	styles available : Officer, OnePiece, TwoPieces
+	
+	Again and again issues with naming conventions to be solved
 	 
 	"""
 	
@@ -59,8 +61,56 @@ class Collars(Pattern):
 				
 			self.Collar_vertices.append( curve_dic['bcd'] + curve_dic['fcd'] + curve_dic['fcc'] + upper_curve )
 			self.Collar_polylines.append(  curve_dic['fcu'] + curve_dic['bcu'] )
+		
+		if self.Collar_style == 'TwoPieces':
+			"""
+			Tombant du col TC
+			l,r,m: left, right, middle
+			u,d: up, down
+			
+			ref_point # some tmp point 
+			
+			
+			The lower curve of the Tombant is symmetrical to the upper curve of the foot collar so 
+			sewing should be easier and the fit should be better
+			"""
+			
+			TC_front_height = 6.5
+			PT_distance = 5
+			
+			curve_dic = self.pied_de_col_gilewska_m(overlap, collar_height, front_height=1.5)
+			
+			C7 = self.Collar_dic[0]['C7']
+			down_curve = deepcopy(curve_dic['fcu'] + curve_dic['bcu'])
+			
+			# invert the curve with regard to C7 
+			# and add 5 cm to position it above the collar foot
+			TC_down_curve=[]
+			for p in down_curve:
+				p[1] = C7.y - p[1] + PT_distance
+				TC_down_curve.append(p) 
+				
+			TCrd = C7 + [0,PT_distance - C7.y]
+			TCld = Point(TC_down_curve[-1])
+			
+			
+			TCru = Point([self.Collar_dic[0]['C7d'].x, TCrd.y + TC_front_height])
+			
+			
+			TClu = Point([self.Collar_dic[0]['Clu'].x, TCru.y])
+			
+			self.Collar_vertices.append( TC_down_curve + [TClu.pos, TCru.pos, TCrd.pos])	
+			self.Collar_dic.append({ 'TCrd':TCrd, 'TCru': TCru, 'TClu': TClu, 'TCld': TCld })
+				
+			#redefine the size of segments
+			A =	Point([self.m['longueur_col_dos']+self.m['longueur_col_devant']+1,0])		
+			Cmd = self.Collar_dic[0]['Cmd']
+			C7d = self.Collar_dic[0]['C7d']
+			self.Collar_segments = {'Middle Back': [Point([0,0]), Point([0,15])],\
+				'Shoulder': [Cmd,Cmd+[0,15]], 'Middle Front': [A,A+[0,15]], 'Overlap Line': [C7,C7d]}
+			
 
-
+			
 				
 	def pied_de_col_gilewska_m(self, overlap=0, collar_height=3, front_height=2):					
 			
@@ -72,6 +122,7 @@ class Collars(Pattern):
 			
 			dcf = self.distance(Cmd, Crd)
 			a = self.segment_angle(Cmd, Crd)
+			print('a=',a)
 			
 			C3 = Cmd + 0.5*dcf*np.array([np.cos(a-2*np.pi/180),np.sin(a-2*np.pi/180)])
 	
@@ -96,14 +147,15 @@ class Collars(Pattern):
 				C7 = Cmu + [0.6*dcf*np.cos(a),0.6*dcf*np.sin(a)]
 			else:
 				# find the (C7) points at the overlap
-				ad = self.segment_angle(Cmd,Crd)
-				C7d = Point( [A.x, np.tan(ad)*(A.x-Cmd.x) + Cmd.y] )		
+				ad = self.segment_angle(C3,Crd)
+				print('ad=',ad)
+				C7d = Point( [A.x, np.tan(ad)*(A.x-C3.x) + C3.y] )		
 				
 				C7 = C7d + [np.cos(ad+np.pi/2)*collar_height, np.sin(ad+np.pi/2)*collar_height]
-				b = self.segment_angle(Cru,Crd)
-				print('b =',b)
+				#~ b = self.segment_angle(Cru,Crd)
+				#~ print('b =',b)
 			
-				C7bis = self.intersec_manches(Cmd,Crd,C7,b*180/np.pi)
+				#~ C7bis = self.intersec_manches(C3,Crd,C7,b*180/np.pi)
 			
 			C8 = Cmu + 0.5*self.distance(Cmu,C6)*np.array([np.cos(a-2*np.pi/180),np.sin(a-2*np.pi/180)])
 			
@@ -113,14 +165,14 @@ class Collars(Pattern):
 			d, front_curve_d = self.pistolet(np.array([Cmd, C3, Crd]), 2, tot=True)
 			d, front_curve_u = self.pistolet(np.array([C7, C8, Cmu]), 2, tot=True)
 
-			self.Collar_dic.append( {'Cld': Cld, 'Cmd': Cmd, 'Crd': Crd, 'Cmu': Cmu, 'Clu': Clu, 'Cru': Cru, 'C7': C7, 'C8': C8, 'C3': C3, 'C6': C6} )
+			self.Collar_dic.append( {'Cld': Cld, 'Cmd': Cmd, 'Crd': Crd, 'Cmu': Cmu, 'Clu': Clu, 'Cru': Cru, 'C7': C7, 'C8': C8, 'C3': C3, 'C6': C6, 'C7d':C7d} )
 			self.Collar_vertices.append( back_curve_d + front_curve_d + front_collar_curve+ front_curve_u + back_curve_u )
 			
 			self.Collar_segments = {'Middle Back': [Point([0,0]), Point([0,10])],\
 				'Shoulder': [Cmd,Cmd+[0,10]], 'Middle Front': [A,A+[0,10]]}
 				
 			if overlap != 0:
-				self.Collar_segments['Overlap Line'] = [C7,C7bis]
+				self.Collar_segments['Overlap Line'] = [C7,C7d]
 			
 			cdic = {'fcc': front_collar_curve, 'bcd' : back_curve_d, 'bcu': back_curve_u, 'fcd': front_curve_d, 'fcu': front_curve_u}
 			return cdic

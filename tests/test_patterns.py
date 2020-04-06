@@ -15,16 +15,24 @@ import OpenPattern as OP
 #~ p.draw_sleeves()
 
 # Men
-#~ p = OP.Basic_Bodice(pname = "M44G", gender = 'm', style = 'Gilewska')
+p = OP.Basic_Bodice(pname = "M42G", gender = 'm', style = 'Gilewska')
+p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')
+
+
+#~ p = OP.Basic_Bodice(pname = "M44D", gender = 'm', style = 'Donnanno', ease=24)
 #~ p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')
+
 #~ p.save_measurements()
 #~ p.draw_sleeves()
 
 #~ c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
 #~ c.draw_cuffs(save=True)
 
-col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'OnePiece', overlap=2, collar_height=2)
-col.draw_collar(save=True)
+#~ col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'TwoPieces', overlap=2, collar_height=3)
+#~ col.draw_collar(save=True)
+
+#~ p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
+#~ p.draw_placket()
 
 #~ pans = OP.Basic_Trousers()
 

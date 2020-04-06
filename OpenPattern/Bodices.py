@@ -32,7 +32,7 @@ class Basic_Bodice(Pattern):
 	
 	"""	
 	
-	def __init__(self, pname="sophie", gender='m', style='Donnanno', age=12):
+	def __init__(self, pname="sophie", gender='m', style='Donnanno', age=12, ease=8):
 		"""
 		Initilizes parent class &  attributes
 		launches the calculation of bodice and sleeve
@@ -613,7 +613,6 @@ class Basic_Bodice(Pattern):
 		""" Calculation of bodice with no dart
 			for Men using Gilewska technique
 			
-		
 		Args:
 			BF_space: distance between front and back patterns on the draft
 		"""
@@ -628,7 +627,7 @@ class Basic_Bodice(Pattern):
 		HB = Point([0, self.m["longueur_dos"]]) #B
 		HB1 = Point([self.m["largeur_epaule"]/2, HB.y]) #B1
 		#4
-		SlB = Point([0, HB.y/2+1]) # ligne d'emmanchure C
+		SlB = Point([0, HB.y/2 + 1]) # ligne d'emmanchure C
 		SlB1 = Point([WB1.x, SlB.y]) # C1
 		#5
 		BB = Point([0, SlB.y + (HB.y - SlB.y)/3 +1]) # ligne de carrure D
@@ -741,7 +740,7 @@ class Basic_Bodice(Pattern):
 		# Front Sleeve
 		#################################################
 		#19
-		f_length = 2 #max 2.2
+		f_length = 2 #min 2 max 2.2
 		CPSlF = Point([ BF1.x-np.cos(np.pi/4)*f_length, SlF1.y+np.sin(np.pi/4)*f_length])
 		CPSlF1 = SlF1 + [0.5, 0] #point added to ensure correct tangents.
 		#~ CPSlF2 = BF1 + [0, -1] #point added to ensure correct tangents.

@@ -16,6 +16,7 @@ from.Bodices import *
 
 from .Cuffs import *
 from .Collars import *
+from .Placket import *
 
 from .Shirts import *
 from .Trousers import *

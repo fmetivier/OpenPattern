@@ -177,14 +177,10 @@ if __name__ == '__main__':
 	T0 = time.time()
 	graph = True
 
-	N_points = 100
-	N_steps = 1000
+	N_points = 200
+	N_steps = 10
+	N_loops = 50
 	
-	lp=[]
-	ipos=[]
-	pos_dic={}
-	idic={}
-	wall=[]
 
 	wall_size=200
 	space_size = 200
@@ -202,50 +198,61 @@ if __name__ == '__main__':
 	
 		plt.ion()
 	
-	
-	pos_map = np.zeros((space_size,space_size))-1*np.ones((space_size,space_size))
-	print( pos_map )
-	
-	wall, pos_map = create_geometry('square',wall_size, pos_map)
-	print('wall ok')
-	
-	lp, pos_map, idic = create_walkers(N_points , space_size, 'n', ipos , graph, lp, pos_map, idic)
-	print('walkers 1 ok')
-	
-	lp, pos_map, idic = create_walkers(10 , space_size, 'i', ipos , graph, lp, pos_map, idic, start_i=N_points)
-	print('walkers 2 ok')
-	
-	print(pos_map)
+	N_infected = 1
 	infected_list=[]
-	for i in range(N_steps):
-		if graph:
-			ax2.cla()
-			ax2.plot(np.array(wall).transpose()[0],np.array(wall).transpose()[1],'r.')
-			ax2.set_xlim(0,space_size)
-			ax2.set_ylim(0,space_size)
+	for j in range(N_loops):
 
-		neighbour_count= 0
-		wall_count = 0
-		
-		random.shuffle(lp)
-		for p in lp:
-			whit, phit, idic = p.neighbours(i, wall, pos_map, idic)
+		lp=[]
+		ipos=[]
+		pos_dic={}
+		idic={}
+		wall=[]
+
+		if graph: ax1.cla()
 			
-			neighbour_count += phit
-			wall_count += whit
+		pos_map = np.zeros((space_size,space_size))-1*np.ones((space_size,space_size))
+		print( pos_map )
+		
+		wall, pos_map = create_geometry('square',wall_size, pos_map)
+		print('wall ok')
+		
+		lp, pos_map, idic = create_walkers(N_points -N_infected , space_size, 'n', ipos , graph, lp, pos_map, idic)
+		print('walkers 1 ok')
 
-			pos_map = p.random_move(pos_map)
-						
-			if graph: 
-				if p.point_type == 'n': p.plot(ax2, None, {'marker':'.', 'color':'blue'})
-				else: p.plot(ax2, None, {'marker':'.', 'color':'red'})
+		lp, pos_map, idic = create_walkers(N_infected , space_size, 'i', ipos , graph, lp, pos_map, idic, start_i=N_points)
+		print('walkers 2 ok')
+		
+		print(pos_map)
+		for i in range(N_steps):
+			if graph:
+				ax2.cla()
+				ax2.plot(np.array(wall).transpose()[0],np.array(wall).transpose()[1],'r.')
+				ax2.set_xlim(0,space_size)
+				ax2.set_ylim(0,space_size)
 
-		infected  = list(idic.values())
-		infected_list.append([i, infected.count('i')])		
-		if graph:
-			ax2.set_title("time step: %i, infected %i" % (i,infected.count('i')), fontsize=16) 
-			plt.draw()
-			plt.pause(1e-17)
+			neighbour_count= 0
+			wall_count = 0
+			
+			random.shuffle(lp)
+			for p in lp:
+				whit, phit, idic = p.neighbours(i, wall, pos_map, idic)
+				
+				neighbour_count += phit
+				wall_count += whit
+
+				pos_map = p.random_move(pos_map)
+							
+				if graph: 
+					if p.point_type == 'n': p.plot(ax2, None, {'marker':'.', 'color':'blue'})
+					else: p.plot(ax2, None, {'marker':'.', 'color':'red'})
+
+			infected  = list(idic.values())
+			infected_list.append(infected.count('i'))
+			N_infected = infected.count('i')		
+			if graph:
+				ax2.set_title("time_loop: %i, time step: %i, infected %i" % (j, i,infected.count('i')), fontsize=16) 
+				plt.draw()
+				plt.pause(1e-17)
 				
 				
 	if graph: plt.ioff()
@@ -254,7 +261,7 @@ if __name__ == '__main__':
 		
 	if graph:	
 		fig2, ax1 = plt.subplots(1)
-		ax1.semilogy(np.array(infected_list).transpose()[0], np.array(infected_list).transpose()[1],'r-')
+		ax1.plot(infected_list,'r-')
 		
 	#~ cursor.execute("insert into runparams values (?,?,?,?,?)", (RN, N_points, N_steps, sum(neighbour_list), sum(wall_list)))
 	#~ conn.commit()

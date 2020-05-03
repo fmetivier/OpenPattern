@@ -32,7 +32,7 @@ class Basic_Bodice(Pattern):
 	
 	"""	
 	
-	def __init__(self, pname="sophie", gender='m', style='Donnanno', age=12, ease=8):
+	def __init__(self, pname="M44G", gender='m', style='Gilewska', age=12, ease=8, hip=True):
 		"""
 		Initilizes parent class &  attributes
 		launches the calculation of bodice and sleeve
@@ -43,20 +43,24 @@ class Basic_Bodice(Pattern):
 			gender: ..
 			style: style to be used for drafting
 			age: used if for a child and style = Chiappetta.
-			
+			hip: True/False use to decide for men whether to draw a fullbodice
 		"""
 		Pattern.__init__(self, pname, gender)
 		
 		self.style=style
 		self.age=age
+		self.hip=hip
+		
+		self.dic_list=[]
+		self.vertices_list=[]
 		
 		self.Bodice_points_dic = {}
 		self.Bodice_Front_points_dic = {}
 		self.Bodice_Back_points_dic = {}
 		self.Sleeve_points_dic = {}
 
-		self.Front_Bodice_vertices = []
-		self.Back_Bodice_vertices = []
+		self.Bodice_Front_vertices = []
+		self.Bodice_Back_vertices = []
 		self.Sleeve_vertices = []
 		
 
@@ -107,7 +111,7 @@ class Basic_Bodice(Pattern):
 		"""
 	
 		# 1 draw
-		fig, ax = self.draw_pattern([self.Bodice_points_dic], [self.Bodice_Front_vertices, self.Bodice_Back_vertices])
+		fig, ax = self.draw_pattern(self.dic_list, self.vertices_list)
 			
 		# 2 print heading
 		ax = self.print_info(ax, dic)
@@ -220,7 +224,7 @@ class Basic_Bodice(Pattern):
 		ax.text(pos.x- 0.5, pos.y, 'FOLD LINE', fontsize=fs, rotation = 90)
 
 		pos = self.middle(bpd['WF'], bpd['SlF'])
-		ax.text(pos.x+ 0.5, pos.y, 'FOLD LINE', fontsize=fs, rotation = 90)
+		ax.text(pos.x+ 0.5, pos.y, 'MIDDLE FRONT', fontsize=fs, rotation = 90)
 		
 		ldic={'color':'blue', 'alpha':0.4, 'linestyle':'dashed'}
 		
@@ -607,8 +611,10 @@ class Basic_Bodice(Pattern):
 			self.Bodice_Back_vertices = [WB.pos, HB.pos] + back_collar_curve + [ShB1.pos] + back_sleeve_curve + [SlB1.pos, WB1.pos]
 			self.Bodice_Front_vertices = [WF.pos, CF1.pos] + front_collar_curve + [ShF1.pos] +  front_sleeve_curve + [SlF1.pos, WF1.pos]
 
-
-
+			self.vertices_list.append(self.Bodice_Front_vertices)
+			self.vertices_list.append(self.Bodice_Back_vertices)
+			self.dic_list.append(self.Bodice_points_dic)
+			
 	def Gilewska_basic_bodice_m(self, BF_space=10):
 		""" Calculation of bodice with no dart
 			for Men using Gilewska technique
@@ -764,14 +770,23 @@ class Basic_Bodice(Pattern):
 		#Create points dictionnary
 		########################################		
 
-		Back_Points_list  =  [HiB, HiB1, WB,  SlB,  BB,  HB, HB1, CB1,  ShB1,  BB1,  CPSlB,  SlB1,  WB1, DS, B2]
-		Back_Points_Names  =  ['HiB', 'HiB1', 'WB', 'SlB', 'BB', 'HB', 'HB1', 'CB1', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1', 'DS', 'B2']
-		
+		if self.hip:
+			Back_Points_list  =  [HiB, HiB1, WB,  SlB,  BB,  HB, HB1, CB1,  ShB1,  BB1,  CPSlB,  SlB1,  WB1, DS, B2]
+			Back_Points_Names  =  ['HiB', 'HiB1', 'WB', 'SlB', 'BB', 'HB', 'HB1', 'CB1', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1', 'DS', 'B2']
+
+			Front_Points_list  =  [HiF, HiF1, WF,  SlF,  BF, CF,  CPCF,  CF1,  ShF1,  BF1,  CPSlF,  SlF1,  WF1, HF, HF1]
+			Front_Points_Names  =  ['HiF', 'HiF1', 'WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
+
+		else:
+			Back_Points_list  =  [WB,  SlB,  BB,  HB, HB1, CB1,  ShB1,  BB1,  CPSlB,  SlB1,  WB1, DS, B2]
+			Back_Points_Names  =  ['WB', 'SlB', 'BB', 'HB', 'HB1', 'CB1', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1', 'DS', 'B2']
+
+			Front_Points_list  =  [WF,  SlF,  BF, CF,  CPCF,  CF1,  ShF1,  BF1,  CPSlF,  SlF1,  WF1, HF, HF1]
+			Front_Points_Names  =  ['WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
+
 		for i in range(len(Back_Points_Names)):
 			self.Bodice_points_dic[Back_Points_Names[i]] = Back_Points_list[i]
 
-		Front_Points_list  =  [HiF, HiF1, WF,  SlF,  BF, CF,  CPCF,  CF1,  ShF1,  BF1,  CPSlF,  SlF1,  WF1, HF, HF1]
-		Front_Points_Names  =  ['HiF', 'HiF1', 'WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
 		for i in range(len(Front_Points_Names)):
 			self.Bodice_points_dic[Front_Points_Names[i]] = Front_Points_list[i]
 			
@@ -781,11 +796,21 @@ class Basic_Bodice(Pattern):
 		#for polygon representation
 		#########################################	
 
-		self.Bodice_Back_vertices  =  [HiB.pos,  WB.pos,  HB.pos ] + collar_back_points +  sleeve_back_points + [SlB1.pos, HiB1.pos]		
-		self.Bodice_Front_vertices  =  [HiF.pos,  SlF.pos,  BF.pos ] + collar_front_points +  sleeve_front_points + [SlF1.pos,  HiF1.pos]
+		if self.hip:
+			
+			self.Bodice_Back_vertices  =  [HiB.pos,  WB.pos,  HB.pos ] + collar_back_points +  sleeve_back_points + [SlB1.pos, HiB1.pos]		
+			self.Bodice_Front_vertices  =  [HiF.pos,  SlF.pos,  BF.pos ] + collar_front_points +  sleeve_front_points + [SlF1.pos,  HiF1.pos]
+
+		else:
+			self.Bodice_Back_vertices  =  [WB.pos,  HB.pos ] + collar_back_points +  sleeve_back_points + [SlB1.pos, WB1.pos]		
+			self.Bodice_Front_vertices  =  [WF.pos,  SlF.pos,  BF.pos ] + collar_front_points +  sleeve_front_points + [SlF1.pos,  WF1.pos]
 
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
 		
+		self.vertices_list.append(self.Bodice_Front_vertices)
+		self.vertices_list.append(self.Bodice_Back_vertices)
+		self.dic_list.append(self.Bodice_points_dic)
+			
 	
 	def Gilewska_basic_sleeve_m(self):
 		""" Calculation of basic sleeve
@@ -1007,6 +1032,10 @@ class Basic_Bodice(Pattern):
 		self.Bodice_Front_vertices  =  [WF.pos,  CF.pos ] + collar_front_points +  sleeve_front_points + [SlF1.pos, WF1.pos]
 		
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
+		
+		self.vertices_list.append(self.Bodice_Front_vertices)
+		self.vertices_list.append(self.Bodice_Back_vertices)
+		self.dic_list.append(self.Bodice_points_dic)
 		
 	
 	def add_bust_dart(self):

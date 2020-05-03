@@ -12,7 +12,8 @@ __all__ = ['OpenPattern','Pattern','Bodices','Trousers','Collars','Cuffs','Shirs
 from .Points import *
 from .Pattern import *
 
-from.Bodices import *
+from .Bodices import *
+from .Gowns import *
 
 from .Cuffs import *
 from .Collars import *
@@ -20,3 +21,4 @@ from .Placket import *
 
 from .Shirts import *
 from .Trousers import *
+from .Waist_Coats import *

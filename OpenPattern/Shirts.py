@@ -4,8 +4,8 @@ sys.path.append('./..')
 from OpenPattern.Pattern import *
 from OpenPattern.Points import *
 from OpenPattern.Bodices import *
-
-class shirt(Basic_Bodice):
+		
+class Shirt(Basic_Bodice):
 	
 
 	def __init__(self, collar_ease = 1, sleeve_lowering = 4, side_ease=4):

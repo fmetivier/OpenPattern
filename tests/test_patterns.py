@@ -15,9 +15,15 @@ import OpenPattern as OP
 #~ p.draw_sleeves()
 
 # Men
-p = OP.Basic_Bodice(pname = "M42G", gender = 'm', style = 'Gilewska')
-p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')
+#~ p = OP.Basic_Bodice(hip=False)
+#~ p.draw_bodice()
 
+p = OP.Waist_Coat()
+
+
+#~ p = OP.Hospital_Gown()
+#~ p.draw_gown()
+#~ p.draw_sleeves()
 
 #~ p = OP.Basic_Bodice(pname = "M44D", gender = 'm', style = 'Donnanno', ease=24)
 #~ p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')

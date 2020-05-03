@@ -120,6 +120,43 @@ class Pattern:
 			with open("../measurements/" + self.pname + "_data.json", "w") as write_file:
 				json.dump(self.m, write_file)		
 	############################################################
+
+	def intersec_lines(self, A,B,C,D):
+		"""
+		finds the instersection between , lines AB and CD
+		Args:
+			A,B,C, D: points given as Points or  array([x,y])
+			
+		Returns:
+			Point([x,y]) or	(x,y) tuple of coordinates
+		"""
+		if isinstance(A, Point) and isinstance(B, Point) and isinstance(C, Point):
+			# coefficient de AB
+			aD1  =  (B.y-A.y)/(B.x-A.x)
+			bD1  =  A.y - aD1*A.x
+			
+			#coefficients de CD
+			aD2 = (C.y-D.y)/(C.x-D.x)
+			bD2 = C.y - aD2*C.x
+			
+			xi = (bD2-bD1)/(aD1-aD2)
+			yi = aD1*xi + bD1
+			
+			return Point([xi,yi])
+		else:
+			aD1  =  (B[1]-A[1])/(B[0]-A[0])
+			bD1  =  A[1] - aD1*A[0]
+			
+			#coefficients de CD
+			aD2 = (C[1]-D[1])/(C[0]-D[0])
+			bD2 = C[1] - aD2*C[0]
+			
+			xi = (aD1-aD2)/(bD2-bD1)
+			yi = aD1*xi + bD1
+			
+			return (xi,yi)
+
+
 		
 	def intersec_manches(self, A, B, C, theta):
 		""" Intersection calculation

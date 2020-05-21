@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import sys
 sys.path.append('./..')
 
@@ -18,7 +21,7 @@ import OpenPattern as OP
 #~ p = OP.Basic_Bodice(hip=False)
 #~ p.draw_bodice()
 
-p = OP.Waist_Coat()
+#p = OP.Waist_Coat()
 
 
 #~ p = OP.Hospital_Gown()
@@ -42,9 +45,9 @@ p = OP.Waist_Coat()
 
 #~ pans = OP.Basic_Trousers()
 
-# Grégoire's pyjama
-#~ pans= OP.Pants_block(pname="gregoire")
-#~ pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers', paper='A4')
+# Gregoire's pyjama
+pans= OP.Pants_block(pname="gregoire")
+pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers', paper='A4')
 
 
 plt.show()

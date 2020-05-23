@@ -11,43 +11,43 @@ import OpenPattern as OP
 
 
 # Women
-#~ p = OP.Basic_Bodice(pname = "W44G", gender = 'w', style = 'Gilewska')
-#~ p.add_bust_dart()
-#~ p.add_waist_dart()
-#~ p.draw_bodice({"Pattern":"Bodice without dart"},save=True,paper='Ledger')
-#~ p.draw_sleeves()
+# p = OP.Basic_Bodice(pname = "W44G", gender = 'w', style = 'Gilewska')
+# p.add_bust_dart()
+# p.add_waist_dart()
+# p.draw_bodice({"Pattern":"Bodice without dart"},save=True,paper='Ledger')
+# p.draw_sleeves()
 
 # Men
-#~ p = OP.Basic_Bodice(hip=False)
-#~ p.draw_bodice()
+# p = OP.Basic_Bodice(hip=False)
+# p.draw_bodice()
 
-#p = OP.Waist_Coat()
+p = OP.Waist_Coat()
 
 
-#~ p = OP.Hospital_Gown()
-#~ p.draw_gown()
-#~ p.draw_sleeves()
+# p = OP.Hospital_Gown()
+# p.draw_gown()
+# p.draw_sleeves()
 
-#~ p = OP.Basic_Bodice(pname = "M44D", gender = 'm', style = 'Donnanno', ease=24)
-#~ p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')
+# p = OP.Basic_Bodice(pname = "M44D", gender = 'm', style = 'Donnanno', ease=24)
+# p.draw_bodice({"Pattern":"Basic Shirt"}, save=True, fname='BasicShirt', paper='A4')
 
-#~ p.save_measurements()
-#~ p.draw_sleeves()
+# p.save_measurements()
+# p.draw_sleeves()
 
-#~ c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
-#~ c.draw_cuffs(save=True)
+# c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
+# c.draw_cuffs(save=True)
 
-#~ col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'TwoPieces', overlap=2, collar_height=3)
-#~ col.draw_collar(save=True)
+# col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'TwoPieces', overlap=2, collar_height=3)
+# col.draw_collar(save=True)
 
-#~ p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
-#~ p.draw_placket()
+# p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
+# p.draw_placket()
 
-#~ pans = OP.Basic_Trousers()
+# pans = OP.Basic_Trousers()
 
 # Gregoire's pyjama
-pans= OP.Pants_block(pname="gregoire")
-pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers', paper='A4')
+# pans= OP.Pants_block(pname="gregoire")
+# pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers', paper='A4')
 
 
 plt.show()

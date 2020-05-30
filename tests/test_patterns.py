@@ -8,8 +8,6 @@ import matplotlib.pyplot as plt
 #~ from OpenPattern.Points import Point
 import OpenPattern as OP
 
-
-
 # Women
 # p = OP.Basic_Bodice(pname = "W44G", gender = 'w', style = 'Gilewska')
 # p.add_bust_dart()
@@ -21,7 +19,7 @@ import OpenPattern as OP
 # p = OP.Basic_Bodice(hip=False)
 # p.draw_bodice()
 
-p = OP.Waist_Coat()
+# p = OP.Waist_Coat()
 
 
 # p = OP.Hospital_Gown()
@@ -43,7 +41,8 @@ p = OP.Waist_Coat()
 # p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
 # p.draw_placket()
 
-# pans = OP.Basic_Trousers()
+pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno')
+pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
 
 # Gregoire's pyjama
 # pans= OP.Pants_block(pname="gregoire")

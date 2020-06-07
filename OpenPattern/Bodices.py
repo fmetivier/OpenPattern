@@ -45,6 +45,7 @@ class Basic_Bodice(Pattern):
 			gender: ..
 			style: style to be used for drafting
 			age: used if for a child and style = Chiappetta.
+			ease: ease in cm; used in Donnanno patterns
 			hip: True/False use to decide for men whether to draw a fullbodice
 		"""
 		Pattern.__init__(self, pname, gender)

@@ -1,17 +1,49 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8x]{inputenc}
 \usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{minted}
+\usepackage{listings}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{natbib}
 
-\def\bl{\begin{minted}[texcl,mathescape]{sql}}
-\def\el{\end{minted}}
+
+\usepackage[x11names]{xcolor}
+\usepackage{booktabs}
+
+
+\usepackage[%
+ pdfstartview=FitH,%
+ bookmarks=true,%
+ bookmarksopen=true,%
+ breaklinks=true,%
+ colorlinks=true,%
+ linkcolor=blue,anchorcolor=blue,%
+ citecolor=blue,filecolor=blue,%
+ menucolor=blue,%
+ urlcolor=blue]{hyperref}
+
+\lstdefinestyle{mystyle}{
+breakatwhitespace=false,
+    commentstyle=\color{gray},
+    keywordstyle=\color{Green4},
+    numberstyle=\footnotesize\color{gray},
+    stringstyle=\color{purple},
+    identifierstyle=\color{SteelBlue4},
+    basicstyle=\ttfamily\small,
+    numbers=left,
+    keepspaces=false,
+    numbers=left,
+    showspaces=false,
+    showstringspaces=true,
+    }
+\lstset{style=mystyle}
+
+% \begin{lstlisting}[language=python]
+% \end{lstlisting}
 
 \begin{document}
 \title{OpenPattern}
@@ -22,53 +54,145 @@
 \tableofcontents
 
 
-\section{Introduction}
+\chapter{Introduction}
 
-OpenPattern  est une librairie python, orientée objet,  dont l'objectif est de permettre le tracé de patrons de vêtements à l'échelle 1:1. 
-Les patrons peuvent être sur-mesures, à  partir d'un ensemble de mesures prises sur le corps de la personne dont vous voulez tracer un patron, ou
-correspondre à des mesures de prêt à porter classique. 
- 
-Les sources que j'ai utilisé pour tracer les patrons proviennent d'ouvrage de patronnages classiques. Ces ouvrages, destinés au couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat c'est-à-dire  la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini). J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux. 
-En premier lieu j'ai utilisé quatre tomes la série Le modélisme de mode de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiapetta  \cite{Chiappetta1999}. Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc...
+OpenPattern  est une librairie python, orientée objet,  dont l'objectif est de permettre le tracé de patrons de vêtements à l'échelle 1:1.
+Les patrons peuvent être sur-mesures, à  partir d'un ensemble de mesures prises sur le corps de la personne dont vous voulez tracer un patron, ou correspondre à des mesures de prêt à porter classique.
+
+Les sources que j'ai utilisé pour tracer les patrons proviennent d'ouvrage de patronnages classiques. Ces ouvrages, destinés au couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat c'est-à-dire  la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini). J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux.
+En premier lieu j'ai utilisé quatre tomes la série Le modélisme de mode de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiapetta  \cite{Chiappetta1999}. Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant par pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc...
+
 OpenPattern reprend ces techniques en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
 
-\section{Structure}
+\chapter{Structure}
 
-OpenPattern est organisée autour de classes qui héritent les unes des autres. Cette structure présente l'avantage de coller aux techniques de coupe. En effet une chemise, une veste ou un gilet sont des adaptations d'un body, une robe dérive de l'assemblage d'une jupe et d'un body, enfin les jupes et les pantalons dérivent de formes génériques dites de bases.
+OpenPattern est organisée autour de classes qui héritent les unes des autres. Cette structure présente l'avantage de coller aux techniques de coupe. En effet une chemise, une veste ou un gilet sont des adaptations d'un body, une robe dérive de l'assemblage d'une jupe et d'un body, enfin les jupes et les pantalons dérivent de formes génériques dites de bases (jupe de base, pantalon de base).
 
 OpenPattern présente pour l'instant deux niveaux d'héritage.
 \begin{itemize}
 \item La classe parente Pattern : C'est la classe générale qui définit ce qu'est un patron et les méthodes permettant de le dessiner et de le manipuler
 \item Les classes de bases dérivées de Pattern: Basic\_Bodice, Basic\_Trousers, Cuffs, Collars
-\item Les classes dérivées des classes de base: shirt, pyjamas qui héritent de Basic\_Bodice ou de Basic\_Trousers. Normalement, in fine ce sont celles que les utilisateurs «verront» ou utiliseront	
+\item Les classes dérivées des classes de base: shirt, pyjamas qui héritent de Basic\_Bodice ou de Basic\_Trousers. Normalement, in fine ce sont celles que les utilisateurs «verront» ou utiliseront
+\item Enfin les patrons font appels à une classe Point qui permet de définir un point de patronnage avec sa position et ses propriétés. Cette classe redéfinit les opérations d'addition et offre diverses manipulations  comme la rotation. L'intérêt ici est d'avoir un objet flexible qui permette de partir d'un patron de base et de l'altérer.
 \end{itemize}
 
 
-\subsection{Classe Pattern}
-La liste des méthodes de cette classe est donnée ci-dessous. ces méthodes sont de quatre types dont seuls les trois premiers sont implémentés.
+
+\chapter{Usage}
+
+Pour dessiner un patron il faut
+\begin{enumerate}
+\item créer une instance de la classe correspondante,
+\item appeler différentes méthodes d'altération ou de modification,
+\item dessiner et, au besoin, sauvegarder le patron.
+\end{enumerate}
+
+Le script suivant montre par exemple comment tracer et sauver un patron de Body de femme sans pinces en 36 selon la méthode de Gilewska.
+\begin{lstlisting}[language=python]
+import sys
+sys.path.append('./..')
+import matplotlib.pyplot as plt
+import OpenPattern as OP
+
+
+p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska') # Création de l'instance
+p.draw_bodice({"Pattern":"Bodice without dart"}, save=True) # appel de la fonction de dessin
+plt.show() # si vous voulez voir la figure s'afficher
+\end{lstlisting}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_36.pdf}
+\caption{Gilweska style Women bodice with no dart. (size 36)}
+\label{fig:bodice_WG36}
+\end{figure}
+
+On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf.
+Les différentes options sont passées dans les arguments des différentes méthodes de classe (draw\_bodice) ou lors des instanciations de classe (Basic\_Bodice dans cet exemple).
+
+\begin{lstlisting}[language=python]
+Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12, ease=8, hip=True):
+	"""
+	Initilizes parent class &  attributes
+	launches the calculation of bodice and sleeve
+	saves measurements performed like armscye depth in the json measurements file for further processing in other classes
+
+	Args:
+		pname: size measurements
+		gender: ..
+		style: style to be used for drafting at present Gilewska, Donnanno and Chiapetta (for kids)
+		age: used if for a child and style = Chiappetta.
+		ease: ease in cm; used in Donnanno patterns
+		hip: True/False use to decide for men whether to draw a fullbodice
+	"""
+
+draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False, fname = None, paper='FullSize'):
+	""" Draws Basic Bodice with legends and save it if asked for
+
+	Args:
+		dic: dictionnary of informations to be printed
+		save: if true save to file
+		fname: filename
+		paper: paper size on which to save (for cuts)
+	"""
+\end{lstlisting}
+
+les figures~\ref{fig:bodice_DW36}, \ref{fig:bodice_MG36} et \ref{fig:CB14} montrent quelques exemples de body obtenus pour différents styles
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Donnanno_Bodice_withour_dart_36.pdf}
+\caption{Donnanno style Women bodice with no dart. (size 36)}
+\label{fig:bodice_DW36}
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_M36.pdf}
+\caption{Gilweska style Men bodice with no dart. (size 36)}
+\label{fig:bodice_MG36}
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Chiappetta_bodice_G14.pdf}
+\caption{Chiappetta style Boy (14 years old) bodice with no dart.}
+\label{fig:CB14}
+\end{figure}
+
+
+
+
+\chapter{Commentaires}
+
+
+\section{Classe Pattern}
+La liste des méthodes de cette classe est donnée ci-dessous. Ces méthodes sont à ce jour de trois types.
 
 \begin{enumerate}
 \item Les méthodes liées aux mesures qui permettent de charger ou d'enregistrer les modifications des mesures. Le choix pour l'instant est fait d'enregistrer les mesures dans des fichiers json.
 \item Les méthodes de calculs couramment effectués en patronnage, mesurer une distance, un angle, chercher le point milieu d'un segment ou encore tracer une courbe. Ici le choix est fait d'utiliser des b-spline pour approximer le sacro-saint pistolet (on reviendra sur ce choix guidé au départ par la simplicité).
 \item Les méthodes de dessin avec matplotlib.
-\item Les méthodes d'altération de patrons qui permettent de déplacer des points des patrons de base et de recalculer les courbes.
 \end{enumerate}
 
+il manque encore des méthodes d'altération de patrons qui permettraient de déplacer des points des patrons de base et de recalculer les courbes. pour l'instant ce genre de calcul est fait au cas par cas.
 
 
-\begin{minted}{python}
+
+\begin{lstlisting}[language=python]
 class Pattern:
 
 	def __init__(self, pname="sophie", gender='w'):
-			
-	# Catégorie 1		
+
+	# Catégorie 1
 	def get_measurements(self, pname="sophie"):
-		
+
 	def save_measurements(self, ofname=None):
 
 	# Catégorie 2
 	def intersec_lines(self, A, B, C, D):
-	
+
 	def intersec_manches(self, A, B, C, theta):
 
 	def segment_angle(self, A, B):
@@ -78,17 +202,18 @@ class Pattern:
 	def distance(self, A, B):
 
 	def pistolet(self, points, kval, ax=None, kwargs = {'color':'blue','linestyle':'solid'}, tot=False):
-		
-	# Catégorie 3	
+
+	# Catégorie 3
 	def draw_pattern(self, dic_list, vertices_list):
 
-	def paper_cut(self, fig, ax, name='patternA4', paper='A4'):	
+	def paper_cut(self, fig, ax, name='patternA4', paper='A4'):
 
 	def print_info(self, ax, model=None):
 
 	def segment(self, A, B, ax, kwargs={'color':'blue'}):
 
-\end{minted}
+\end{lstlisting}
+
 \section{Mesures}
 
 Les mesures sont enregistrées dans des fichiers json dans la répertoire measurements.
@@ -105,9 +230,9 @@ Les mesures sont enregistrées dans des fichiers json dans la répertoire measur
 \end{itemize}
 
 
-\section{Bodice}  
+\chapter{Bodice}
 
-\subsection{Naming convention}
+\section{Naming convention}
 
 trying to get standard
 \begin{itemize}
@@ -123,50 +248,50 @@ trying to get standard
 \item		Cp: Control Point
 \item		Hi: Hip
 \end{itemize}
-		
+
 \item		Last Letter
 \begin{itemize}
 \item		B: Back
 \item		F: Front
 \end{itemize}
-		
+
 \item		No numbering when on the fold line numbering when on the sleeve side
 \end{itemize}
 
 
 Not done for Donnanno yet
 
-\subsection{Comments}
+\section{Comments}
 
-\paragraph{Mesures}
+\subsection{Mesures}
 ça part dans tous les sens notamment pour les hommes... le plus gros écart sépare ceux qui mesurent la largeur des épaules et ceux qui mesurent la longueur des épaules. Quelques un mesurent les deux mais c'est plus rare. On notera que les mesures type varient d'un livre à l'autre. Pas toujours de mesure du tour de bras, du tour de jaret, du tour de cuisse.
 
-\paragraph{Shoulder line} 
+\subsection{Shoulder line}
 
 For G-style women the shoulder construction relies on fixed angles. For G-style men it relies on distances from the shoulder line as for D-style. Why  this change ? This raises an issue as, if one follows the instruction, the shoulder is longer then measurements (if they exist) and the front shoulder and back shoulder lines do not have the same length. In the case the shoulder length is given, the solution is then to ajust the shoulder length to the measured length ones the shoulder line has been set up (as suggestion by Donnanno).
-For C-style teenagers (boys) the shoulder relies on two different angles for the back (22$^o$)a nd the front (25$^o$). 
+For C-style teenagers (boys) the shoulder relies on two different angles for the back (22$^o$)a nd the front (25$^o$).
 
 added a test for existence of true shoulder length measurement. If so then the soulder length is ajusted to fit measurements.
 
 les largeurs d'épaules correspondent chez G homme si on ne baisse pas l'épaule devant de 7cm mais de 5 (comme chez donnanno).
 
-\paragraph{Armhole and collar}
+\subsection{Armhole and collar}
 
-à noter que, pour une fois, pour l'homme tout est un peu fait par dessus 
-la jambe. Ok des chemises des pantalons et des costumes c'est pas 
+à noter que, pour une fois, pour l'homme tout est un peu fait par dessus
+la jambe. Ok des chemises des pantalons et des costumes c'est pas
 folichon mais quand même !
 
-Donnano:  pour les femmes le buste de base présente un problème d'ajustement car il ne 
-fournit pas de points de contrôles. J'ai repris ceux de Gilweska. 
-Pour l'hommes: pas de buste de base j'en au  créé un à partir de la chemise de base. 
-relativement simple à faire. Par contre problème (toujours) pour les 
-longueurs d'épaule. La largeur d'épaule est donnée mais pas la 
-longueur (qui d'ailleurs n'est que très rarement donnée pour les 
-hommes). or on demande la longueur d'épaule (j'adore le e.g. 17cm mis 
-dans l'exemple dont on ne sait pas d'où il sort) 
+Donnano:  pour les femmes le buste de base présente un problème d'ajustement car il ne
+fournit pas de points de contrôles. J'ai repris ceux de Gilweska.
+Pour l'hommes: pas de buste de base j'en au  créé un à partir de la chemise de base.
+relativement simple à faire. Par contre problème (toujours) pour les
+longueurs d'épaule. La largeur d'épaule est donnée mais pas la
+longueur (qui d'ailleurs n'est que très rarement donnée pour les
+hommes). or on demande la longueur d'épaule (j'adore le e.g. 17cm mis
+dans l'exemple dont on ne sait pas d'où il sort)
 
-Gilewska : pour le buste homme j'ai ajouté  deux points de contrôle 
-en base de manche  afin d'assurer la platitude d'emmanchure. Sinon les 
+Gilewska : pour le buste homme j'ai ajouté  deux points de contrôle
+en base de manche  afin d'assurer la platitude d'emmanchure. Sinon les
 spleen ne veulent pas faire comme le perroquet.
 
 
@@ -176,40 +301,16 @@ Pour l'enfant Chiapetta changer l'angle, la longueur des points de contrôle et 
 
 L'emmanchure et l'encolure sont faites avec des splines de second ordre. J'ai fini par jouer sur le fit des splines et les points de contrôle. À développer.
 
-Bon mais comme d'hab Chiapetta ça à l'air un peu ringard sur les bords mais ça marche tout seul. je pense que je vais investir dans 
+Bon mais comme d'hab Chiapetta ça à l'air un peu ringard sur les bords mais ça marche tout seul. je pense que je vais investir dans
 les bouquins adultes notamment pour l'homme...
 
 
-\paragraph{Manches}
-Gilewska: Aucune indication pour le bas de manche de base il faut donc 
-se débrouiller seul avec le tour de poignet... 
+\subsection{Manches}
+Gilewska: Aucune indication pour le bas de manche de base il faut donc
+se débrouiller seul avec le tour de poignet...
 
-Les splines ici sont du troisième ordre car il y a un point d'inflexion. 
+Les splines ici sont du troisième ordre car il y a un point d'inflexion.
 
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.8\linewidth]{../patterns/Gilewska_Bodice_withour_dart_36.pdf}
-\caption{Gilweska style Women bodice with no dart. (size 36)}
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.8\linewidth]{../patterns/Donnanno_Bodice_withour_dart_36.pdf}
-\caption{Donnanno style Women bodice with no dart. (size 36)}
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.8\linewidth]{../patterns/Gilewska_Bodice_withour_dart_M36.pdf}
-\caption{Gilweska style Men bodice with no dart. (size 36)}
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.8\linewidth]{../patterns/Chiappetta_bodice_G14.pdf}
-\caption{Chiappetta style Boy (14 years old) bodice with no dart.}
-\label{fig:CB14}
-\end{figure}
 
 De façon générale je trouve que les bustes hommes ne sont pas très ressemblant aux dessins des livres et je suis dubitatif car le programme reproduit exactement les instruction sauf quand c'est problématique de façon évidente (genre les largeur d'épaules de Donnanno).
 
@@ -219,8 +320,8 @@ Styles available from Gilewska men: Officer and OnePiece (for one piece collar)
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.48\textwidth]{../patterns/collar_Gilewska_OnePiece_M44G_FullSize.pdf} 
-\includegraphics[width=0.48\textwidth]{../patterns/collar_Gilewska_Officer_M44G_FullSize.pdf} 
+\includegraphics[width=0.48\textwidth]{../patterns/collar_Gilewska_OnePiece_M44G_FullSize.pdf}
+\includegraphics[width=0.48\textwidth]{../patterns/collar_Gilewska_Officer_M44G_FullSize.pdf}
 \end{center}
 \caption{Collar styles}
 \end{figure}
@@ -231,12 +332,24 @@ Styles availabel from Gilewska men : Simple and French
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.48\textwidth]{../patterns/cuff_Gilewska_Simple_M44G_FullSize.pdf} 
-\includegraphics[width=0.48\textwidth]{../patterns/cuff_Gilewska_French_M44G_FullSize.pdf} 
+\includegraphics[width=0.48\textwidth]{../patterns/cuff_Gilewska_Simple_M44G_FullSize.pdf}
+\includegraphics[width=0.48\textwidth]{../patterns/cuff_Gilewska_French_M44G_FullSize.pdf}
 \end{center}
 \caption{Cuff styles}
 \end{figure}
 
+\chapter{Trousers}
+
+
+\section{Pants Block}
+
+Incohérence du modèle chez Donnanno. La mesure de la ceinture est
+$$AV = Hip + 6.$$
+Or la somme
+$$ceinture avant + ceinture arriere = Hip +2.$$
+Donanno indique qu'il faut séparer les patrons avant et arrière de 6cm soit
+$$ceinture avant + ceinture arriere + 6 = Hip +8 = AV,$$
+d'où l'incohérence.
 
 
 \bibliographystyle{plain}

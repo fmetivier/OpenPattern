@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 # librairies
 import sys
 sys.path.append('./..')
@@ -312,7 +312,7 @@ class Pattern:
 		else:
 			tck, u  =  splprep([points.transpose()[0], points.transpose()[1]], k = kval, s=0)
 
-		us  =  np.linspace(u.min(),  u.max(),  30)
+		us  =  np.linspace(u.min(),  u.max(),  100)
 		new_points  =  splev(us,  tck)
 		if ax:
 			ax.plot(new_points[0],  new_points[1],  **kwargs)

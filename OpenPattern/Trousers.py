@@ -77,7 +77,7 @@ class Basic_Trousers(Pattern):
 	def Donnanno_front_trousers(self):
 		"""
 		Calculate front Trousers' pattern
-		essentially the same for women and men with some slight differences
+		Essentially the same for women and men with some slight differences
 		"""
 
 		#Front frame
@@ -308,6 +308,12 @@ class Basic_Trousers(Pattern):
 	############################################################
 
 	def Donnanno_add_darts(self):
+		"""
+		Add front and back darts.
+		TODO darts properties should be given as lists with some default values
+		corresponding to typical values given in the book.
+		at pesent they are set by default to the typical values given by Donnanno
+		"""
 
 		if self.gender == "w":
 			front_dart_list = [['M','r',1.5,-5],['M2','c',1.5,-5]]
@@ -445,6 +451,84 @@ class Basic_Trousers(Pattern):
 
 	############################################################
 
+class Flared_pants(Basic_Trousers):
+	"""
+	Flared pants based on dartless basic trousers
+
+	Args:
+		flare_length: added length of Trousers
+		flare_width: added width at the hem,
+		flare_start: place to start relative to Knee
+	"""
+
+	def __init__(self,pname = "gregoire", gender = 'm', save=False, paper='FullSize', flare_length=2,flare_width=5, flare_start=0):
+
+		style='Donnanno'
+		darts=False
+		Basic_Trousers.__init__(self, pname, gender, style, darts)
+
+		# beware these are not  true copies. Changes to the dic changes the original which is fine to me !
+		pbf=self.Trousers_Front_points_dic
+		pbb=self.Trousers_Back_points_dic
+
+		tfcl = self.Trousers_Front_Contour_list
+		tbcl = self.Trousers_Back_Contour_list
+
+		N1 = pbf['N'] + [0,-flare_length]
+		C2 = pbf['C1'] + [-flare_width,-flare_length]
+		D2 = pbf['D1'] + [flare_width,-flare_length]
+
+		pbf['N1'] = N1
+		pbf['C2'] = C2
+		pbf['D2'] = D2
+
+		d, front_hem_curve = self.pistolet([D2,N1+[0,0.5],C2],kval=2,tot=True)
+
+		y_th = pbf['O'].y + flare_start
+		newContourFront = []
+		newFrontVertices = [C2.pos]
+		for p in tfcl:
+			if p.y > y_th:
+				newContourFront.append(p)
+				newFrontVertices.append(p.pos)
+
+		newFrontVertices += front_hem_curve
+
+		#same for the back pattern
+
+		N1 = pbb['N'] + [0,-flare_length]
+		C2 = pbb['C1'] + [flare_width,-flare_length]
+		D2 = pbb['D1'] + [-flare_width,-flare_length]
+
+		pbb['N1'] = N1
+		pbb['C2'] = C2
+		pbb['D2'] = D2
+
+		d, back_hem_curve = self.pistolet([C2,N1+[0,-0.5],D2],kval=2,tot=True)
+
+		y_th = pbb['O'].y + flare_start
+		newContourBack = []
+		newBackVertices = [D2.pos]
+		for p in tbcl:
+			if p.y > y_th:
+				newContourBack.append(p)
+				newBackVertices.append(p.pos)
+
+		newBackVertices += back_hem_curve
+
+		self.Trousers_Front_vertices = newFrontVertices
+		self.Trousers_Back_vertices = newBackVertices
+
+		ax = self.draw_basic_trousers()
+		# for p in newContourBack:
+		# 	ax.text(p.x,p.y,p.pname_ori)
+		#
+		# for p in newContourFront:
+		# 	ax.text(p.x,p.y,p.pname_ori)
+
+		ax.plot(N1.x,N1.y,'ro')
+		ax.plot(C2.x,C2.y,'ro')
+		ax.plot(D2.x,D2.y,'ro')
 
 class Pants_block(Basic_Trousers):
 		"""
@@ -461,7 +545,7 @@ class Pants_block(Basic_Trousers):
 
 		so either we comply with AV or we comply with VZ being at 3cm from the two frames and in this case V is offset by 2cm towards the front
 		which keeps the sligh difference between front and back parts.
-		I decided to keep this
+		I keep VZ as 3cm apart from the front and back patterns so V is 1cm to the left of the middle of AV
 
 		"""
 		def __init__(self, pname = "gregoire", gender = 'm', save=False, paper='FullSize', overlay=False, classic=True):
@@ -469,7 +553,7 @@ class Pants_block(Basic_Trousers):
 			style='Donnanno'
 			Basic_Trousers.__init__(self, pname, gender, style)
 
-			self.Donnanno_back_trousers(delta=4)
+			self.Donnanno_back_trousers(delta=6)
 
 			pbf=self.Trousers_Front_points_dic
 			pbb=self.Trousers_Back_points_dic
@@ -478,7 +562,7 @@ class Pants_block(Basic_Trousers):
 			AB = pbb['A'] + [0, 6]
 
 
-			V = self.middle(AF, AB)
+			V = self.middle(AF, AB) -[1,0]
 			Z = V + [0, -V.y]
 
 			if classic == True:

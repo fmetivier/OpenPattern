@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import OpenPattern as OP
 
 # Women
-# p = OP.Basic_Bodice(pname = "W44G", gender = 'w', style = 'Gilewska')
+# p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
 # p.add_bust_dart()
 # p.add_waist_dart()
 # p.draw_bodice({"Pattern":"Bodice without dart"},save=True,paper='Ledger')
@@ -42,17 +42,19 @@ import OpenPattern as OP
 # p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
 # p.draw_placket()
 
-pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno', darts=False)
+# pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno', darts=False)
 # pans.Donnanno_add_darts()
-pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
+# pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
 
 # Gregoire's pyjama
 # pans= OP.Basic_Trousers(pname="gregoire",gender="m",style="Donnanno")
 # pans.Donnanno_add_darts()
 # pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
 
-bp = OP.Pants_block(pname="sophie",gender="w", overlay=False)
+# bp = OP.Pants_block(pname="sophie",gender="w", overlay=False)
+#
+# bp = OP.Pants_block(pname="gregoire",gender="m", overlay=False)
 
-bp = OP.Pants_block(pname="gregoire",gender="m", overlay=False)
+pans = OP.Flared_pants( pname="sophie", gender='w')
 
 plt.show()

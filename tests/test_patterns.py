@@ -53,8 +53,8 @@ import OpenPattern as OP
 
 # bp = OP.Pants_block(pname="sophie",gender="w", overlay=False)
 #
-# bp = OP.Pants_block(pname="gregoire",gender="m", overlay=False)
+bp = OP.Pants_block(pname="M46D",gender="m", overlay=False, save=True, paper='A4')
 
-pans = OP.Flared_pants( pname="sophie", gender='w')
+#pans = OP.Flared_pants( pname="sophie", gender='w')
 
 plt.show()

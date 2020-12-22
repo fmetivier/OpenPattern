@@ -99,7 +99,6 @@ class Basic_Bodice(Pattern):
 
 	############################################################
 
-
 	def draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False, fname = None, paper='FullSize'):
 		""" Draws Basic Bodice with legends and save it if asked for
 
@@ -113,8 +112,10 @@ class Basic_Bodice(Pattern):
 			fig, ax
 		"""
 
+		dl, vl = self.generate_lists()
+
 		# 1 draw
-		fig, ax = self.draw_pattern(self.dic_list, self.vertices_list)
+		fig, ax = self.draw_pattern(dl, vl)
 
 		# 2 print heading
 		ax = self.print_info(ax, dic)
@@ -614,9 +615,6 @@ class Basic_Bodice(Pattern):
 			self.Bodice_Back_vertices = [WB.pos, HB.pos] + back_collar_curve + [ShB1.pos] + back_sleeve_curve + [SlB1.pos, WB1.pos]
 			self.Bodice_Front_vertices = [WF.pos, CF1.pos] + front_collar_curve + [ShF1.pos] +  front_sleeve_curve + [SlF1.pos, WF1.pos]
 
-			self.vertices_list.append(self.Bodice_Front_vertices)
-			self.vertices_list.append(self.Bodice_Back_vertices)
-			self.dic_list.append(self.Bodice_points_dic)
 
 	def Gilewska_basic_bodice_m(self, BF_space=10):
 		""" Calculation of bodice with no dart
@@ -810,9 +808,6 @@ class Basic_Bodice(Pattern):
 
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
 
-		self.vertices_list.append(self.Bodice_Front_vertices)
-		self.vertices_list.append(self.Bodice_Back_vertices)
-		self.dic_list.append(self.Bodice_points_dic)
 
 
 	def Gilewska_basic_sleeve_m(self):
@@ -1026,8 +1021,8 @@ class Basic_Bodice(Pattern):
 
 
 		#########################################
-		#Create Vertices
-		#for polygon representation
+		#	Create Vertices
+		#	for polygon representation
 		#########################################
 
 
@@ -1036,9 +1031,6 @@ class Basic_Bodice(Pattern):
 
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
 
-		self.vertices_list.append(self.Bodice_Front_vertices)
-		self.vertices_list.append(self.Bodice_Back_vertices)
-		self.dic_list.append(self.Bodice_points_dic)
 
 
 	def add_bust_dart(self):
@@ -1074,7 +1066,7 @@ class Basic_Bodice(Pattern):
 
 			# Extension of the bust
 			""" Here, in comments and as a reminder,
-			I've place  the strict method of Gilewska...
+			I've placed  the strict method of Gilewska...
 
 			a = self.segment_angle(MShF, OP)*180/np.pi
 			B = self.intersec_manches(bfd['BF'], bfd['BF1'], MShF, a)

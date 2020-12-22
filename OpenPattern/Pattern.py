@@ -54,6 +54,9 @@ I Use Google convention for doc strings
 class Pattern:
 	"""Defines basic methods needed for pattern drafting
 
+	Notes:
+	- Pattern methods originally  used arrays or lists of values for points as arguments for calculations.
+	- Since the development of the Point class I've progressively turned them to use it. I no longer use arrays for new methods.
 
 	Attributes:
 		m: dictionnary of size measurements
@@ -83,6 +86,9 @@ class Pattern:
 		self.gender=gender
 
 	############################################################
+	#				measurements
+	############################################################
+
 
 	def get_measurements(self, pname="sophie"):
 		"""Load stored measurements.
@@ -119,6 +125,28 @@ class Pattern:
 		else:
 			with open("../measurements/" + self.pname + "_data.json", "w") as write_file:
 				json.dump(self.m, write_file)
+
+	############################################################
+	#				Calculations
+	############################################################
+
+	def distance(self, A, B):
+		"""
+		returns distance [AB]
+
+		Args:
+			A,B: points given as Points or array([x,y])
+
+
+		Returns:
+			distance as a float
+		"""
+
+		if isinstance(A, Point) and isinstance(B, Point):
+			return np.sqrt((A.x-B.x)**2+(A.y-B.y)**2)
+		else:
+			return np.sqrt((A[0]-B[0])**2+(A[1]-B[1])**2)
+
 	############################################################
 
 	def intersec_lines(self, A,B,C,D):
@@ -206,6 +234,24 @@ class Pattern:
 
 	############################################################
 
+	def middle(self, A, B):
+		"""
+		returns the middle point of [AB]
+
+		Args:
+			A,B: points given as array([x,y])
+
+
+		Returns:
+			x,y as an array
+				"""
+		if isinstance(A, Point) and isinstance(B, Point):
+			return Point([0.5*(A.x+B.x), 0.5*(A.y+B.y)])
+		else:
+			return np.array([0.5*(A[0]+B[0]), 0.5*(A[1]+B[1])])
+
+	############################################################
+
 	def segment_angle(self, A, B):
 		"""Returns slope of segment [AB]
 
@@ -230,57 +276,60 @@ class Pattern:
 
 	############################################################
 
-	def middle(self, A, B):
-		"""
-		returns the middle point of [AB]
+	def segment_offset(self, A, B, alpha, d):
+		"""translates segment AB by a vector of length d making an angle alpha  with AB
 
 		Args:
-			A,B: points given as array([x,y])
-
+			A,B: Points
+			alpha : real angle in radians
+			d: offset distance in m
 
 		Returns:
-			x,y as an array
-				"""
-		if isinstance(A, Point) and isinstance(B, Point):
-			return Point([0.5*(A.x+B.x), 0.5*(A.y+B.y)])
+			Ap, Bp the offset points
+		"""
+
+		if isinstance(A. Point) and isiisinstance(B, Point):
+			a = self.segment_angle(A, B)
+			beta = a + alpha
+
+			Ap =  Point([A.x + np.cos(beta)*d, A.y+ np.sin(beta)*d])
+			Bp =  Point([B.x + np.cos(beta)*d, B.y+ np.sin(beta)*d])
+
+			return Ap, Bp
 		else:
-			return np.array([0.5*(A[0]+B[0]), 0.5*(A[1]+B[1])])
+			print("Points needed for this method")
+			return 1
 
 	############################################################
 
-	def segment(self, A, B, ax, kwargs={'color':'blue'}):
-		"""
-		plots [AB] segment on ax
+	def curve_offset(self, plist, alpha, d):
+		"""translates a curve by a vector of length d making an angle alpha  with the local tangent
 
 		Args:
-			A,B: points given as array([x,y])
-			ax: axis on which to plot
-			kwargs: dictionnary of drawing porperties
-		"""
-
-		if isinstance(A, Point) and isinstance(B, Point):
-			ax.plot([A.x, B.x], [A.y, B.y],  **kwargs)
-		else:
-			ax.plot([A[0], B[0]], [A[1], B[1]],  **kwargs)
-
-	############################################################
-
-	def distance(self, A, B):
-		"""
-		returns distance [AB]
-
-		Args:
-			A,B: points given as Points or array([x,y])
-
+			plist: list of [x,y] points positions
+			alpha : real angle in radians
+			d: offset distance in m
 
 		Returns:
-			distance as a float
+			olist : list of [x,y] offset points positions
 		"""
 
-		if isinstance(A, Point) and isinstance(B, Point):
-			return np.sqrt((A.x-B.x)**2+(A.y-B.y)**2)
-		else:
-			return np.sqrt((A[0]-B[0])**2+(A[1]-B[1])**2)
+		olist = []
+		N = len(plist)
+		for i in range(N-1):
+			a = self.segment_angle(plist[i], plist[i+1])
+			beta = a + alpha
+			x = plist[i][0] + np.cos(beta)*d
+			y = plist[i][1] + np.sin(beta)*d
+			olist.append([x,y])
+
+		# use the last value of beta for the last point
+		x = plist[N-1][0] + np.cos(beta)*d
+		y = plist[N-1][1] + np.sin(beta)*d
+		olist.append([x,y])
+
+		return olist
+
 
 	############################################################
 
@@ -330,6 +379,35 @@ class Pattern:
 			return  np.sum(np.sqrt(dx**2+dy**2))
 
 	############################################################
+	#				Drawings
+	############################################################
+
+	def generate_lists(self):
+		"""
+		generates a list of point vertices and a list of point dictionnaries for drawing
+		this method can only be called by children classes but is common to them
+
+		"""
+
+		vl = [self.Bodice_Front_vertices, self.Bodice_Back_vertices]
+		dl = [self.Bodice_points_dic]
+
+		return dl, vl
+
+	def segment(self, A, B, ax, kwargs={'color':'blue'}):
+		"""
+		plots [AB] segment on ax
+
+		Args:
+			A,B: points given as array([x,y])
+			ax: axis on which to plot
+			kwargs: dictionnary of drawing porperties
+		"""
+
+		if isinstance(A, Point) and isinstance(B, Point):
+			ax.plot([A.x, B.x], [A.y, B.y],  **kwargs)
+		else:
+			ax.plot([A[0], B[0]], [A[1], B[1]],  **kwargs)
 
 	def draw_pattern(self, dic_list, vertices_list, polyline_list=[]):
 

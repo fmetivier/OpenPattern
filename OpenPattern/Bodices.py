@@ -95,7 +95,7 @@ class Basic_Bodice(Pattern):
 			print("style %s unknown, using Donnanno instead" % (self.style))
 			self.Donnanno_bodice_without_dart()
 
-		self.save_measurements()
+		self.save_measurements_sql()
 
 	############################################################
 

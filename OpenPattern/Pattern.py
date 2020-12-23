@@ -6,6 +6,7 @@ sys.path.append('./..')
 import matplotlib.pyplot as plt
 import numpy as np
 import json
+import sqlite3
 
 from scipy.interpolate import splprep,  splev
 from matplotlib.patches import Polygon, PathPatch
@@ -77,7 +78,7 @@ class Pattern:
 
 		"""
 		if pname:
-			self.m  =  self.get_measurements(pname)
+			self.m  =  self.get_measurements_sql(pname)
 			self.pname = pname
 		else:
 			# in the end it should be able to store new measurements.
@@ -90,11 +91,11 @@ class Pattern:
 	############################################################
 
 
-	def get_measurements(self, pname="sophie"):
+	def get_measurements_json(self, pname="sophie"):
 		"""Load stored measurements.
 
 		Measurements loaded are dictionnaries stored as json files in the measurements folder
-
+		23/12/2020: This is the original version now i use sqlite
 		Args:
 			pname: name of json file as str
 
@@ -107,14 +108,37 @@ class Pattern:
 
 		return dic
 
+	def get_measurements_sql(self, pname="sophie"):
+		"""Load stored measurements.
+
+		Measurements loaded are dictionnaries stored as json files in the measurements folder
+
+		Args:
+			pname: name of pattern measurement code string
+
+		Returns:
+			dic: a dictionnary of size measurments
+		"""
+
+		conn = sqlite3.connect('../OpenPattern/measurements.db')
+		c = conn.cursor()
+
+		dic = {}
+		for row in c.execute("select * from measurements where wkey = ?", (pname,)):
+			dic[row[1]] = row[2]
+
+		conn.close()
+
+		return dic
+
 	############################################################
 
-	def save_measurements(self, ofname=None):
+	def save_measurements_json(self, ofname=None):
 		""" Save new measurements
 
 		Save new measurements in ofname_data.json file in the mesures folder
 		If no output format is given stores the data under the attribute self.pname
-
+		20/12/2020 changed to sql
 		Args:
 			ofname: output json filename as str
 
@@ -126,6 +150,35 @@ class Pattern:
 			with open("../measurements/" + self.pname + "_data.json", "w") as write_file:
 				json.dump(self.m, write_file)
 
+	def save_measurements_sql(self, ofname=None):
+		""" Save new measurements
+
+		Save new measurements under ofname key in the mesurement database
+		If no output format is given stores the data under the attribute self.pname
+		! beware of the final path.
+
+		Args:
+			ofname: str output wkey for measurements.db database
+
+		"""
+		conn = sqlite3.connect('../OpenPattern/measurements.db')
+		c = conn.cursor()
+
+		if ofname:
+			if ofname != self.pname:
+				pass
+			else:
+				c.execute("delete from measurements where wkey = ?", (ofname,))
+		else:
+			ofname = self.pname
+			c.execute("delete from measurements where wkey = ?", (ofname,))
+
+		for key, val in self.m.items():
+			c.execute("insert into measurements values (?,?,?)", (ofname,key,val))
+
+
+		conn.commit()
+		conn.close()
 	############################################################
 	#				Calculations
 	############################################################

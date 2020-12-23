@@ -24,7 +24,7 @@ class Point(object):
 
 	"""
 
-	def __init__(self, pos = [0,0], point_type='Pattern', comment=None, pname_ori=None):
+	def __init__(self, pos = [0,0], point_type='Pattern', comment = None, pname_ori = None):
 		"""Initialize
 
 		Args:
@@ -68,7 +68,7 @@ class Point(object):
 	##################################################################
 
 
-	def __add__(self,*args):
+	def __add__(self, *args):
 		"""
 		A = self + Y
 		A = self + array ou list
@@ -85,7 +85,7 @@ class Point(object):
 
 	##################################################################
 
-	def __iadd__(self,*args):
+	def __iadd__(self, *args):
 		"""
 		self += Y
 		self += array ou list
@@ -106,7 +106,7 @@ class Point(object):
 
 	##################################################################
 
-	def __sub__(self,*args):
+	def __sub__(self,  *args):
 		"""
 		A = self - Y
 		A = self - array ou list
@@ -123,7 +123,7 @@ class Point(object):
 
 	##################################################################
 
-	def __isub__(self,*args):
+	def __isub__(self, *args):
 		"""
 		self -= Y
 		self -= array ou list
@@ -169,7 +169,7 @@ class Point(object):
 	##################################################################
 
 
-	def add(self,*args):
+	def add(self, *args):
 		""" Addition
 
 		Args: two possible types

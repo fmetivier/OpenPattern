@@ -8,12 +8,14 @@ import matplotlib.pyplot as plt
 #~ from OpenPattern.Points import Point
 import OpenPattern as OP
 
+p = OP.Basic_Skirt()
+
 # Women
-p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
-p.add_bust_dart()
+# p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
+# p.add_bust_dart()
 #p.add_waist_dart()
-p.draw_bodice({"Pattern":"Bodice with darts"},save=True,paper='A4')
-p.draw_sleeves()
+# p.draw_bodice({"Pattern":"Bodice with darts"},save=True,paper='A4')
+# p.draw_sleeves()
 
 # Men
 # p = OP.Basic_Bodice(hip=False)

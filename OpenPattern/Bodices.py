@@ -17,7 +17,7 @@ class Basic_Bodice(Pattern):
 		style: style used to draw the pattern as string (Gilewska, Donnanno, Chiappetta for now)
 
 		# Attributes that control the dictionnaries used for size measurements
-		age: ade og the kid in Chiapetta's patterns
+		age: ade of the kid in Chiapetta's patterns
 		gender: gender
 		pname: measurements used corresponding to a json file
 

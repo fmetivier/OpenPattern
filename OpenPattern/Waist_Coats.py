@@ -125,17 +125,17 @@ class Waist_Coat(Basic_Bodice):
 			if self.overlap:
 				self.dic_list.append(BB)
 
-				self.vertices_list.append([BB['TipF'].pos, BB['WF'].pos, BB['CF'].pos, BB['CF1'].pos, BB['ShF1'].pos] + sleeve_front_points + [BB['WF1'].pos, BB['HipF1'].pos, BB['PwFl'].pos, BB['OPwF'].pos, BB['PwFr'].pos ])
-				self.vertices_list.append([BB['HipB'].pos, BB['SlB'].pos, BB['HB'].pos] + collar_back_points + sleeve_back_points + [BB['WB1'].pos,BB['HipB1'].pos])
+				self.vertices_list.append([BB['TipF'].pos(), BB['WF'].pos(), BB['CF'].pos(), BB['CF1'].pos(), BB['ShF1'].pos()] + sleeve_front_points + [BB['WF1'].pos(), BB['HipF1'].pos(), BB['PwFl'].pos(), BB['OPwF'].pos(), BB['PwFr'].pos() ])
+				self.vertices_list.append([BB['HipB'].pos(), BB['SlB'].pos(), BB['HB'].pos()] + collar_back_points + sleeve_back_points + [BB['WB1'].pos(),BB['HipB1'].pos()])
 
 			else:
 
 				self.Bodice_points_dic = BB
 				self.dic_list=[BB]
 
-				self.Bodice_Front_vertices = [BB['TipF'].pos, BB['WF'].pos, BB['CF'].pos, BB['CF1'].pos, BB['ShF1'].pos] + sleeve_front_points + [BB['WF1'].pos, BB['HipF1'].pos, BB['PwFl'].pos, BB['OPwF'].pos, BB['PwFr'].pos]
+				self.Bodice_Front_vertices = [BB['TipF'].pos(), BB['WF'].pos(), BB['CF'].pos(), BB['CF1'].pos(), BB['ShF1'].pos()] + sleeve_front_points + [BB['WF1'].pos(), BB['HipF1'].pos(), BB['PwFl'].pos(), BB['OPwF'].pos(), BB['PwFr'].pos()]
 
-				self.Bodice_Back_vertices = [BB['HipB'].pos, BB['SlB'].pos, BB['HB'].pos] + collar_back_points + sleeve_back_points + [BB['WB1'].pos,BB['HipB1'].pos]
+				self.Bodice_Back_vertices = [BB['HipB'].pos(), BB['SlB'].pos(), BB['HB'].pos()] + collar_back_points + sleeve_back_points + [BB['WB1'].pos(),BB['HipB1'].pos()]
 
 				self.dic_list=[BB]
 				self.vertices_list=[self.Bodice_Front_vertices, self.Bodice_Back_vertices]

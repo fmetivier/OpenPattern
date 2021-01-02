@@ -9,11 +9,12 @@ import matplotlib.pyplot as plt
 import OpenPattern as OP
 
 p = OP.Basic_Skirt()
+p.draw_skirt()
 
 # Women
 # p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
 # p.add_bust_dart()
-#p.add_waist_dart()
+# p.add_waist_dart()
 # p.draw_bodice({"Pattern":"Bodice with darts"},save=True,paper='A4')
 # p.draw_sleeves()
 

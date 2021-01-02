@@ -172,7 +172,7 @@ class Basic_Trousers(Pattern):
 			self.Trousers_Front_points_dic[Front_Points_Names[i]] = Front_Points_List[i]
 			self.Trousers_Front_points_dic[Front_Points_Names[i]].pname_ori = Front_Points_Names[i]
 
-		self.Trousers_Front_vertices = self.interieur_avant + self.fourche_avant + self.ceinture_avant + self.exterieur_avant + [N1.pos, C1.pos]
+		self.Trousers_Front_vertices = self.interieur_avant + self.fourche_avant + self.ceinture_avant + self.exterieur_avant + [N1.pos(), C1.pos()]
 		for i in range(len(self.Trousers_Front_vertices)):
 			p = Point(self.Trousers_Front_vertices[i],point_type='contour',pname_ori='fp%s' % (i))
 			self.Trousers_Front_Contour_list.append(p)
@@ -275,7 +275,7 @@ class Basic_Trousers(Pattern):
 			Back_Points_Names=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'E2', 'I', 'L', 'X', 'M', 'N', 'O', 'A1', 'A2', 'B1', 'B3', 'B4', 'I1', 'L1', 'C1', 'D1', 'N1']
 			Back_Points_List=[A, B, C, D, E, F, G, H, E1, E2, I, L, X, M, N, O, A1, A2, B1, B3, B4, I1, L1, C1, D1, N1]
 
-			self.Trousers_Back_vertices = self.exterieur_arriere_bas + self.exterieur_arriere_haut + [B4.pos, A2.pos] + self.fourche_arriere + self.interieur_arriere + [N1.pos, D1.pos]
+			self.Trousers_Back_vertices = self.exterieur_arriere_bas + self.exterieur_arriere_haut + [B4.pos(), A2.pos()] + self.fourche_arriere + self.interieur_arriere + [N1.pos(), D1.pos()]
 			self.back_width=self.distance(B3, A)+self.distance(E, E1)
 		else:
 			dea1, self.exterieur_arriere1 = self.pistolet(np.array([D1, DD1, L1, F + [0.1,-2], F]), 3, tot = True)
@@ -287,7 +287,7 @@ class Basic_Trousers(Pattern):
 				Back_Points_Names=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'E2', 'E3', 'I', 'L', 'X', 'M', 'N', 'O', 'A1', 'A2', 'B1', 'I1', 'L1', 'C1', 'D1', 'N1']
 				Back_Points_List=[A, B, C, D, E, F, G, H, E1, E2, E3, I, L, X, M, N, O, A1, A2, B1, I1, L1, C1, D1, N1]
 
-			self.Trousers_Back_vertices = self.exterieur_arriere1 + self.exterieur_arriere2 + [B1.pos, A2.pos] + self.fourche_arriere + self.interieur_arriere + [N1.pos, D1.pos]
+			self.Trousers_Back_vertices = self.exterieur_arriere1 + self.exterieur_arriere2 + [B1.pos(), A2.pos()] + self.fourche_arriere + self.interieur_arriere + [N1.pos(), D1.pos()]
 			self.back_width=self.distance(B1, A)+self.distance(E, E1)
 
 		#
@@ -331,28 +331,28 @@ class Basic_Trousers(Pattern):
 				Dl = fpd[dart[0]]
 				Dr = Dl + [dart[2],0]
 				Dc = self.middle(Dl,Dr) + [0,dart[3]]
-				poslist.append(Dl.pos)
-				poslist.append(Dc.pos)
-				poslist.append(Dr.pos)
+				poslist.append(Dl.pos())
+				poslist.append(Dc.pos())
+				poslist.append(Dr.pos())
 
 			elif dart[1] == 'c':
 				Dl = fpd[dart[0]] - [0.5*dart[2],0]
 				Dr = fpd[dart[0]] + [0.5*dart[2],0]
 				Dc = fpd[dart[0]] + [0,dart[3]]
-				poslist.append(Dl.pos)
-				poslist.append(Dc.pos)
-				poslist.append(Dr.pos)
+				poslist.append(Dl.pos())
+				poslist.append(Dc.pos())
+				poslist.append(Dr.pos())
 
 			else:
 				pass
 
 		if self.gender == 'w':
-			self.ceinture_avant = [fpd['A1'].pos] + poslist + [fpd['B1'].pos]
+			self.ceinture_avant = [fpd['A1'].pos()] + poslist + [fpd['B1'].pos()]
 		elif self.gender == "m":
-			self.ceinture_avant = [fpd['A1'].pos] + poslist + [fpd['B'].pos]
+			self.ceinture_avant = [fpd['A1'].pos()] + poslist + [fpd['B'].pos()]
 
 
-		self.Trousers_Front_vertices = self.interieur_avant + self.fourche_avant + self.ceinture_avant + self.exterieur_avant + [fpd['N1'].pos, fpd['C1'].pos]
+		self.Trousers_Front_vertices = self.interieur_avant + self.fourche_avant + self.ceinture_avant + self.exterieur_avant + [fpd['N1'].pos(), fpd['C1'].pos()]
 
 		fbd = self.Trousers_Back_points_dic
 		poslist=[]
@@ -361,23 +361,23 @@ class Basic_Trousers(Pattern):
 				Dl = fbd[dart[0]] - [0.5*dart[2]*np.cos(self.back_waist_angle),0.5*dart[2]*np.sin(self.back_waist_angle)]
 				Dr = fbd[dart[0]] + [0.5*dart[2]*np.cos(self.back_waist_angle),0.5*dart[2]*np.sin(self.back_waist_angle)]
 				Dc = fbd[dart[0]] - [dart[3]*np.sin(self.back_waist_angle), -dart[3]*np.cos(self.back_waist_angle)]
-				poslist.append(Dl.pos)
-				poslist.append(Dc.pos)
-				poslist.append(Dr.pos)
+				poslist.append(Dl.pos())
+				poslist.append(Dc.pos())
+				poslist.append(Dr.pos())
 			elif dart[1] == 'r':
 				Dl = fbd[dart[0]]
 				Dr = Dl + [dart[2]*np.cos(self.back_waist_angle),dart[2]*np.sin(self.back_waist_angle)]
 				Dc = self.middle(Dl,Dr) - [dart[3]*np.sin(self.back_waist_angle), -dart[3]*np.cos(self.back_waist_angle)]
-				poslist.append(Dl.pos)
-				poslist.append(Dc.pos)
-				poslist.append(Dr.pos)
+				poslist.append(Dl.pos())
+				poslist.append(Dc.pos())
+				poslist.append(Dr.pos())
 
 		if self.gender == 'w':
-			self.ceinture_arriere = [fbd['B1'].pos] + poslist + [fbd['A2'].pos]
-			self.Trousers_Back_vertices = self.exterieur_arriere1 + self.exterieur_arriere2 + self.ceinture_arriere + self.fourche_arriere + self.interieur_arriere + [fbd['N1'].pos, fbd['D1'].pos]
+			self.ceinture_arriere = [fbd['B1'].pos()] + poslist + [fbd['A2'].pos()]
+			self.Trousers_Back_vertices = self.exterieur_arriere1 + self.exterieur_arriere2 + self.ceinture_arriere + self.fourche_arriere + self.interieur_arriere + [fbd['N1'].pos(), fbd['D1'].pos()]
 		elif self.gender == "m":
-			self.ceinture_arriere = [fbd['B3'].pos] + poslist + [fbd['A2'].pos]
-			self.Trousers_Back_vertices = self.exterieur_arriere_bas + self.exterieur_arriere_haut + self.ceinture_arriere + self.fourche_arriere + self.interieur_arriere + [fbd['N1'].pos, fbd['D1'].pos]
+			self.ceinture_arriere = [fbd['B3'].pos()] + poslist + [fbd['A2'].pos()]
+			self.Trousers_Back_vertices = self.exterieur_arriere_bas + self.exterieur_arriere_haut + self.ceinture_arriere + self.fourche_arriere + self.interieur_arriere + [fbd['N1'].pos(), fbd['D1'].pos()]
 
 		self.Trousers_Front_Contour_list=[] # reinitialize the contour point list
 		for i in range(len(self.Trousers_Front_vertices)):
@@ -486,11 +486,11 @@ class Flared_pants(Basic_Trousers):
 
 		y_th = pbf['O'].y + flare_start
 		newContourFront = []
-		newFrontVertices = [C2.pos]
+		newFrontVertices = [C2.pos()]
 		for p in tfcl:
 			if p.y > y_th:
 				newContourFront.append(p)
-				newFrontVertices.append(p.pos)
+				newFrontVertices.append(p.pos())
 
 		newFrontVertices += front_hem_curve
 
@@ -508,11 +508,11 @@ class Flared_pants(Basic_Trousers):
 
 		y_th = pbb['O'].y + flare_start
 		newContourBack = []
-		newBackVertices = [D2.pos]
+		newBackVertices = [D2.pos()]
 		for p in tbcl:
 			if p.y > y_th:
 				newContourBack.append(p)
-				newBackVertices.append(p.pos)
+				newBackVertices.append(p.pos())
 
 		newBackVertices += back_hem_curve
 
@@ -578,7 +578,7 @@ class Pants_block(Basic_Trousers):
 
 			pants_points_dic={'B1':B1, 'E1':pbf['E1'], 'AF':AF, 'V':V, 'AB':AB, 'E2':pbb['E2'], 'C1':C1, 'Z':Z}
 
-			pants_bloc_vertices = [B1.pos, pbf['E1'].pos] + self.fourche_avant + [AF.pos, AB.pos] + self.fourche_arriere + [C1.pos, B1.pos]
+			pants_bloc_vertices = [B1.pos(), pbf['E1'].pos()] + self.fourche_avant + [AF.pos(), AB.pos()] + self.fourche_arriere + [C1.pos(), B1.pos()]
 
 
 			if overlay == True:

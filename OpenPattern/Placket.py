@@ -37,7 +37,7 @@ class Placket(Pattern):
 			Ptip = Pul + [1,2]
 
 			self.Placket_dic.append({'Pbl':Pbl, 'Pbm': Pbm, 'Pbr': Pbr, 'Pur': Pur, 'Pum':Pum, 'Pul': Pul, 'Ptip': Ptip})
-			self.Placket_vertices.append([Pbl.pos, Pbr.pos, Pur.pos, Pum.pos, Ptip.pos, Pul.pos, Pbl.pos])
+			self.Placket_vertices.append([Pbl.pos(), Pbr.pos(), Pur.pos(), Pum.pos(), Ptip.pos(), Pul.pos(), Pbl.pos()])
 
 			self.Placket_segments = {'Fold': [Pbm, Pum]}
 

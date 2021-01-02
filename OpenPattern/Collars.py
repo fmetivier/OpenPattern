@@ -101,7 +101,7 @@ class Collars(Pattern):
 
 			TClu = Point([self.Collar_dic[0]['Clu'].x, TCru.y])
 
-			self.Collar_vertices.append( TC_down_curve + [TClu.pos, TCru.pos, TCrd.pos])
+			self.Collar_vertices.append( TC_down_curve + [TClu.pos(), TCru.pos(), TCrd.pos()])
 			self.Collar_dic.append({ 'TCrd':TCrd, 'TCru': TCru, 'TClu': TClu, 'TCld': TCld })
 
 			#redefine the size of segments

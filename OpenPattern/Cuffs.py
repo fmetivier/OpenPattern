@@ -67,7 +67,7 @@ class Cuffs(Pattern):
 			Brd = Orm + [-overlap/2,-width/2]
 
 			self.Cuffs_dic.append( {'Cld': Cld, 'Clu': Clu, 'Olu': Olu, 'Oru': Oru, 'Ord': Ord, 'Old': Old} )
-			self.Cuffs_vertices.append( [Cld.pos, Clu.pos, Oru.pos, Ord.pos, Cld.pos] )
+			self.Cuffs_vertices.append( [Cld.pos(), Clu.pos(), Oru.pos(), Ord.pos(), Cld.pos()] )
 			#~ print(self.Cuffs_vertices)
 			self.Cuffs_segments = {'Fold': [Clm, Olm], 'Overlap': [Olu, Old], 'Bru': [Bru, Bru - [0,1]],\
 			'Brd': [Brd, Brd + [0,1]]}
@@ -91,7 +91,7 @@ class Cuffs(Pattern):
 			Brd = Crm + [-overlap/2, -width/2]
 
 			self.Cuffs_dic.append( {'Cld': Cld, 'Clu': Clu, 'Olu': Olu, 'Oru': Oru, 'Ord': Ord, 'Old': Old, 'Crd': Crd, 'Cru': Cru } )
-			self.Cuffs_vertices.append( [Cld.pos, Clu.pos, Cru.pos, Crd.pos, Cld.pos] )
+			self.Cuffs_vertices.append( [Cld.pos(), Clu.pos(), Cru.pos(), Crd.pos(), Cld.pos()] )
 			self.Cuffs_segments = {'Cuff_Fold': [Clm, Crm], 'L_Overlap': [Olu, Old], 'R_Overlap': [Oru, Ord], 'Fabric_Fold': [Cld,Crd],\
 			'Blu': [Blu, Blu - [0,1]], 'Bru': [Bru, Bru - [0,1]], 'Bld': [Bld, Bld + [0,1]], 'Brd': [Brd, Brd + [0,1]]}
 

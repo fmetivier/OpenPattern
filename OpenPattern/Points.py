@@ -37,7 +37,7 @@ class Point(object):
 		# coordinates
 		self.x = pos[0]
 		self.y = pos[1]
-		self.pos = [self.x, self.y]
+		#self.pos = [self.x, self.y]
 
 		self.point_type = point_type
 
@@ -56,6 +56,9 @@ class Point(object):
 		else:
 			self.pname_ori=""
 
+
+	def pos(self):
+		return [self.x, self.y]
 
 	def copy(self):
 		"""Deepcopy point to a newly named one

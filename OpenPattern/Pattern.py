@@ -16,7 +16,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from OpenPattern.Points import Point
 
 """
-TODO:  20/12
+TODO:  02/01/21
 
 Measurements:
 - translate measurement names to english n
@@ -30,13 +30,6 @@ Drawing:
 Patterns:
 - add darts IN PROGRESS
 - Bodice D change names (not mandatory though)
-- Add donnanno sleeve for m
-- Add donnanno everything for w
-- Add Gilewska skirt, trousers for w, m
-- Add chiapetta... in a some far future
-- Add all basic models.
-- Cuffs in progress
-- Collars in progress
 
 Modeling:
 - define the methods for alterations
@@ -86,8 +79,74 @@ class Pattern:
 
 		self.gender=gender
 
+		# initialize dics and vertices
+		self.Pattern_Front_dic = {}
+		self.Pattern_Back_dic = {}
+		self.Pattern_Front_vertices = []
+		self.Pattern_Back_vertices = []
+
+
+
 	############################################################
-	#				measurements
+	#				add points or curves to dics
+	#				and get them back
+	############################################################
+
+	def add_point(name = 'A', coords = [0,0], dic = 'front'):
+		"""
+		adds a point to the corresponding dic
+
+		Args:
+			name: str,  point name
+			coords: list of floats, x and y coordinates
+			dic: 'front' or 'back' dics to store the point
+		"""
+
+		if dic == 'front':
+			self.Pattern_Front_dic[name] = Point(pos = coords, pname_ori = name)
+		if dic == 'back':
+			self.Pattern_Back_dic[name] = Point(pos = coords, pname_ori = name)
+		else:
+			print("choose back fo front for the dictionnary that stores the points")
+
+	def add_curve(name = 'front_curve', coords = [0,0], dic = 'front'):
+		"""
+		adds a curve to the corresponding dic
+
+		Args:
+			name: str,  curve name
+			coords: list of floats, x and y coordinates
+			dic: 'front' or 'back' dics to store the point
+		"""
+		if dic == 'front':
+			self.Pattern_Front_dic[name] = coords
+		if dic == 'back':
+			self.Pattern_Back_dic[name] = coords
+		else:
+			print("choose back fo front for the dictionnary that stores the points")
+
+	def get(pname='A', dic='front'):
+		"""
+		returns the point/curve pname from the corresponding dic
+
+		Args:
+			pname: str point/curve name
+			dic: 'front' or back' dictionnary from which to extrac the point
+
+		returns:
+			type Point : the chosen point
+			or type list: list of coordinates of a curve
+		"""
+		if dic == 'front':
+			return self.Pattern_Front_dic[pname]
+		if dic == 'back':
+			return self.Pattern_Back_dic[pname]
+		else:
+			print("choose back fo front for the dictionnary that stores the points")
+			return 1
+
+	############################################################
+	# get and store measurements
 	############################################################
 
 
@@ -130,8 +189,6 @@ class Pattern:
 		conn.close()
 
 		return dic
-
-	############################################################
 
 	def save_measurements_json(self, ofname=None):
 		""" Save new measurements
@@ -249,7 +306,7 @@ class Pattern:
 
 		Args:
 			A,B,C: points given as Points or  array([x,y])
-			theta: angle in radians
+			theta: angle in degrees
 
 		Returns:
 			Point([x,y]) or	(x,y) tuple of coordinates
@@ -432,20 +489,107 @@ class Pattern:
 			return  np.sum(np.sqrt(dx**2+dy**2))
 
 	############################################################
+
+	def add_dart(self,center = Point(),A = Point() , B = Point(), opening = 0, draw_curves = False, order = 'lr', rotate_end = 'none'):
+		"""adds a dart to a pattern
+		if draw_curves = True: draws the curve when the dart is closed then rotates when opening the dart
+		if rotate = none: rotation of the curves or segment decreases linearly to reach 0 at the end points.
+		if rotate =  left or right or both: also rotates the end points. The angle of rotation remains constant in this case NOT IMPLEMENTED YET
+
+		Args:
+		    center: Point position of the dart edge and center of rotation
+		    A, B: Points segment to cut
+		    opening: float width of the dart
+
+		returns:
+		    dart1, dart2 : points of the dart.
+		"""
+
+		# angle of the segment to cut
+		theta = self.segment_angle(A, B)+np.pi/2
+
+		# point of intersection
+		I = self.intersec_manches(A, B, center, theta*180/np.pi)
+
+		if draw_curves == True:
+
+		    control_points = [A, I, B]
+		    db, curve_points = self.pistolet(control_points, 2, tot = True)
+
+		    if rotate_end == 'none':
+		        # find the place of I and separate the curve into two subcurves
+		        list_1 = []
+		        list_2 = []
+		        dval = 1000
+		        for p in curve_points:
+		            d = self.distance(I, Point(p))
+		            dd = d-dval
+		            if d < dval and dd < 0:
+		                list_1.append(Point(p))
+		            elif d > dval and dd > 0:
+		                list_2.append(Point(p))
+		            dval = d
+
+		        # rotate lists
+		        rotated_curve_1 = []
+		        N = len(list_1)
+
+		        if order == 'lr':
+		            theta_N = opening/(2*self.distance(center, I)*N)
+		            theta = 0
+		            dtheta = theta_N
+		        elif order == 'rl':
+		            theta_N = opening/(2*self.distance(center, I)*N)
+		            theta = 0
+		            dtheta = -theta_N
+
+		        for p in list_1:
+		            p.rotate(center,theta, unit='rad')
+		            theta += dtheta
+		            rotated_curve_1.append(p.pos())
+
+
+		        rotated_curve_2 = []
+		        N = len(list_2)
+
+		        if order == 'rl':
+		            theta_N = opening/(2*self.distance(center, I)*N)
+		            theta = N*theta_N
+		            dthetat = -theta_N
+		        elif order == 'lr':
+		            theta_N = opening/(2*self.distance(center, I)*N)
+		            theta = -N*theta_N
+		            dtheta = theta_N
+
+		        for p in list_2:
+		            p.rotate(center, theta, unit='rad')
+		            theta += dtheta
+		            rotated_curve_2.append(p.pos())
+
+		        return rotated_curve_1, rotated_curve_2
+
+		    elif rotate_end == 'left':
+		        pass
+		    elif rotate_end == 'right':
+		        pass
+		    elif rotate_end == 'both':
+		        pass
+		    else:
+		        pass
+
+		else:
+		    theta = opening/(2*self.distance(center, I))
+		    I1 = I.copy()
+		    I1.rotate(center,theta, unit='rad')
+		    I2 = I.copy()
+		    I2.rotate(center,-theta, unit='rad')
+
+		    return I1, I2
+
+	############################################################
 	#				Drawings
 	############################################################
 
-	def generate_lists(self):
-		"""
-		generates a list of point vertices and a list of point dictionnaries for drawing
-		this method can only be called by children classes but is common to them
-
-		"""
-
-		vl = [self.Bodice_Front_vertices, self.Bodice_Back_vertices]
-		dl = [self.Bodice_points_dic]
-
-		return dl, vl
 
 	def segment(self, A, B, ax, kwargs={'color':'blue'}):
 		"""

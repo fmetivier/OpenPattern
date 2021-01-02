@@ -99,6 +99,18 @@ class Basic_Bodice(Pattern):
 
 	############################################################
 
+	def generate_lists(self):
+		"""
+		generates a list of point vertices and a list of point dictionnaries for drawing
+		this method can only be called by children classes but is common to them
+
+		"""
+
+		vl = [self.Bodice_Front_vertices, self.Bodice_Back_vertices]
+		dl = [self.Bodice_points_dic]
+
+		return dl, vl
+
 	def draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False, fname = None, paper='FullSize'):
 		""" Draws Basic Bodice with legends and save it if asked for
 
@@ -364,8 +376,8 @@ class Basic_Bodice(Pattern):
 		for i in range(len(Bodice_Points_Names)):
 			self.Bodice_points_dic[Bodice_Points_Names[i]] = Bodice_Points_List[i]
 
-		self.Bodice_Front_vertices = [B.pos, U1.pos] + col_devant + [Z.pos] + emmanchure_devant + [Q.pos, E.pos]
-		self.Bodice_Back_vertices = [C.pos, D.Pos] + col_dos + [O.pos] + emmanchure_dos + [Q.Pos, E.Pos]
+		self.Bodice_Front_vertices = [B.pos(), U1.pos()] + col_devant + [Z.pos()] + emmanchure_devant + [Q.pos(), E.pos()]
+		self.Bodice_Back_vertices = [C.pos(), D.pos()] + col_dos + [O.pos()] + emmanchure_dos + [Q.pos(), E.pos()]
 
 	def Donnanno_bodice_without_dart_m(self, bust_ease=8):
 		""" Calculation of bodice with no dart
@@ -519,8 +531,8 @@ class Basic_Bodice(Pattern):
 		for i in range(len(Bodice_Points_Names)):
 			self.Bodice_points_dic[Bodice_Points_Names[i]] = Bodice_Points_List[i]
 
-		self.Bodice_Front_vertices = [B.pos, U1.pos] + col_devant + [Z.pos] + emmanchure_devant + [Q.pos, W1.pos, E1.pos] + base_front + [B1.pos]
-		self.Bodice_Back_vertices = [C.pos, D.pos] + col_dos + [O.pos] + emmanchure_dos + [Q.pos, W.pos, E1.pos] + base_back + [C1.pos]
+		self.Bodice_Front_vertices = [B.pos(), U1.pos()] + col_devant + [Z.pos()] + emmanchure_devant + [Q.pos(), W1.pos(), E1.pos()] + base_front + [B1.pos()]
+		self.Bodice_Back_vertices = [C.pos(), D.pos()] + col_dos + [O.pos()] + emmanchure_dos + [Q.pos(), W.pos(), E1.pos()] + base_back + [C1.pos()]
 
 
 	def chiappetta_basic_bodice(self, age=14, d_FB = 5):
@@ -612,8 +624,8 @@ class Basic_Bodice(Pattern):
 			for key, val in zip(bodice_points_keys, bodice_points_val):
 				self.Bodice_points_dic[key] = val
 
-			self.Bodice_Back_vertices = [WB.pos, HB.pos] + back_collar_curve + [ShB1.pos] + back_sleeve_curve + [SlB1.pos, WB1.pos]
-			self.Bodice_Front_vertices = [WF.pos, CF1.pos] + front_collar_curve + [ShF1.pos] +  front_sleeve_curve + [SlF1.pos, WF1.pos]
+			self.Bodice_Back_vertices = [WB.pos(), HB.pos()] + back_collar_curve + [ShB1.pos()] + back_sleeve_curve + [SlB1.pos(), WB1.pos()]
+			self.Bodice_Front_vertices = [WF.pos(), CF1.pos()] + front_collar_curve + [ShF1.pos()] +  front_sleeve_curve + [SlF1.pos(), WF1.pos()]
 
 
 	def Gilewska_basic_bodice_m(self, BF_space=10):
@@ -799,12 +811,12 @@ class Basic_Bodice(Pattern):
 
 		if self.hip:
 
-			self.Bodice_Back_vertices  =  [HiB.pos,  WB.pos,  HB.pos ] + collar_back_points +  sleeve_back_points + [SlB1.pos, HiB1.pos]
-			self.Bodice_Front_vertices  =  [HiF.pos,  SlF.pos,  BF.pos ] + collar_front_points +  sleeve_front_points + [SlF1.pos,  HiF1.pos]
+			self.Bodice_Back_vertices  =  [HiB.pos(),  WB.pos(),  HB.pos() ] + collar_back_points +  sleeve_back_points + [SlB1.pos(), HiB1.pos()]
+			self.Bodice_Front_vertices  =  [HiF.pos(),  SlF.pos(),  BF.pos() ] + collar_front_points +  sleeve_front_points + [SlF1.pos(),  HiF1.pos()]
 
 		else:
-			self.Bodice_Back_vertices  =  [WB.pos,  HB.pos ] + collar_back_points +  sleeve_back_points + [SlB1.pos, WB1.pos]
-			self.Bodice_Front_vertices  =  [WF.pos,  SlF.pos,  BF.pos ] + collar_front_points +  sleeve_front_points + [SlF1.pos,  WF1.pos]
+			self.Bodice_Back_vertices  =  [WB.pos(),  HB.pos() ] + collar_back_points +  sleeve_back_points + [SlB1.pos(), WB1.pos()]
+			self.Bodice_Front_vertices  =  [WF.pos(),  SlF.pos(),  BF.pos() ] + collar_front_points +  sleeve_front_points + [SlF1.pos(),  WF1.pos()]
 
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
 
@@ -872,7 +884,7 @@ class Basic_Bodice(Pattern):
 		V = Point([-self.m["tour_poignet"]/2, 0])
 
 		self.Sleeve_points_dic = {'A':A, 'B':B, 'C':C, 'D':D, 'E':E, 'F':F, 'C1':C1, 'D1':D1, 'K':K, 'Kb1':Kb1, 'Kh1': Kh1, 'G':G, 'Gb':Gb, 'Gh':Gh, 'Gb1':Gb1, 'Gh1':Gh1, 'V':V, 'S':S}
-		self.Sleeve_vertices = [V.pos, C.pos] + back_curve_points + [A.pos] + front_curve_points + [D.pos, S.pos]
+		self.Sleeve_vertices = [V.pos(), C.pos()] + back_curve_points + [A.pos()] + front_curve_points + [D.pos(), S.pos()]
 
 
 	def Gilewska_basic_bodice_w(self, sep=10):
@@ -1026,8 +1038,8 @@ class Basic_Bodice(Pattern):
 		#########################################
 
 
-		self.Bodice_Back_vertices  =  [WB.pos, CB.pos ] + collar_back_points +  sleeve_back_points + [SlB1.pos, WB1.pos]
-		self.Bodice_Front_vertices  =  [WF.pos,  CF.pos ] + collar_front_points +  sleeve_front_points + [SlF1.pos, WF1.pos]
+		self.Bodice_Back_vertices  =  [WB.pos(), CB.pos() ] + collar_back_points +  sleeve_back_points + [SlB1.pos(), WB1.pos()]
+		self.Bodice_Front_vertices  =  [WF.pos(),  CF.pos() ] + collar_front_points +  sleeve_front_points + [SlF1.pos(), WF1.pos()]
 
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
 
@@ -1094,7 +1106,7 @@ class Basic_Bodice(Pattern):
 				self.Bodice_points_dic[key[i]] = val[i]
 
 			#redraw the front bodice with the added dart
-			self.Bodice_Front_vertices = [bfd['WF'].pos,  bfd['CF'].pos ] + self.curves_dic['Front_Collar'] +  [MShF.pos, OP.pos, K2.pos, ShF2.pos] + new_sleeve_front_points + [bfd['SlF1'].pos, bfd['WF1'].pos]
+			self.Bodice_Front_vertices = [bfd['WF'].pos(),  bfd['CF'].pos() ] + self.curves_dic['Front_Collar'] +  [MShF.pos(), OP.pos(), K2.pos(), ShF2.pos()] + new_sleeve_front_points + [bfd['SlF1'].pos(), bfd['WF1'].pos()]
 
 			#recalculate the sleeve
 			self.Gilewska_basic_sleeve_w()
@@ -1133,7 +1145,7 @@ class Basic_Bodice(Pattern):
 			for k, v in zip(key, val):
 				self.Bodice_points_dic[k]=v
 
-			self.Bodice_Back_vertices  =  [CBD.pos, sbp['SlB'].pos, sbp['CB'].pos ] + self.curves_dic['Back_Collar'] +  self.curves_dic['Back_Sleeve'] + [sbp['SlB1'].pos, SBD.pos, BD1.pos, BDs.pos, BD0.pos]
+			self.Bodice_Back_vertices  =  [CBD.pos(), sbp['SlB'].pos(), sbp['CB'].pos() ] + self.curves_dic['Back_Collar'] +  self.curves_dic['Back_Sleeve'] + [sbp['SlB1'].pos(), SBD.pos(), BD1.pos(), BDs.pos(), BD0.pos()]
 			#~ print(self.Bodice_Back_vertices)
 
 			# The Front
@@ -1160,9 +1172,9 @@ class Basic_Bodice(Pattern):
 				self.Bodice_points_dic[k]=v
 
 			if bust_dart:
-				self.Bodice_Front_vertices = [sbp['WF'].pos,  sbp['CF'].pos ] + self.curves_dic['Front_Collar'] +  [sbp['MShF'].pos, sbp['OP'].pos, sbp['K2'].pos, sbp['ShF2'].pos] + self.curves_dic['Front_Sleeve'] + [sbp['SlF1'].pos, SFD.pos, FD0.pos, OP.pos, FD1.pos]
+				self.Bodice_Front_vertices = [sbp['WF'].pos(),  sbp['CF'].pos() ] + self.curves_dic['Front_Collar'] +  [sbp['MShF'].pos(), sbp['OP'].pos(), sbp['K2'].pos(), sbp['ShF2'].pos()] + self.curves_dic['Front_Sleeve'] + [sbp['SlF1'].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
 			else:
-				self.Bodice_Front_vertices = [sbp['WF'].pos,  sbp['CF'].pos ] + self.curves_dic['Front_Collar'] + self.curves_dic['Front_Sleeve'] + [sbp['SlF1'].pos, SFD.pos, FD0.pos, OP.pos, FD1.pos]
+				self.Bodice_Front_vertices = [sbp['WF'].pos(),  sbp['CF'].pos() ] + self.curves_dic['Front_Collar'] + self.curves_dic['Front_Sleeve'] + [sbp['SlF1'].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
 
 
 		else:
@@ -1241,4 +1253,4 @@ class Basic_Bodice(Pattern):
 		 'K':K, 'K1':K1, 'G':G, 'G1':G1, 'V':V, 'S':S, 'W':W, 'W0':W0, 'W1':W1, \
 		 'CDos1':CDos1, 'CDos2':CDos2, 'CDos4':CDos4, 'CDevant1':CDevant1, \
 		 'CDevant2':CDevant2, 'CDevant4':CDevant4}
-		self.Sleeve_vertices = [S.pos, W0.pos, E.pos] + front_curve_points + [A.pos] + back_curve_points + [D.pos, W1.pos, V.pos]
+		self.Sleeve_vertices = [S.pos(), W0.pos(), E.pos()] + front_curve_points + [A.pos()] + back_curve_points + [D.pos(), W1.pos(), V.pos()]

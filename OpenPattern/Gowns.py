@@ -62,8 +62,8 @@ class Hospital_Gown(Pattern):
 
 		self.Gown_points_dic.append({'HipF':HipF, 'HipB': HipB, 'CB': CB, 'CB2':CB2, 'ShB':ShB, 'SlB':SlB, 'ShF':ShF, 'SlF':SlF, 'CF':CF, 'CF2':CF2, 'BF':BeltF, 'BB':BeltB, 'HFB':HipFoldB, 'HFC':HipFoldC, 'HipSlF':HipSlF, 'HipSlB':HipSlB })
 
-		self.Gown_vertices.append([HipSlB.pos,HipB.pos,CB.pos,CB2.pos, ShB.pos])
-		self.Gown_vertices.append([HipF.pos, HipSlF.pos, SlF.pos, ShF.pos, CF2.pos] + col + [HipF.pos])
+		self.Gown_vertices.append([HipSlB.pos(),HipB.pos(),CB.pos(),CB2.pos(), ShB.pos()])
+		self.Gown_vertices.append([HipF.pos(), HipSlF.pos(), SlF.pos(), ShF.pos(), CF2.pos()] + col + [HipF.pos()])
 
 
 	def cal_sleeves(self):
@@ -80,7 +80,7 @@ class Hospital_Gown(Pattern):
 		WB = WC + [-20,0]
 
 		self.Sleeve_points_dic.append({'SF':SF,'SC':SC, 'SB':SB, 'WC':WC, 'WF':WF, 'WB':WB})
-		self.Sleeve_vertices.append([SC.pos,SF.pos,WF.pos,WB.pos,SB.pos,SC.pos])
+		self.Sleeve_vertices.append([SC.pos(),SF.pos(),WF.pos(),WB.pos(),SB.pos(),SC.pos()])
 
 
 

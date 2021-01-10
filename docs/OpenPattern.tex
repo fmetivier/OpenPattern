@@ -72,10 +72,8 @@ OpenPattern présente pour l'instant deux niveaux d'héritage.
 \begin{itemize}
 \item La classe parente Pattern : C'est la classe générale qui définit ce qu'est un patron et les méthodes permettant de le dessiner et de le manipuler
 \item Les classes de bases dérivées de Pattern: Basic\_Bodice, Basic\_Trousers, Cuffs, Collars
-\item Les classes dérivées des classes de base: shirt, pyjamas qui héritent de Basic\_Bodice ou de Basic\_Trousers. Normalement, in fine ce sont celles que les utilisateurs «verront» ou utiliseront
-\item Enfin les patrons font appels à une classe Point qui permet de définir un point de patronnage avec sa position et ses propriétés. Cette classe redéfinit les opérations d'addition et offre diverses manipulations  comme la rotation. L'intérêt ici est d'avoir un objet flexible qui permette de partir d'un patron de base et de l'altérer.
+\item Les classes dérivées des classes de base: shirt, pyjamas qui héritent de Basic\_Bodice ou de Basic\_Trousers. \item Enfin les patrons font appels à une classe Point qui permet de définir un point de patronnage avec sa position et ses propriétés. Cette classe redéfinit les opérations d'addition et offre diverses manipulations  comme la rotation. L'intérêt ici est d'avoir un objet flexible qui permette de partir d'un patron de base et de l'altérer.
 \end{itemize}
-
 
 
 \chapter{Usage}
@@ -87,13 +85,14 @@ Pour dessiner un patron il faut
 \item dessiner et, au besoin, sauvegarder le patron.
 \end{enumerate}
 
+Le dessin du patron peut se faire soit à partir des classes dérivées existantes soit directement à partir des classes Pattern et Point.
+
 Le script suivant montre par exemple comment tracer et sauver un patron de Body de femme sans pinces en 36 selon la méthode de Gilewska.
 \begin{lstlisting}[language=python]
 import sys
 sys.path.append('./..')
 import matplotlib.pyplot as plt
 import OpenPattern as OP
-
 
 p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska') # Création de l'instance
 p.draw_bodice({"Pattern":"Bodice without dart"}, save=True) # appel de la fonction de dessin
@@ -108,6 +107,7 @@ plt.show() # si vous voulez voir la figure s'afficher
 \end{figure}
 
 On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf.
+
 Les différentes options sont passées dans les arguments des différentes méthodes de classe (draw\_bodice) ou lors des instanciations de classe (Basic\_Bodice dans cet exemple).
 
 \begin{lstlisting}[language=python]
@@ -176,34 +176,66 @@ La liste des méthodes de cette classe est donnée ci-dessous. Ces méthodes son
 \item Les méthodes de dessin avec matplotlib.
 \end{enumerate}
 
-il manque encore des méthodes d'altération de patrons qui permettraient de déplacer des points des patrons de base et de recalculer les courbes. pour l'instant ce genre de calcul est fait au cas par cas.
-
-
 
 \begin{lstlisting}[language=python]
 class Pattern:
 
 	def __init__(self, pname="sophie", gender='w'):
 
-	# Catégorie 1
-	def get_measurements(self, pname="sophie"):
+  ############################################################
+  #				add points or curves to dics
+  #				and get them back
+  ############################################################
 
-	def save_measurements(self, ofname=None):
+  def add_point(self, name = 'A', p = Point([0,0]), dic = 'front'):
 
-	# Catégorie 2
+  def add_curve(self, name = 'front_curve', coords = [0,0], dic = 'front'):
+
+  def get(self, pname='A', dic='front'):
+
+  def generate_lists(self):
+
+  ############################################################
+	# get and store measurements
+	############################################################
+
+	def get_measurements_json(self, pname="sophie"):
+
+  def get_measurements_sql(self, pname="sophie"):
+
+  def save_measurements_json(self, ofname=None):
+
+  def save_measurements_sql(self, ofname=None):
+
+  ############################################################
+	#				Calculations
+	############################################################
+
+
 	def intersec_lines(self, A, B, C, D):
 
 	def intersec_manches(self, A, B, C, theta):
 
 	def segment_angle(self, A, B):
 
+  def oriented_segment_angle(self, A, B):
+
 	def middle(self, A, B):
 
 	def distance(self, A, B):
 
+  def segment_offset(self, A, B, alpha, d):
+
+  def curve_offset(self, ilist, alpha, d, closed=False):
+
 	def pistolet(self, points, kval, ax=None, kwargs = {'color':'blue','linestyle':'solid'}, tot=False):
 
-	# Catégorie 3
+  def add_dart(self,center = Point(),A = Point() , B = Point(), opening = 0, draw_curves = False, order = 'lr', rotate_end = 'none'):
+
+  ############################################################
+	#				Drawings
+	############################################################
+
 	def draw_pattern(self, dic_list, vertices_list):
 
 	def paper_cut(self, fig, ax, name='patternA4', paper='A4'):
@@ -215,8 +247,7 @@ class Pattern:
 \end{lstlisting}
 
 \section{Mesures}
-
-Les mesures sont enregistrées dans des fichiers json dans la répertoire measurements.
+Les mesures sont enregistrées dans une base de données sqlite3. Elles peuvent être enregistrées dans des fichiers json dans le répertoire measurements.
 
 \begin{itemize}
 

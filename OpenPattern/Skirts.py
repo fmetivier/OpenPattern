@@ -25,13 +25,13 @@ class Basic_Skirt(Pattern):
 		# Variables obtained from the basic calculations for Skirts
 		# dics used here:
 
-		Skirt_points_dic
-		curves_dic
+		Front_dic
+        Back_dic
 
 		# lists of vertices:
 
-		Skirt_Back_vertices
-		Skirt_Front_vertices
+		Back_vertices
+		Front_vertices
 
 	"""
 
@@ -56,8 +56,8 @@ class Basic_Skirt(Pattern):
         self.vertices_list=[]
 
         self.points_dic = {}
-        self.Front_points_dic = {}
-        self.Back_points_dic = {}
+        self.Front_dic = {}
+        self.Back_dic = {}
 
         self.Front_vertices = []
         self.Back_vertices = []
@@ -75,105 +75,6 @@ class Basic_Skirt(Pattern):
         elif self.style == 'Chiappetta':
             print("style Chiappetta selected")
             self.chiappetta_basic_Skirt()
-
-    def add_dart(self,center = Point(),A = Point() , B = Point(), opening = 0, draw_curves = False, order = 'lr', rotate_end = 'none'):
-        """adds a dart to a pattern
-
-        if draw_curves=True draws the curve when the dart is closed then rotates when opening the dart
-        if rotate = none rotation of the curves or segment decreases linearly to reach 0 at the end points.
-        if rotate =  left or right or both also rotates the end points. The angle of rotation remains constant in this case
-
-        Args:
-            center: Point position of the dart summit and center of rotation
-            A, B: Points segment to cut
-            opening: float width of the dart
-
-        returns:
-            I1, I2 : depending on Args can be
-                        1) points left and right of the dart center of rotation.
-                        2) left and right curves of the dart center of rotation
-        """
-
-        # angle of the segment to cut
-        theta = self.segment_angle(A, B)+np.pi/2
-
-        # point of intersection
-        I = self.intersec_manches(A, B, center, theta*180/np.pi)
-
-        if draw_curves == True:
-
-            control_points = [A, I, B]
-            db, curve_points = self.pistolet(control_points, 2, tot = True)
-
-            if rotate_end == 'none':
-                # find the place of I and separate the curve into two subcurves
-                list_1 = []
-                list_2 = []
-                dval = 1000
-                for p in curve_points:
-                    d = self.distance(I, Point(p))
-                    dd = d-dval
-                    if d < dval and dd < 0:
-                        list_1.append(Point(p))
-                    elif d > dval and dd > 0:
-                        list_2.append(Point(p))
-                    dval = d
-
-                # rotate lists
-                rotated_curve_1 = []
-                N = len(list_1)
-
-                if order == 'lr':
-                    theta_N = opening/(2*self.distance(center, I)*N)
-                    theta = 0
-                    dtheta = theta_N
-                elif order == 'rl':
-                    theta_N = opening/(2*self.distance(center, I)*N)
-                    theta = 0
-                    dtheta = -theta_N
-
-                for p in list_1:
-                    p.rotate(center,theta, unit='rad')
-                    theta += dtheta
-                    rotated_curve_1.append(p.pos())
-
-
-                rotated_curve_2 = []
-                N = len(list_2)
-
-                if order == 'rl':
-                    theta_N = opening/(2*self.distance(center, I)*N)
-                    theta = N*theta_N
-                    dthetat = -theta_N
-                elif order == 'lr':
-                    theta_N = opening/(2*self.distance(center, I)*N)
-                    theta = -N*theta_N
-                    dtheta = theta_N
-
-                for p in list_2:
-                    p.rotate(center, theta, unit='rad')
-                    theta += dtheta
-                    rotated_curve_2.append(p.pos())
-
-                return rotated_curve_1, rotated_curve_2
-
-            elif rotate_end == 'left':
-                pass
-            elif rotate_end == 'right':
-                pass
-            elif rotate_end == 'both':
-                pass
-            else:
-                pass
-
-        else:
-            theta = opening/(2*self.distance(center, I))
-            I1 = I.copy()
-            I1.rotate(center,theta, unit='rad')
-            I2 = I.copy()
-            I2.rotate(center,-theta, unit='rad')
-
-            return I1, I2
 
     def chiappetta_basic_Skirt(self):
 
@@ -224,7 +125,7 @@ class Basic_Skirt(Pattern):
             val=[A,A1,A2,dart1,G,C]
 
             for i in range(len(key)): # add new points to the dictionnary
-                self.Back_points_dic[key[i]] = val[i]
+                self.Back_dic[key[i]] = val[i]
 
             if back_curves:
                 #in this case I1 and I2 are lists of positions
@@ -239,25 +140,13 @@ class Basic_Skirt(Pattern):
             val=[B,B1,B2,dart2,H,F,E,D]
 
             for i in range(len(key)): # add new points to the dictionnary
-                self.Front_points_dic[key[i]] = val[i]
+                self.Front_dic[key[i]] = val[i]
 
             #redraw the front bodice with the added dart
             if front_curves:
                 self.Front_vertices = [B2.pos()] + I3 + [dart2.pos()] + I4 + [H.pos()] + skirt_front_side + [E.pos(), D.pos()]
             else:
                 self.Front_vertices = [B2.pos(), I4.pos(), dart2.pos(), I3.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]
-
-    def generate_lists(self):
-    	"""
-    	generates a list of point vertices and a list of point dictionnaries for drawing
-    	this method can only be called by children classes but is common to them
-
-    	"""
-
-    	vl = [self.Front_vertices, self.Back_vertices]
-    	dl = [self.Front_points_dic, self.Back_points_dic]
-
-    	return dl, vl
 
 
     def draw_skirt(self, dic = {"Pattern":"Skirt"}, save = False, fname = None, paper='FullSize'):

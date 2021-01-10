@@ -14,6 +14,7 @@ from matplotlib.path import Path
 from matplotlib.backends.backend_pdf import PdfPages
 
 from OpenPattern.Points import Point
+from copy import deepcopy
 
 """
 TODO:  02/01/21
@@ -80,10 +81,10 @@ class Pattern:
 		self.gender=gender
 
 		# initialize dics and vertices
-		self.Pattern_Front_dic = {}
-		self.Pattern_Back_dic = {}
-		self.Pattern_Front_vertices = []
-		self.Pattern_Back_vertices = []
+		self.Front_dic = {}
+		self.Back_dic = {}
+		self.Front_vertices = []
+		self.Back_vertices = []
 
 
 
@@ -92,24 +93,25 @@ class Pattern:
 	#				and get them back
 	############################################################
 
-	def add_point(name = 'A', coords = [0,0], dic = 'front'):
+	def add_point(self, name = 'A', p = Point([0,0]), dic = 'front'):
 		"""
 		adds a point to the corresponding dic
 
 		Args:
-			name: str,  point name
-			coords: list of floats, x and y coordinates
-			dic: 'front' or 'back' dics to store the point
+			name: point name
+			p: point
+			dic: 'front' for front dic, 'back' for back dic
 		"""
 
 		if dic == 'front':
-			self.Pattern_Front_dic[name] = Point(pos = coords, pname_ori = name)
-		if dic == 'back':
-			self.Pattern_Back_dic[name] = Point(pos = coords, pname_ori = name)
+			print('coucou')
+			self.Front_dic[name] = p
+		elif dic == 'back':
+			self.Back_dic[name] = p
 		else:
-			print("choose back fo front for the dictionnary that stores the points")
+			print("choose back or front for the dictionnary that stores the points")
 
-	def add_curve(name = 'front_curve', coords = [0,0], dic = 'front'):
+	def add_curve(self, name = 'front_curve', coords = [0,0], dic = 'front'):
 		"""
 		adds a curve to the corresponding dic
 
@@ -119,13 +121,13 @@ class Pattern:
 			dic: 'front' or 'back' dics to store the point
 		"""
 		if dic == 'front':
-			self.Pattern_Front_dic[name] = coords
-		if dic == 'back':
-			self.Pattern_Back_dic[name] = coords
+			self.Front_dic[name] = coords
+		elif dic == 'back':
+			self.Back_dic[name] = coords
 		else:
 			print("choose back fo front for the dictionnary that stores the points")
 
-	def get(pname='A', dic='front'):
+	def get(self, pname='A', dic='front'):
 		"""
 		returns the point/curve pname from the corresponding dic
 
@@ -138,12 +140,24 @@ class Pattern:
 			or type list: list of coordinates of a curve
 		"""
 		if dic == 'front':
-			return self.Pattern_Front_dic[pname]
+			return self.Front_dic[pname]
 		if dic == 'back':
-			return self.Pattern_Back_dic[pname]
+			return self.Back_dic[pname]
 		else:
 			print("choose back fo front for the dictionnary that stores the points")
 			return 1
+
+	def generate_lists(self):
+		"""
+		generates a list of point vertices and a list of point dictionnaries for drawing
+		this method can only be called by children classes but is common to them
+
+		"""
+
+		vl = [self.Front_vertices, self.Back_vertices]
+		dl = [self.Front_dic, self.Back_dic]
+
+		return dl, vl
 
 	############################################################
 	# get and store measurements
@@ -236,6 +250,7 @@ class Pattern:
 
 		conn.commit()
 		conn.close()
+
 	############################################################
 	#				Calculations
 	############################################################
@@ -386,6 +401,43 @@ class Pattern:
 
 	############################################################
 
+	def oriented_segment_angle(self, A, B):
+		"""Returns slope of segment [AB]
+
+		Args:
+			A,B: points given as array([x,y])
+
+
+		Returns:
+			angle in radians
+		"""
+
+		if isinstance(A, Point) and isinstance(B, Point):
+			if B.x-A.x == 0:
+				if B.y >= A.y:
+					return np.pi/2
+				else:
+					return 3*np.pi/2
+			else:
+				if (B.x-A.x) > 0:
+					return np.arctan((B.y-A.y)/(B.x-A.x))
+				else:
+					return np.arctan((B.y-A.y)/(B.x-A.x)) + np.pi
+		else:
+			if B[0]-A[0] == 0:
+				if B[1]-A[1] >= 0:
+					return(np.pi/2)
+				else:
+					return(-np.pi/2)
+			else:
+				if B[0]-A[0] > 0:
+					return np.arctan((B[1]-A[1])/(B[0]-A[0]))
+				else:
+					return np.arctan((B[1]-A[1])/(B[0]-A[0])) + np.pi
+
+
+	############################################################
+
 	def segment_offset(self, A, B, alpha, d):
 		"""translates segment AB by a vector of length d making an angle alpha  with AB
 
@@ -398,8 +450,8 @@ class Pattern:
 			Ap, Bp the offset points
 		"""
 
-		if isinstance(A. Point) and isiisinstance(B, Point):
-			a = self.segment_angle(A, B)
+		if isinstance(A, Point) and isinstance(B, Point):
+			a = self.oriented_segment_angle(A, B)
 			beta = a + alpha
 
 			Ap =  Point([A.x + np.cos(beta)*d, A.y+ np.sin(beta)*d])
@@ -412,7 +464,7 @@ class Pattern:
 
 	############################################################
 
-	def curve_offset(self, plist, alpha, d):
+	def curve_offset(self, ilist, alpha, d, closed=False):
 		"""translates a curve by a vector of length d making an angle alpha  with the local tangent
 
 		Args:
@@ -423,19 +475,45 @@ class Pattern:
 		Returns:
 			olist : list of [x,y] offset points positions
 		"""
-
+		plist = deepcopy(ilist)
 		olist = []
 		N = len(plist)
+		beta = []
+		# first loop find the angles
 		for i in range(N-1):
-			a = self.segment_angle(plist[i], plist[i+1])
-			beta = a + alpha
-			x = plist[i][0] + np.cos(beta)*d
-			y = plist[i][1] + np.sin(beta)*d
+			a = self.oriented_segment_angle(plist[i], plist[i+1])
+			beta.append( a + alpha )
+
+		#second loop offset
+
+		if closed == False:
+			x = plist[0][0] + np.cos(beta[0])*d
+			y = plist[0][1] + np.sin(beta[0])*d
+			olist.append([x,y])
+		else:
+			plist[0][0] += np.cos(beta[0])*d
+			plist[0][1] += np.sin(beta[0])*d
+
+		plist[1][0] += np.cos(beta[0])*d
+		plist[1][1] += np.sin(beta[0])*d
+
+		for i in np.arange(N-2) + 1:
+
+			x = plist[i][0] + np.cos(beta[i])*d
+			y = plist[i][1] + np.sin(beta[i])*d
 			olist.append([x,y])
 
+			plist[i+1][0] += np.cos(beta[i])*d
+			plist[i+1][1] += np.sin(beta[i])*d
+
 		# use the last value of beta for the last point
-		x = plist[N-1][0] + np.cos(beta)*d
-		y = plist[N-1][1] + np.sin(beta)*d
+		if closed == False:
+			x = plist[N-1][0]
+			y = plist[N-1][1]
+		else:
+			x = plist[0][0] + np.cos(beta[N-2])*d
+			y = plist[0][1] + np.sin(beta[N-2])*d
+
 		olist.append([x,y])
 
 		return olist

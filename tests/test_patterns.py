@@ -7,9 +7,38 @@ sys.path.append('./..')
 import matplotlib.pyplot as plt
 #~ from OpenPattern.Points import Point
 import OpenPattern as OP
+import numpy as np
 
-p = OP.Basic_Skirt()
-p.draw_skirt()
+def pattern_sample():
+    p=OP.Pattern()
+    A=OP.Point([0,0])
+    B=OP.Point([10,0])
+    C=OP.Point([10,10])
+    D=OP.Point([0,10])
+
+    # A,B = p.segment_offset(A,B,2*np.pi/5,1)
+
+    p.add_point('A',A)
+    p.add_point('B',B)
+    p.add_point('C',C)
+    p.add_point('D',D)
+
+    E = OP.Point([5,5])
+    I1,I2 = p.add_dart(E,C,D,2)
+
+    p.add_point('E',E)
+    p.add_point('I1',I1)
+    p.add_point('I2',I2)
+
+    p.Front_vertices = [A.pos(), B.pos(), C.pos(), I2.pos(), E.pos(),I1.pos(), D.pos(), A.pos()]
+    rotated = p.curve_offset(p.Front_vertices,np.pi/2,1,True)
+    p.draw_pattern([p.Front_dic],[p.Front_vertices,rotated])
+    
+pattern_sample()
+
+#
+# p = OP.Basic_Skirt()
+# p.draw_skirt()
 
 # Women
 # p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')

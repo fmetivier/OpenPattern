@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{report}
 \usepackage[utf8x]{inputenc}
-\usepackage[francais]{babel}
+\usepackage[french]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -56,15 +56,22 @@ breakatwhitespace=false,
 
 \chapter{Introduction}
 
-OpenPattern  est une librairie python, orientée objet,  dont l'objectif est de permettre le tracé de patrons de vêtements à l'échelle 1:1.
-Les patrons peuvent être sur-mesures, à  partir d'un ensemble de mesures prises sur le corps de la personne dont vous voulez tracer un patron, ou correspondre à des mesures de prêt à porter classique.
+\section{What is it}
+OpenPattern  est une librairie python, orientée objet,  dont l'objectif est de permettre le tracé de patrons, en particulier de vêtements, à l'échelle 1:1 et leur sauvegarde au format pdf ou svg. Les patrons ainsi construits peuvent soit être directement imprimés pour utilisation soit être repris dans un logiciel de dessin comme Inkscape ou Illustrator.
+OpenPattern offre la possibilité de créer des patrons «from scratch», d'utiliser des librairies de patrons existants (patrons de bases notamment) et de les reprendre pour les adapter et les transformer.
 
-Les sources que j'ai utilisé pour tracer les patrons proviennent d'ouvrage de patronnages classiques. Ces ouvrages, destinés au couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat c'est-à-dire  la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini). J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux.
-En premier lieu j'ai utilisé quatre tomes la série Le modélisme de mode de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiapetta  \cite{Chiappetta1999}. Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant par pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc...
+Les patrons peuvent être construits sur-mesures à partir d'un ensemble de mesures effectuées sur les corps d'une personne particulière (j'ai créé OpenPattern pour dessiner des vêtements pour ma famille), ou construits à partir de mesures de prêt à porter classique.
 
-OpenPattern reprend ces techniques en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
+Les sources que j'ai utilisées pour tracer les patrons proviennent d'ouvrage de patronnages classiques. Ces ouvrages, destinés au couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat c'est-à-dire  la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini).
 
-\chapter{Structure}
+J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux.
+En premier lieu j'ai utilisé les quatre tomes de la série \textit{Le modélisme de mode} de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiapetta  \cite{Chiappetta1999} (mon préféré). Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc.
+
+la création d'un patron est donc une suite d'instruction comme «tracer un segment AB de longueur égale au 1/4 du tour de bassin» ou encore «ajouter une pince de 1.5 cm de 9cm de profondeur entre les points F1 et H» etc...
+OpenPattern reprend de façon quasi litérale ces techniques et leur principe de construction en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
+
+
+\section{How is it organized}
 
 OpenPattern est organisée autour de classes qui héritent les unes des autres. Cette structure présente l'avantage de coller aux techniques de coupe. En effet une chemise, une veste ou un gilet sont des adaptations d'un body, une robe dérive de l'assemblage d'une jupe et d'un body, enfin les jupes et les pantalons dérivent de formes génériques dites de bases (jupe de base, pantalon de base).
 
@@ -75,9 +82,6 @@ OpenPattern présente pour l'instant deux niveaux d'héritage.
 \item Les classes dérivées des classes de base: shirt, pyjamas qui héritent de Basic\_Bodice ou de Basic\_Trousers. \item Enfin les patrons font appels à une classe Point qui permet de définir un point de patronnage avec sa position et ses propriétés. Cette classe redéfinit les opérations d'addition et offre diverses manipulations  comme la rotation. L'intérêt ici est d'avoir un objet flexible qui permette de partir d'un patron de base et de l'altérer.
 \end{itemize}
 
-
-\chapter{Usage}
-
 Pour dessiner un patron il faut
 \begin{enumerate}
 \item créer une instance de la classe correspondante,
@@ -85,7 +89,55 @@ Pour dessiner un patron il faut
 \item dessiner et, au besoin, sauvegarder le patron.
 \end{enumerate}
 
-Le dessin du patron peut se faire soit à partir des classes dérivées existantes soit directement à partir des classes Pattern et Point.
+Le dessin du patron peut aussi  directement se faire à partir des classes Pattern et Point comme nous allons le voir dans le tuto suivant.
+
+\chapter{Tuto}
+
+
+\section{Dessine moi un carré}
+
+Le script suivant montre comment dessiner un carré.
+les opérations consistent en
+\begin{enumerate}
+  \item la création du patron par la création d'une instance de la classe pattern,
+  \item la création de quatre points,
+  \item l'ajout de ces points au patrons,
+  \item la définition de l'ordre dans lequel les tracés doivent être faits,
+  \item enfin la représentation graphique.
+\end{enumerate}
+
+\lstinputlisting[language=Python]{./sample/simple_scripts_0.py}
+
+la figure \ref{fig:carre} montre le résultat. Le patron du carré est constitué d'un carré grisé délimité par quatres segments dont les quatre sommets sont marqués par un point rouge avec son nom.  Le carroyage, qui donnent l'échelle et permet les raccords, fait 1 cm quand on imprime le patron en taille réelle. Le patron est enfin entouré d'une bande de 5cm de tous les côtés.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../patterns/simple_scripts_0__FullSize}
+\end{center}
+\caption{Mon beau carré}
+\label{fig:carre}
+\end{figure}
+
+
+\section{Dessine moi une pince}
+
+Imaginons que nous allons transformer notre carré un peu pour en faire un demi-trapèze et lui ajouter une pince (Attention ça va faire jupe !). Les étapes sont les mêmes l'ajout de la pince se faisant évidemment après la définition des points du segment impacté par cet ajout.
+
+\lstinputlisting[language=Python]{./sample/simple_scripts_1.py}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../patterns/simple_scripts_1__FullSize}
+\end{center}
+\caption{Mon beau trapèze}
+\label{fig:trapeze}
+\end{figure}
+
+Comme on le voit ici la création de la pince se fait en deux étapes. On définit la position du sommet de la pince puis on appelle la fonction \texttt{add\_dart} en lui passant quatre arguments (il y en a plus pour plus tard) le sommet, les deux points définissant le segment qui doit être pincé et la largeur de la pince. la fonction renvoie la position des deux points qui, avec le sommet, constitueront la pince sur le patron.  Il ne reste alors plus qu'à intercaler les points de pince lors de la définition du trajet du tracé. La figure \ref{fig:trapeze} montre le résultat. Comment ça elle ne vous plait pas ma jupe...
+
+\section{Les annotations}
+
+\section{Utiliser une classe dérivée}
 
 Le script suivant montre par exemple comment tracer et sauver un patron de Body de femme sans pinces en 36 selon la méthode de Gilewska.
 \begin{lstlisting}[language=python]
@@ -94,7 +146,7 @@ sys.path.append('./..')
 import matplotlib.pyplot as plt
 import OpenPattern as OP
 
-p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska') # Création de l'instance
+p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska') # Creation de l'instance
 p.draw_bodice({"Pattern":"Bodice without dart"}, save=True) # appel de la fonction de dessin
 plt.show() # si vous voulez voir la figure s'afficher
 \end{lstlisting}
@@ -107,6 +159,9 @@ plt.show() # si vous voulez voir la figure s'afficher
 \end{figure}
 
 On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf.
+
+
+
 
 Les différentes options sont passées dans les arguments des différentes méthodes de classe (draw\_bodice) ou lors des instanciations de classe (Basic\_Bodice dans cet exemple).
 
@@ -164,8 +219,7 @@ les figures~\ref{fig:bodice_DW36}, \ref{fig:bodice_MG36} et \ref{fig:CB14} montr
 
 
 
-\chapter{Commentaires}
-
+\chapter{Les classes}
 
 \section{Classe Pattern}
 La liste des méthodes de cette classe est donnée ci-dessous. Ces méthodes sont à ce jour de trois types.
@@ -246,7 +300,7 @@ class Pattern:
 
 \end{lstlisting}
 
-\section{Mesures}
+\subsection{Mesures}
 Les mesures sont enregistrées dans une base de données sqlite3. Elles peuvent être enregistrées dans des fichiers json dans le répertoire measurements.
 
 \begin{itemize}
@@ -261,9 +315,9 @@ Les mesures sont enregistrées dans une base de données sqlite3. Elles peuvent 
 \end{itemize}
 
 
-\chapter{Bodice}
+\section{Bodice}
 
-\section{Naming convention}
+\subsection{Naming convention}
 
 trying to get standard
 \begin{itemize}
@@ -292,12 +346,14 @@ trying to get standard
 
 Not done for Donnanno yet
 
-\section{Comments}
+\chapter{Commentaires}
 
-\subsection{Mesures}
+Une fois n'est pas coutume, marché aidant probablement, les femmes sont mieux traitées que les enfants qui sont mieux traités que les hommes.
+
+\section{Mesures}
 ça part dans tous les sens notamment pour les hommes... le plus gros écart sépare ceux qui mesurent la largeur des épaules et ceux qui mesurent la longueur des épaules. Quelques un mesurent les deux mais c'est plus rare. On notera que les mesures type varient d'un livre à l'autre. Pas toujours de mesure du tour de bras, du tour de jaret, du tour de cuisse.
 
-\subsection{Shoulder line}
+\section{Shoulder line}
 
 Pour les femmes de style G, la  onstruction des épaules repose sur des angles fixes. Pour les hommes de style G, cela dépend des distances par rapport à la ligne des épaules comme podonc ur le style D. Pourquoi ce changement? Cela pose un problème car, si l'on suit les instructions, l'épaule est plus longue que les mesures (si elles existent) et les épaules avant et arrière n'ont pas la même longueur. Dans le cas où la longueur d'épaule est donnée, la solution est alors d'ajuster la longueur d'épaule à la longueur mesurée à laquelle la ligne d'épaule a été établie (comme suggéré par Donnanno). J'ai donc ajouté un test pour l'existence d'une mesure de la vraie longueur des épaules Si tel est le cas, la longueur de l'épaule est ajustée pour s'adapter aux mesures. Notons en outre que les largeurs d'épaules correspondent chez G homme si on ne baisse pas l'épaule devant de 7cm mais de 5 (comme chez Donnanno).
 
@@ -306,7 +362,7 @@ Pour les adolescents (garçons) de style C, l'épaule repose sur deux angles dif
 
 
 
-\subsection{Armhole and collar}
+\section{Armhole and collar}
 
 à noter que, encore une fois, pour l'homme tout est un peu fait par dessus
 la jambe. Ok des chemises des pantalons et des costumes c'est pas
@@ -337,7 +393,7 @@ Bon mais comme d'hab Chiapetta ça à l'air un peu ringard sur les bords mais ç
 les bouquins adultes notamment pour l'homme...
 
 
-\subsection{Manches}
+\section{Manches}
 Gilewska: Aucune indication pour le bas de manche de base il faut donc
 se débrouiller seul avec le tour de poignet...
 
@@ -370,10 +426,10 @@ Styles availabel from Gilewska men : Simple and French
 \caption{Cuff styles}
 \end{figure}
 
-\chapter{Trousers}
+\section{Trousers}
 
 
-\section{Pants Block}
+\subsection{Pants Block}
 
 Incohérence du modèle chez Donnanno. La mesure de la ceinture est
 $$AV = Hip + 6.$$

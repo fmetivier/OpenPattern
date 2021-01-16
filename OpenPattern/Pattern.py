@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # librairies
 import sys
-sys.path.append('./..')
+PATH = '/home/metivier/Nextcloud/Personnel/couture/OpenPattern'
+sys.path.append(PATH)
+
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,7 +19,7 @@ from OpenPattern.Points import Point
 from copy import deepcopy
 
 """
-TODO:  02/01/21
+TODO:  15/01/21
 
 Measurements:
 - translate measurement names to english n
@@ -25,18 +27,17 @@ Measurements:
 
 Drawing:
 - Write drawing routines with lines and comments IN PROGRESS
-- olivier suggests adding a scale !
-
+- proposer la sauvegarde en svg
+- méthodes pour
+	ajouter le droit fil
+	ajouter le pli
+	ajouter des crans
+	ajouter une échelle (pour Olivier)
 
 Patterns:
 - add darts IN PROGRESS
-- Bodice D change names (not mandatory though)
+- add cut
 
-Modeling:
-- define the methods for alterations
-
-GUI:
-- Everything !!!
 
 I Use Google convention for doc strings
 """
@@ -71,6 +72,8 @@ class Pattern:
 			gender: gender of pattern to be drafted
 
 		"""
+
+
 		if pname:
 			self.m  =  self.get_measurements_sql(pname)
 			self.pname = pname
@@ -85,6 +88,7 @@ class Pattern:
 		self.Back_dic = {}
 		self.Front_vertices = []
 		self.Back_vertices = []
+
 
 
 
@@ -153,9 +157,18 @@ class Pattern:
 		this method can only be called by children classes but is common to them
 
 		"""
+		vl=[]
+		dl=[]
 
-		vl = [self.Front_vertices, self.Back_vertices]
-		dl = [self.Front_dic, self.Back_dic]
+		if len(self.Front_vertices) > 0:
+			vl.append(self.Front_vertices)
+		if len(self.Back_vertices) >0:
+			vl.append(self.Back_vertices)
+
+		if len(self.Front_dic) > 0:
+			dl.append(self.Front_dic)
+		if len(self.Back_dic) >0:
+			dl.append(self.Back_dic)
 
 		return dl, vl
 
@@ -193,7 +206,7 @@ class Pattern:
 			dic: a dictionnary of size measurments
 		"""
 
-		conn = sqlite3.connect('../OpenPattern/measurements.db')
+		conn = sqlite3.connect(PATH+'/OpenPattern/measurements.db')
 		c = conn.cursor()
 
 		dic = {}
@@ -232,7 +245,7 @@ class Pattern:
 			ofname: str output wkey for measurements.db database
 
 		"""
-		conn = sqlite3.connect('../OpenPattern/measurements.db')
+		conn = sqlite3.connect(PATH+'/OpenPattern/measurements.db')
 		c = conn.cursor()
 
 		if ofname:
@@ -684,6 +697,7 @@ class Pattern:
 		else:
 			ax.plot([A[0], B[0]], [A[1], B[1]],  **kwargs)
 
+
 	def draw_pattern(self, dic_list, vertices_list, polyline_list=[]):
 
 		"""
@@ -915,3 +929,113 @@ class Pattern:
 					ax.text(xmin+3, ymax-y, "%s: %s" % (key, val))
 					y+=1
 		return ax
+
+	def draw(self, dic = {"Pattern":"My beautiful pattern"}, save = False, fname = None, info = False, legends = True, paper = 'FullSize'):
+		""" Draw pattern with legends and save it if asked for
+
+		Args:
+			dic: dictionnary of informations to be printed
+			save: if true save to file
+			fname: filename
+			paper: paper size on which to save (for cuts)
+
+		Returns:
+			fig, ax
+		"""
+
+		dl, vl = self.generate_lists()
+
+		# 1 draw
+		fig, ax = self.draw_pattern(dl, vl)
+
+		# 2 print heading
+		if info:
+			ax = self.print_info(ax, dic)
+
+		# 3 print specific drawings
+		if legends:
+			ax = self.add_legends(ax)
+
+		if save:
+			if fname:
+				pass
+			else:
+				fname = 'myPattern'
+
+			if hasattr(self, 'style'):
+				of = PATH + '/patterns/'+ self.style + '_' + fname + '_' + self.pname +'_FullSize.pdf'
+			else:
+				of = PATH + '/patterns/' + fname + '_' + '_FullSize.pdf'
+			plt.savefig(of)
+
+			if paper != 'FullSize':
+				self.paper_cut(fig, ax, name = fname, paper = paper)
+
+		return fig, ax
+
+	def set_droit_fil(self, A = Point([0,0]), length = 10, angle = np.pi/2):
+		""" sets the droit-fil list porperty to be added to legends.
+		"""
+		self.droit_fil  = [A,length,angle]
+
+	def set_fold_line(self,A,B,pos):
+		""" sets the fold_line list porperty to be added to legends.
+			if fold line already exists appends the new one
+		"""
+
+		if hasattr(self, 'fold_line'):
+			self.fold_line.append([A,B,pos])
+		else:
+			self.fold_line = [[A,B, pos]]
+
+	def add_comment(self, A = Point([0,0]), comment = 'HELLO', angle = 0):
+		""" adds a comment to be plotted with legends
+		"""
+		if hasattr(self, 'comments'):
+			self.comments.append([A,comment,angle])
+		else:
+			self.comments=[[A,comment,angle]]
+
+
+	def add_legends(self, ax):
+		""" adds legends and comments  to the pattern
+		"""
+
+		if hasattr(self, 'droit_fil'):
+			A =self.droit_fil[0]
+			length = self.droit_fil[1]
+			angle = self.droit_fil[2]
+			B = A + [length*np.cos(angle), length*np.sin(angle)]
+			self.segment(A, B, ax)
+			C = self.middle(A, B)
+			ax.text(C.x+0.5, C.y+0.5, "GRAINLINE", rotation = angle*180/np.pi , ha ='center', va='center')
+
+		if hasattr(self, 'fold_line'):
+			for fl in self.fold_line:
+				if fl[2] == 'right':
+					dx = +0.5
+					dy = 0
+					a = -90
+				elif fl[2] == 'left':
+					dx = -0.5
+					dy = 0
+					a = 90
+				elif fl[2] == 'top':
+					dx=0
+					dy=-0.5
+				elif fl[2] == 'bottom':
+					dx=0
+					dy=+0.5
+
+				ax.arrow(fl[0].x-dx,fl[0].y -dy, dx, dy, color = 'blue', width = 0.05, length_includes_head = True)
+				ax.arrow(fl[1].x-dx,fl[1].y -dy, dx,dy,color='blue', width = 0.05, length_includes_head = True)
+				self.segment(fl[0] - [dx,dy], fl[1]-[dx,dy], ax)
+				C =self.middle(fl[0] - [2*dx,2*dy], fl[1] - [2*dx,2*dy])
+				ax.text(C.x,C.y,"FOLD LINE",rotation = a, ha ='center', va='center')
+
+		if hasattr(self, 'comments'):
+			for comment in self.comments:
+				p = comment[0]
+				t = comment[1]
+				a = comment[2]
+				ax.text(p.x, p.y, t, rotation = a*180/np.pi, ha = 'center', va = 'center')

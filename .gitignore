@@ -95,6 +95,7 @@ ENV/
 *.blg
 *.pygtex
 *.pygstyle
+*.out
 
 #json
 *.json

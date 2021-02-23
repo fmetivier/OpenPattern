@@ -96,7 +96,7 @@ Le dessin du patron peut aussi  directement se faire à partir des classes Patte
 
 \section{Dessine moi un carré}
 
-Le script suivant montre comment dessiner un carré.
+Le script suivant montre comment dessiner un carré (de tissus :=)).
 les opérations consistent en
 \begin{enumerate}
   \item la création du patron par la création d'une instance de la classe pattern,
@@ -108,7 +108,7 @@ les opérations consistent en
 
 \lstinputlisting[language=Python]{./sample/simple_scripts_0.py}
 
-la figure \ref{fig:carre} montre le résultat. Le patron du carré est constitué d'un carré grisé délimité par quatres segments dont les quatre sommets sont marqués par un point rouge avec son nom.  Le carroyage, qui donnent l'échelle et permet les raccords, fait 1 cm quand on imprime le patron en taille réelle. Le patron est enfin entouré d'une bande de 5cm de tous les côtés.
+la figure \ref{fig:carre} montre le résultat. Le patron du carré est constitué d'un carré grisé délimité par quatres segments dont les quatre sommets sont marqués par un point rouge avec son nom.  Le carroyage, qui donnent l'échelle et permet les raccords, fait 1 cm quand on imprime le patron en taille réelle. Le patron est enfin entouré d'une bande de 5cm de tous les côtés. Vous noterez qu'une échelle apparaît dans cette bande. Elle est automatiquement ajoutée avec l'option \texttt{save = True} c'est à dire quand votre patron finit mérite impression. Cela vous permettra de vérifier rapidement que votre patron est bien à l'échelle\footnote{Normalement les carrés font 1cm de côté mais une requête d'un ami m'a fait ajouter cette échelle (pour être certain que tout va bien dirons nous).}.
 
 \begin{figure}
 \begin{center}
@@ -133,9 +133,62 @@ Imaginons que nous allons transformer notre carré un peu pour en faire un demi-
 \label{fig:trapeze}
 \end{figure}
 
-Comme on le voit ici la création de la pince se fait en deux étapes. On définit la position du sommet de la pince puis on appelle la fonction \texttt{add\_dart} en lui passant quatre arguments (il y en a plus pour plus tard) le sommet, les deux points définissant le segment qui doit être pincé et la largeur de la pince. la fonction renvoie la position des deux points qui, avec le sommet, constitueront la pince sur le patron.  Il ne reste alors plus qu'à intercaler les points de pince lors de la définition du trajet du tracé. La figure \ref{fig:trapeze} montre le résultat. Comment ça elle ne vous plait pas ma jupe...
+Comme on le voit ici la création de la pince se fait en deux étapes. On définit la position du sommet de la pince puis on appelle la fonction \texttt{add\_dart} en lui passant quatre arguments (il y en a plus que nous verrons plus tard) le sommet, les deux points définissant le segment qui doit être pincé et la largeur de la pince. la fonction renvoie la position des deux points qui, avec le sommet, constitueront la pince sur le patron.  Il ne reste alors plus qu'à intercaler les points de pince lors de la définition du trajet du tracé. La figure \ref{fig:trapeze} montre le résultat. Comment ça elle ne vous plait pas ma jupe...
+
+\section{Les légendes, marques et commentaires}
+
+Un patron vient souvent accompagné de commentaires et de signes particulier comme l'indication du droit fil, les pliures et les crans de montages. Il est possible de les insérer sur votre patron à l'aide des commandes correspondantes comme le montre le script suivant et la figure qui l'accompagne (les commandes sont insérées dans le script précédent avant la commande \texttt{draw}).
+
+\begin{lstlisting}[language=Python]
+# add legends
+myPattern.set_grainline(OP.Point([8,10]), 8, -np.pi/2)
+myPattern.set_fold_line(C-[0,2], B+[0,2],'right')
+myPattern.add_comment(OP.Point([12.5,15.5]),'TOP',0)
+myPattern.add_comment(OP.Point([10,-0.5,]),'BOTTOM',0)
+
+
+a = 70
+myPattern.add_comment(OP.Point([2.8,8,]),'VV',a*np.pi/180) # workaround for notches
+\end{lstlisting}
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../patterns/simple_scripts_2__FullSize}
+\end{center}
+\caption{Mon beau trapèze et ses annotations}
+\label{fig:trapeze}
+\end{figure}
+
+On notera au passage qu'à l'heure actuelle un cran de montage se place comme un commentaire constitué de V en série.
+
+\section{Les courbes et le pistolet}
 
 \section{Les annotations}
+
+\section{Utiliser des mensurations}
+
+\section{créer des patrons multiples}
+Il est fréquent de créer un patron à partir de plusieurs bases différentes, buste et pantalon pour les salopettes par, buste et jupe pour certaines robes, ou encore buste, manche, col et manchette pour une chemise\footnote{On verra cependant dans ce dernier cas que la manche est intrinsèquement liée au buste. Elle vient «après» le dessin du buste}.
+
+la classe \texttt{pattern} peut contenir d'autres \texttt{pattern} qui sont enregistrées dans la liste de patrons \texttt{pattern\_list}. Nous allons reprendre notre patron de jupe et le copier trois fois en utilisant des propriétés de translation et de rotation et de copie de la classe \texttt{pattern}.
+
+\lstinputlisting[language=Python]{./sample/simple_scripts_3.py}
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../patterns/simple_scripts_3__FullSize}
+\end{center}
+\caption{Patron composite: mon beau trapèze et ses trois avatars}
+\label{fig:trapeze}
+\end{figure}
+
+La partie qui nous intéresse ici débute à la ligne 47. Il s'agit de copier le patron de départ dans P2, P3 et P4 puis de le translater ou lui faire faire une rotation par rapport à un de ses points. Enfin le patron est ajouter à la liste de sous-patrons de myPattern. Pour le dessin on commence par dessiner les sous patrons sur une même figure puis on dessine le patron principal et on ajoute les légendes. Enfin lors du dessin de sous-patrons vous pouvez activer l'overlay qui les dessine avec un remplissage plus léger dans le but de pouvoir dessiner les altérations par dessus ultérieurement dans la teinte de gris classique.
+
+
+
+
 
 \section{Utiliser une classe dérivée}
 
@@ -159,8 +212,6 @@ plt.show() # si vous voulez voir la figure s'afficher
 \end{figure}
 
 On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf.
-
-
 
 
 Les différentes options sont passées dans les arguments des différentes méthodes de classe (draw\_bodice) ou lors des instanciations de classe (Basic\_Bodice dans cet exemple).
@@ -229,76 +280,6 @@ La liste des méthodes de cette classe est donnée ci-dessous. Ces méthodes son
 \item Les méthodes de calculs couramment effectués en patronnage, mesurer une distance, un angle, chercher le point milieu d'un segment ou encore tracer une courbe. Ici le choix est fait d'utiliser des b-spline pour approximer le sacro-saint pistolet (on reviendra sur ce choix guidé au départ par la simplicité).
 \item Les méthodes de dessin avec matplotlib.
 \end{enumerate}
-
-
-\begin{lstlisting}[language=python]
-class Pattern:
-
-	def __init__(self, pname="sophie", gender='w'):
-
-  ############################################################
-  #				add points or curves to dics
-  #				and get them back
-  ############################################################
-
-  def add_point(self, name = 'A', p = Point([0,0]), dic = 'front'):
-
-  def add_curve(self, name = 'front_curve', coords = [0,0], dic = 'front'):
-
-  def get(self, pname='A', dic='front'):
-
-  def generate_lists(self):
-
-  ############################################################
-	# get and store measurements
-	############################################################
-
-	def get_measurements_json(self, pname="sophie"):
-
-  def get_measurements_sql(self, pname="sophie"):
-
-  def save_measurements_json(self, ofname=None):
-
-  def save_measurements_sql(self, ofname=None):
-
-  ############################################################
-	#				Calculations
-	############################################################
-
-
-	def intersec_lines(self, A, B, C, D):
-
-	def intersec_manches(self, A, B, C, theta):
-
-	def segment_angle(self, A, B):
-
-  def oriented_segment_angle(self, A, B):
-
-	def middle(self, A, B):
-
-	def distance(self, A, B):
-
-  def segment_offset(self, A, B, alpha, d):
-
-  def curve_offset(self, ilist, alpha, d, closed=False):
-
-	def pistolet(self, points, kval, ax=None, kwargs = {'color':'blue','linestyle':'solid'}, tot=False):
-
-  def add_dart(self,center = Point(),A = Point() , B = Point(), opening = 0, draw_curves = False, order = 'lr', rotate_end = 'none'):
-
-  ############################################################
-	#				Drawings
-	############################################################
-
-	def draw_pattern(self, dic_list, vertices_list):
-
-	def paper_cut(self, fig, ax, name='patternA4', paper='A4'):
-
-	def print_info(self, ax, model=None):
-
-	def segment(self, A, B, ax, kwargs={'color':'blue'}):
-
-\end{lstlisting}
 
 \subsection{Mesures}
 Les mesures sont enregistrées dans une base de données sqlite3. Elles peuvent être enregistrées dans des fichiers json dans le répertoire measurements.

@@ -29,8 +29,6 @@ Drawing:
 - Write drawing routines with lines and comments IN PROGRESS
 - proposer la sauvegarde en svg
 - méthodes pour
-	ajouter le droit fil
-	ajouter le pli
 	ajouter des crans
 	ajouter une échelle (pour Olivier)
 
@@ -38,8 +36,6 @@ Patterns:
 - add darts IN PROGRESS
 - add cut
 
-
-I Use Google convention for doc strings
 """
 
 
@@ -53,26 +49,26 @@ class Pattern:
 	Notes:
 	- Pattern methods originally  used arrays or lists of values for points as arguments for calculations.
 	- Since the development of the Point class I've progressively turned them to use it. I no longer use arrays for new methods.
+	- Patterns can contain patterns (subpatterns) stored in a dictionnary of patterns
 
-	Attributes:
-		m: dictionnary of size measurements
-		pname:  name of size measurements
-		gender: gender
+	:param	m: dictionnary of size measurements
+	:param	pname:  name of size measurements
+	:param	gender: gender
 
 	"""
 
 	############################################################
 
-	def __init__(self, pname="sophie", gender='w'):
+	def __init__(self, pname="sophie", gender='w', pattern_name = 'P0'):
 		"""
 		Initializes class instance
 
-		Args:
-			pname : measurement file if given
-			gender: gender of pattern to be drafted
+		:param	pname : measurement file if given
+		:param	gender: gender of pattern to be drafted
 
 		"""
 
+		self.pattern_name = pattern_name
 
 		if pname:
 			self.m  =  self.get_measurements_sql(pname)
@@ -83,11 +79,13 @@ class Pattern:
 
 		self.gender=gender
 
-		# initialize dics and vertices
+		# initialize dics and vertices for the pattern
 		self.Front_dic = {}
 		self.Back_dic = {}
 		self.Front_vertices = []
 		self.Back_vertices = []
+		self.pattern_list = [] # List of subpatterns
+
 
 
 
@@ -95,16 +93,24 @@ class Pattern:
 	############################################################
 	#				add points or curves to dics
 	#				and get them back
+	#   			copy pattern and add sub_patterns
 	############################################################
+
+	def copy(self):
+		"""Deepcopy pattern to a newly named one
+		"""
+		return deepcopy( self )
+
+	def add_pattern(self,P):
+		self.pattern_list.append(P)
 
 	def add_point(self, name = 'A', p = Point([0,0]), dic = 'front'):
 		"""
 		adds a point to the corresponding dic
 
-		Args:
-			name: point name
-			p: point
-			dic: 'front' for front dic, 'back' for back dic
+		:param	name: point name
+		:param	p: point
+		:param	dic: 'front' for front dic, 'back' for back dic
 		"""
 
 		if dic == 'front':
@@ -119,10 +125,10 @@ class Pattern:
 		"""
 		adds a curve to the corresponding dic
 
-		Args:
-			name: str,  curve name
-			coords: list of floats, x and y coordinates
-			dic: 'front' or 'back' dics to store the point
+
+		:param	name: str,  curve name
+		:param	coords: list of floats, x and y coordinates
+		:param	dic: 'front' or 'back' dics to store the point
 		"""
 		if dic == 'front':
 			self.Front_dic[name] = coords
@@ -135,13 +141,13 @@ class Pattern:
 		"""
 		returns the point/curve pname from the corresponding dic
 
-		Args:
-			pname: str point/curve name
-			dic: 'front' or back' dictionnary from which to extrac the point
 
-		returns:
-			type Point : the chosen point
-			or type list: list of coordinates of a curve
+		:param	pname: str point/curve name
+		:param	dic: 'front' or back' dictionnary from which to extrac the point
+
+
+		:returns: the chosen point or the list of coordinates of a curve
+		:rtype: Point or list
 		"""
 		if dic == 'front':
 			return self.Front_dic[pname]
@@ -182,11 +188,11 @@ class Pattern:
 
 		Measurements loaded are dictionnaries stored as json files in the measurements folder
 		23/12/2020: This is the original version now i use sqlite
-		Args:
-			pname: name of json file as str
 
-		Returns:
-			dic: a dictionnary of size measurments
+		:param	pname: name of json file as str
+
+	 	:returns: a dictionnary of size measurments
+		:rtype: dic
 		"""
 
 		with open("../measurements/" + pname + "_data.json", "r") as read_file:
@@ -199,11 +205,10 @@ class Pattern:
 
 		Measurements loaded are dictionnaries stored as json files in the measurements folder
 
-		Args:
-			pname: name of pattern measurement code string
+		:param	pname: name of pattern measurement code string
 
-		Returns:
-			dic: a dictionnary of size measurments
+		:returns:  a dictionnary of size measurments
+		:rtype: dic
 		"""
 
 		conn = sqlite3.connect(PATH+'/OpenPattern/measurements.db')
@@ -223,8 +228,8 @@ class Pattern:
 		Save new measurements in ofname_data.json file in the mesures folder
 		If no output format is given stores the data under the attribute self.pname
 		20/12/2020 changed to sql
-		Args:
-			ofname: output json filename as str
+
+		:param	str ofname: output json filename
 
 		"""
 		if ofname:
@@ -241,8 +246,7 @@ class Pattern:
 		If no output format is given stores the data under the attribute self.pname
 		! beware of the final path.
 
-		Args:
-			ofname: str output wkey for measurements.db database
+		:param	str ofname: output wkey for measurements.db database
 
 		"""
 		conn = sqlite3.connect(PATH+'/OpenPattern/measurements.db')
@@ -269,15 +273,14 @@ class Pattern:
 	############################################################
 
 	def distance(self, A, B):
-		"""
-		returns distance [AB]
+		"""Returns distance [AB]
 
-		Args:
-			A,B: points given as Points or array([x,y])
+		:param	A: point given as Point or array([x,y])
+		:param	B: point given as Point or array([x,y])
 
 
-		Returns:
-			distance as a float
+		:returns: distance
+		:rtype: float
 		"""
 
 		if isinstance(A, Point) and isinstance(B, Point):
@@ -288,13 +291,16 @@ class Pattern:
 	############################################################
 
 	def intersec_lines(self, A,B,C,D):
-		"""
-		finds the instersection between , lines AB and CD
-		Args:
-			A,B,C, D: points given as Points or  array([x,y])
+		"""Finds the instersection between , lines AB and CD
 
-		Returns:
-			Point([x,y]) or	(x,y) tuple of coordinates
+		:param	A: Point or  array([x,y])
+		:param	B: Point or  array([x,y])
+		:param	C: Point or  array([x,y])
+		:param	D: Point or  array([x,y])
+
+
+		:returns: x,y coordinates
+		:rtype:	Point or tuple
 		"""
 		if isinstance(A, Point) and isinstance(B, Point) and isinstance(C, Point):
 			# coefficient de AB
@@ -332,12 +338,12 @@ class Pattern:
 		Especially useful for sleeve heads.
 		Does not work if AB is vertical !!!
 
-		Args:
-			A,B,C: points given as Points or  array([x,y])
-			theta: angle in degrees
+		:param	A: Point or  array([x,y])
+		:param	B: Point or  array([x,y])
+		:param	C: Point or  array([x,y])
+		:param	theta: angle in degrees
 
-		Returns:
-			Point([x,y]) or	(x,y) tuple of coordinates
+		:returns: Point([x,y]) or	(x,y) tuple of coordinates
 		"""
 
 		if isinstance(A, Point) and isinstance(B, Point) and isinstance(C, Point):
@@ -373,16 +379,13 @@ class Pattern:
 	############################################################
 
 	def middle(self, A, B):
+		""" returns the middle point of [AB]
+
+		:param	A: Point or array([x,y])
+		:param	B: Point or array([x,y])
+
+		:returns: x,y as an array
 		"""
-		returns the middle point of [AB]
-
-		Args:
-			A,B: points given as array([x,y])
-
-
-		Returns:
-			x,y as an array
-				"""
 		if isinstance(A, Point) and isinstance(B, Point):
 			return Point([0.5*(A.x+B.x), 0.5*(A.y+B.y)])
 		else:
@@ -393,12 +396,11 @@ class Pattern:
 	def segment_angle(self, A, B):
 		"""Returns slope of segment [AB]
 
-		Args:
-			A,B: points given as array([x,y])
+		:param	A: Point or array([x,y])
+		:param	B: Point or array([x,y])
 
-
-		Returns:
-			angle in radians
+		:returns:	angle in radians
+		:rtype: float
 		"""
 
 		if isinstance(A, Point) and isinstance(B, Point):
@@ -417,12 +419,14 @@ class Pattern:
 	def oriented_segment_angle(self, A, B):
 		"""Returns slope of segment [AB]
 
-		Args:
-			A,B: points given as array([x,y])
+		In this case the slope is positionned in the good quadrant depending
+		on the relative positions of A and B
 
+		:param	A: Point or array([x,y])
+		:param	B: Point or array([x,y])
 
-		Returns:
-			angle in radians
+		:returns:	angle in radians
+		:rtype: float
 		"""
 
 		if isinstance(A, Point) and isinstance(B, Point):
@@ -454,13 +458,12 @@ class Pattern:
 	def segment_offset(self, A, B, alpha, d):
 		"""translates segment AB by a vector of length d making an angle alpha  with AB
 
-		Args:
-			A,B: Points
-			alpha : real angle in radians
-			d: offset distance in m
+		:param A,B: Points
+		:param alpha : real angle in radians
+		:param d: offset distance in m
 
-		Returns:
-			Ap, Bp the offset points
+		:returns: Ap, Bp the offset points
+		:rtype: Point
 		"""
 
 		if isinstance(A, Point) and isinstance(B, Point):
@@ -480,13 +483,14 @@ class Pattern:
 	def curve_offset(self, ilist, alpha, d, closed=False):
 		"""translates a curve by a vector of length d making an angle alpha  with the local tangent
 
-		Args:
-			plist: list of [x,y] points positions
-			alpha : real angle in radians
-			d: offset distance in m
 
-		Returns:
-			olist : list of [x,y] offset points positions
+		:param	plist: list of [x,y] points positions
+		:param	alpha : real angle in radians
+		:param	d: offset distance in m
+
+
+		:returns:	olist list of [x,y] offset points positions
+		:rtype: list of [x, y] coordinates
 		"""
 		plist = deepcopy(ilist)
 		olist = []
@@ -541,16 +545,15 @@ class Pattern:
 		if ax given draws the result on ax and returns length of Armhole
 		if tot returns a list of 30 points to draw the spline curve.
 
-		Args:
-			points: array of tuples or list of points
-			kval: int
-			ax: matplotlib axis
-			kwargs: dictionnary of drawing properties
-			tot: boolean deciding whether the entire curve is returned
 
-		Returns:
-			Total distance if tot = False
-			Total distance and list of interpolated points if tot = True
+		:param	points: array of tuples or list of points
+		:param	kval: int
+		:param	ax: matplotlib axis
+		:param	kwargs: dictionnary of drawing properties
+		:param	tot: boolean deciding whether the entire curve is returned
+
+		:returns:	Total distance if tot = False
+		:returns:	Total distance and list of interpolated points if tot = True
 		"""
 		if isinstance(points[0], Point): # test on the first point of the list
 			xlist, ylist = [], []
@@ -587,13 +590,14 @@ class Pattern:
 		if rotate = none: rotation of the curves or segment decreases linearly to reach 0 at the end points.
 		if rotate =  left or right or both: also rotates the end points. The angle of rotation remains constant in this case NOT IMPLEMENTED YET
 
-		Args:
-		    center: Point position of the dart edge and center of rotation
-		    A, B: Points segment to cut
-		    opening: float width of the dart
 
-		returns:
-		    dart1, dart2 : points of the dart.
+		:param    center: Point position of the dart edge and center of rotation
+		:param    A, B: Points segment to cut
+		:param    opening: float width of the dart
+
+
+		:returns:    dart1, dart2 points of the dart.
+		:rtype: Points
 		"""
 
 		# angle of the segment to cut
@@ -677,19 +681,63 @@ class Pattern:
 
 		    return I1, I2
 
+	def translate(self,dx,dy):
+		"""translation of the entire pattern by dx, dy
+
+		:param dx, dy: floats
+		"""
+
+		dl, vl = self.generate_lists()
+
+		for dic in dl:
+			for key,val in dic.items():
+				val += [dx,dy]
+
+		for j in range(len(vl)):
+			for i in range(len(vl[j])):
+				vl[j][i][0] += dx
+				vl[j][i][1] += dy
+
+	def rotate(self,C = Point([0,0]), theta=0):
+		""" Rotation of the entire patter of angle theta around center class.
+
+		In the case of points uses the rotate method for points if not does the rotation "manually".
+		BEWARE not to pass dic points directly as the center because this might induce spurious rotations.
+
+		:param C: Point, center of rotation
+		:param theta: float angle of rotation in radians
+		"""
+
+		dl, vl = self.generate_lists()
+
+		for dic in dl:
+			for key,val in dic.items():
+				val.rotate(C,theta,'rad')
+
+		for j in range(len(vl)):
+			for i in range(len(vl[j])):
+				x, y = vl[j][i]
+
+				p = np.array([[np.cos(theta), -np.sin(theta)],[np.sin(theta), np.cos(theta)]])
+				xo = p[0,0]*(x-C.x) + p[0,1]*(y-C.y) + C.x
+				yo = p[1,0]*(x-C.x) + p[1,1]*(y-C.y) + C.y
+
+				vl[j][i][0] = xo
+				vl[j][i][1] = yo
+
+
 	############################################################
 	#				Drawings
 	############################################################
-
 
 	def segment(self, A, B, ax, kwargs={'color':'blue'}):
 		"""
 		plots [AB] segment on ax
 
-		Args:
-			A,B: points given as array([x,y])
-			ax: axis on which to plot
-			kwargs: dictionnary of drawing porperties
+
+		:param	A,B: points given as array([x,y])
+		:param	ax: axis on which to plot
+		:param	kwargs: dictionnary of drawing porperties
 		"""
 
 		if isinstance(A, Point) and isinstance(B, Point):
@@ -698,7 +746,7 @@ class Pattern:
 			ax.plot([A[0], B[0]], [A[1], B[1]],  **kwargs)
 
 
-	def draw_pattern(self, dic_list, vertices_list, polyline_list=[]):
+	def draw_pattern(self, dic_list = [], vertices_list = [], polyline_list=[], fig = None, ax = None, overlay = False):
 
 		"""
 		for each dic in dic_list
@@ -709,18 +757,20 @@ class Pattern:
 			The figure is a 1:1 scaled pattern ready to print on a
 			full size AO printer.
 
-		Args:
-			dic_list: list of dictionnaries of points to be plotted as points
-				with label
-			vertices_list: list of vertices_list to be plotted as lines
 
-		Returns:
-			fig, ax
+		:param	dic_list: list of dictionnaries of points to be plotted as points
+				with label
+		:param	vertices_list: list of vertices_list to be plotted as lines
+
+
+		:returns:	fig, ax
 		"""
 
 		####################################################
 		#       Figure size calculation and axes creation
 		####################################################
+
+		# checks if ax argument exists
 
 		xmin=0
 		ymin=0
@@ -775,9 +825,13 @@ class Pattern:
 		H=ymax-ymin+2*offset
 		W=xmax-xmin+2*offset
 
-		fig = plt.figure(figsize = (W/2.54, H/2.54))
-		ax = plt.axes([0, 0, 1, 1])
-		ax.axis('square')
+		if not fig or not ax:
+			fig = plt.figure(figsize = (W/2.54, H/2.54))
+			ax = plt.axes([0, 0, 1, 1])
+			ax.axis('square')
+			preexist = False
+		else:
+			preexist= True
 
 		####################################################
 		#       plot pattern
@@ -786,16 +840,28 @@ class Pattern:
 		for dic in dic_list:
 			for key, val in dic.items():
 				if isinstance(val, Point):
-					ax.plot(val.x, val.y, 'ro')
-					ax.text(val.x + 0.2, val.y, key, ha = 'left')
+					if overlay:
+						ax.plot(val.x, val.y, 'o', color = 'silver')
+						ax.text(val.x + 0.2, val.y, key, ha = 'left')
+					else:
+						ax.plot(val.x, val.y, 'ro')
+						ax.text(val.x + 0.2, val.y, key, ha = 'left')
 				else:
-					ax.plot(val[0], val[1], 'ro')
-					ax.text(val[0] + 0.2, val[1], key, ha = 'left')
+					if overlay:
+						ax.plot(val[0], val[1], 'o', color='silver')
+						ax.text(val[0] + 0.2, val[1], key, ha = 'left')
+					else:
+						ax.plot(val[0], val[1], 'ro')
+						ax.text(val[0] + 0.2, val[1], key, ha = 'left')
 
 
 		for vertices in vertices_list:
-			poly  =  Polygon(vertices,  facecolor = '0.9',  edgecolor = '0.5')
-			ax.add_patch(poly)
+			if overlay:
+				poly  =  Polygon(vertices,  facecolor = '0.96',  edgecolor = 'silver')
+				ax.add_patch(poly)
+			else:
+				poly  =  Polygon(vertices,  facecolor = '0.9',  edgecolor = '0.5')
+				ax.add_patch(poly)
 
 		for polyline in polyline_list:
 			path = Path(polyline, codes = None, closed=False)
@@ -806,9 +872,17 @@ class Pattern:
 		#       Figure parameters before output
 		####################################################
 
+		if preexist:
+			ymin = min(ymin, ax.get_ylim()[0]+offset)
+			ymax = max(ymax, ax.get_ylim()[1]-offset)
+			xmin = min(xmin, ax.get_xlim()[0]+offset)
+			xmax = max(xmax, ax.get_xlim()[1]-offset)
 
-		ax.set_xticks(np.arange(xmin-offset, xmax+offset))
-		ax.set_yticks(np.arange(ymin-offset, ymax+offset))
+		ax.set_xlim(xmin-offset, xmax+offset)
+		ax.set_ylim(ymin-offset, ymax+offset)
+
+		ax.set_xticks(np.arange(np.floor(xmin-offset), np.ceil(xmax+offset)))
+		ax.set_yticks(np.arange(np.floor(ymin-offset), np.ceil(ymax+offset)))
 		ax.grid('on')
 
 		plt.tick_params(
@@ -825,9 +899,8 @@ class Pattern:
 		right = False,          # ticks along the top edge are off
 		labelleft = False)
 
-		#~ fig.set_size_inches(60/2.54, 60/2.54)
-		ax.set_xlim(xmin-offset, xmax+offset)
-		ax.set_ylim(ymin-offset, ymax+offset)
+		fig.set_size_inches((xmax-xmin+2*offset)/2.54, (ymax-ymin+2*offset)/2.54)
+
 
 		return fig, ax
 
@@ -836,15 +909,9 @@ class Pattern:
 		Cuts a pattern according to different paper sizes
 		No overlap but the grid should suffice
 
+		:param	name: the output filename
+		:param	paper: the paper format for the cut
 
-		Args:
-			fig: the figure on wich to plot
-			ax: the axis on which to plot
-			name: the output filename
-			paper: the paper format for the cut
-
-		Returns:
-			fig, ax
 		"""
 
 		paper_dic = {'A4': (19, 27.7), 'A3': (27, 40), 'Legal' : (19.6, 33.6), 'Letter' : (19.6, 25.9), 'Tabloid': (25.9, 41.2), 'Ledger': (25.9, 41.2)}
@@ -902,6 +969,7 @@ class Pattern:
 			pdf.savefig()
 
 		fig.set_size_inches((xmax-xmin)/2.54, (ymax-ymin)/2.54)
+
 		return fig, ax
 
 	def print_info(self, ax, model=None):
@@ -909,14 +977,16 @@ class Pattern:
 		"""
 		print generic info on each graph.
 
-		Args:
-			ax: ax on which to print info
-			model: a dictionnary of informations to be printed
 
-		Returns:
-			ax
+		:param	ax: ax on which to print info
+		:param	model: a dictionnary of informations to be printed
+
+		:returns:	ax
 
 		"""
+		if hasattr(self, 'fig'):
+			ax = self.ax
+
 		xmin, xmax = ax.get_xlim()
 		ymin, ymax = ax.get_ylim()
 
@@ -928,35 +998,40 @@ class Pattern:
 			for key, val in model.items():
 					ax.text(xmin+3, ymax-y, "%s: %s" % (key, val))
 					y+=1
+
 		return ax
 
-	def draw(self, dic = {"Pattern":"My beautiful pattern"}, save = False, fname = None, info = False, legends = True, paper = 'FullSize'):
+	def draw(self, dic = {"Pattern":"My beautiful pattern"}, save = False, fname = None, info = False, legends = True, paper = 'FullSize', ifig = None, iax = None, scale_val = 5, overlay = False):
 		""" Draw pattern with legends and save it if asked for
 
-		Args:
-			dic: dictionnary of informations to be printed
-			save: if true save to file
-			fname: filename
-			paper: paper size on which to save (for cuts)
 
-		Returns:
-			fig, ax
+		:param	dic: dictionnary of informations to be printed
+		:param	save: if true save to file
+		:param	fname: filename
+		:param	paper: paper size on which to save (for cuts)
+
+		:returns:	fig, ax
 		"""
 
 		dl, vl = self.generate_lists()
 
-		# 1 draw
-		fig, ax = self.draw_pattern(dl, vl)
+		if ifig and iax:
+			print('given fig and axes')
+			fig, ax = self.draw_pattern(dl, vl, [], ifig, iax, overlay)
+		else:
+			print('Nothing exists')
+			fig, ax = self.draw_pattern(dl, vl, [], None, None, overlay)
 
 		# 2 print heading
 		if info:
-			ax = self.print_info(ax, dic)
+			self.print_info(ax, dic)
 
 		# 3 print specific drawings
 		if legends:
-			ax = self.add_legends(ax)
+			self.add_legends(ax)
 
 		if save:
+			self.add_scales(ax, scale_val)
 			if fname:
 				pass
 			else:
@@ -973,14 +1048,43 @@ class Pattern:
 
 		return fig, ax
 
-	def set_droit_fil(self, A = Point([0,0]), length = 10, angle = np.pi/2):
+	def draw_subpatterns(self, fig, ax, legends = False, info = False, overlay = False):
+		"""Draws each sub_pattern on a figure
+		enables for different levels of patterning and composite Patterns
+
+		:param ifig: figure to draw on if given
+		:param iax: axes to draw on if given
+		"""
+		if fig and ax:
+			# print("figure given")
+			for p in self.pattern_list:
+				p.draw(legends = legends, info = info, ifig = fig, iax = ax, overlay = overlay)
+		else:
+			# print("no figure given")
+			for p in self.pattern_list:
+				p.draw(legends = legends, info = info, overlay = overlay)
+
+		if fig and ax:
+			return fig, ax
+
+	def set_grainline(self, A = Point([0,0]), length = 10, angle = np.pi/2):
 		""" sets the droit-fil list porperty to be added to legends.
 		"""
-		self.droit_fil  = [A,length,angle]
+		self.grainline  = [A,length,angle]
 
 	def set_fold_line(self,A,B,pos):
 		""" sets the fold_line list porperty to be added to legends.
 			if fold line already exists appends the new one
+			for exemples (A,B,'right') gives
+
+				A-->
+				|
+				|
+				B-->
+
+
+		:param A, B: fold line segment AB
+		:param pos: string parameter that defines how the arrows are to be set with regard to AB
 		"""
 
 		if hasattr(self, 'fold_line'):
@@ -990,6 +1094,11 @@ class Pattern:
 
 	def add_comment(self, A = Point([0,0]), comment = 'HELLO', angle = 0):
 		""" adds a comment to be plotted with legends
+
+		:param A: Point where to place the comment
+		:param comment: the str comment
+		:param angle: the angle of rotation of the comment in radians
+
 		"""
 		if hasattr(self, 'comments'):
 			self.comments.append([A,comment,angle])
@@ -999,12 +1108,14 @@ class Pattern:
 
 	def add_legends(self, ax):
 		""" adds legends and comments  to the pattern
+
+		:param: ax: the ax on which to place the comments
 		"""
 
-		if hasattr(self, 'droit_fil'):
-			A =self.droit_fil[0]
-			length = self.droit_fil[1]
-			angle = self.droit_fil[2]
+		if hasattr(self, 'grainline'):
+			A =self.grainline[0]
+			length = self.grainline[1]
+			angle = self.grainline[2]
 			B = A + [length*np.cos(angle), length*np.sin(angle)]
 			self.segment(A, B, ax)
 			C = self.middle(A, B)
@@ -1039,3 +1150,14 @@ class Pattern:
 				t = comment[1]
 				a = comment[2]
 				ax.text(p.x, p.y, t, rotation = a*180/np.pi, ha = 'center', va = 'center')
+
+	def add_scales(self, ax, val = 5):
+
+		# print(type(ax))
+		ymin = ax.get_ylim()[0]
+		ymax = ax.get_ylim()[1]
+		xmin = ax.get_xlim()[0]
+		xmax = ax.get_xlim()[1]
+
+		ax.plot([xmin + 1, xmin + 1 + val],[ymin+1,ymin+1],'b-',lw=5, solid_capstyle="butt")
+		ax.text(xmin + 1 + val/2, ymin + 1.5, str(val)+' cm', ha = 'center', fontsize=16)

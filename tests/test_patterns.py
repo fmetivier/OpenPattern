@@ -33,12 +33,12 @@ def pattern_sample():
     p.Front_vertices = [A.pos(), B.pos(), C.pos(), I2.pos(), E.pos(),I1.pos(), D.pos(), A.pos()]
     rotated = p.curve_offset(p.Front_vertices,np.pi/2,1,True)
     p.draw_pattern([p.Front_dic],[p.Front_vertices,rotated])
-    
-pattern_sample()
+
+# pattern_sample()
 
 #
-# p = OP.Basic_Skirt()
-# p.draw_skirt()
+p = OP.Basic_Skirt()
+p.draw_skirt()
 
 # Women
 # p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')

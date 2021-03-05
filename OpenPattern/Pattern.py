@@ -19,18 +19,15 @@ from OpenPattern.Points import Point
 from copy import deepcopy
 
 """
-TODO:  15/01/21
+TODO:  24/02/21
 
 Measurements:
 - translate measurement names to english n
 - measurement input procedure
 
-Drawing:
 - Write drawing routines with lines and comments IN PROGRESS
+Drawing:
 - proposer la sauvegarde en svg
-- méthodes pour
-	ajouter des crans
-	ajouter une échelle (pour Olivier)
 
 Patterns:
 - add darts IN PROGRESS
@@ -59,7 +56,7 @@ class Pattern:
 
 	############################################################
 
-	def __init__(self, pname="sophie", gender='w', pattern_name = 'P0'):
+	def __init__(self, pname="W38G", gender='w', pattern_name = 'P0'):
 		"""
 		Initializes class instance
 
@@ -114,7 +111,7 @@ class Pattern:
 		"""
 
 		if dic == 'front':
-			print('coucou')
+			# print('coucou')
 			self.Front_dic[name] = p
 		elif dic == 'back':
 			self.Back_dic[name] = p
@@ -162,14 +159,30 @@ class Pattern:
 		generates a list of point vertices and a list of point dictionnaries for drawing
 		this method can only be called by children classes but is common to them
 
+		cheks if the front and back vertices are lists of points or if they are lists of lists of points
+		in the former case adds the front and back vertices to a list of vertices_list
+		in the latter adds the lists of vertices inside the front and back vertices list to the vertices list
+		to be plotted. This trick enables to «cut» a pattern in as many pieces (polygons) as you want
+
+		The problem does not apply for the dictionnary as there is no need to cut them.
+		They are only here to plot points
+
 		"""
 		vl=[]
 		dl=[]
 
 		if len(self.Front_vertices) > 0:
-			vl.append(self.Front_vertices)
+			if isinstance(self.Front_vertices[0][0],list):
+				for fv in self.Front_vertices:
+					vl.append(fv)
+			else:
+				vl.append(self.Front_vertices)
 		if len(self.Back_vertices) >0:
-			vl.append(self.Back_vertices)
+			if isinstance(self.Back_vertices[0][0],list):
+				for bv in self.Back_vertices:
+					vl.append(bv)
+			else:
+				vl.append(self.Back_vertices)
 
 		if len(self.Front_dic) > 0:
 			dl.append(self.Front_dic)
@@ -538,7 +551,7 @@ class Pattern:
 
 	############################################################
 
-	def pistolet(self, points, kval, ax=None, kwargs = {'color':'blue','linestyle':'solid'}, tot=False):
+	def pistolet(self, points, kval = 2, ax=None, kwargs = {'color':'blue','linestyle':'solid'}, tot=False):
 		"""French curve calculation
 
 		calculates a spline of order kval from set of given points.
@@ -1105,6 +1118,21 @@ class Pattern:
 		else:
 			self.comments=[[A,comment,angle]]
 
+	def add_labelled_line(self,A,B,lab = 'HIP LINE',pos='t'):
+		""" adds a labelled line to be plotted with legends
+		typical exemples are HIP LINE, WAIST LINE
+
+		:param A, B: Points between which to draw the line
+		:param lab: the str label
+		:param pos: char(1)  t,b,l,r for position of the comment
+
+		"""
+		if hasattr(self, 'labelled_line'):
+			self.labelled_line.append([A,B,lab,pos])
+		else:
+			self.labelled_line=[[A,B,lab,pos]]
+
+
 
 	def add_legends(self, ax):
 		""" adds legends and comments  to the pattern
@@ -1150,6 +1178,21 @@ class Pattern:
 				t = comment[1]
 				a = comment[2]
 				ax.text(p.x, p.y, t, rotation = a*180/np.pi, ha = 'center', va = 'center')
+
+		if hasattr(self, 'labelled_line'):
+			for ll in self.labelled_line:
+				x = np.array([ll[0].x, ll[1].x])
+				y = np.array([ll[0].y, ll[1].y])
+				ax.plot(x,y,'b--')
+				if ll[3] == 't':
+					ax.text(np.mean(x),np.mean(y)+0.5,ll[2])
+				elif ll[3] == 'b':
+					ax.text(np.mean(x),np.mean(y)-0.5,ll[2])
+				elif ll[3] == 'l':
+					ax.text(np.mean(x)-0.5,np.mean(y),ll[2], rotation = 90)
+				elif ll[3] == 'r':
+					ax.text(np.mean(x)+0.5,np.mean(y),ll[2], rotation = 90)
+
 
 	def add_scales(self, ax, val = 5):
 

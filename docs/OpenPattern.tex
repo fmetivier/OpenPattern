@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{report}
+\documentclass[10pt,a4paper,twoside]{report}
 \usepackage[utf8x]{inputenc}
 \usepackage[french]{babel}
 \usepackage[T1]{fontenc}
@@ -39,6 +39,7 @@ breakatwhitespace=false,
     numbers=left,
     showspaces=false,
     showstringspaces=true,
+    xleftmargin=20pt,
     }
 \lstset{style=mystyle}
 
@@ -46,11 +47,30 @@ breakatwhitespace=false,
 % \end{lstlisting}
 
 \begin{document}
-\title{OpenPattern}
-\author{F. Métivier}
-\date{\today}
-\maketitle
 
+
+\begin{titlepage}
+\vspace*{5cm}
+\begin{flushright}
+{\Huge\sf OpenPattern}
+\vspace*{1cm}
+
+\begin{center}
+\includegraphics[height=7cm]{/home/metivier/Nextcloud/Personnel/couture/Sewing/Daniel_bw.jpg}
+\includegraphics[height=7cm]{/home/metivier/Nextcloud/Personnel/couture/Sewing/Sophie_bw.jpg}
+\includegraphics[height=7cm]{/home/metivier/Nextcloud/Personnel/couture/Sewing/Greg_bw.jpg}
+\end{center}
+
+\vspace*{1cm}
+{\Large\sf F. Métivier}\\
+\vspace*{1cm}
+{\sf\today}
+\end{flushright}
+
+
+\end{titlepage}
+% \maketitle
+\pagestyle{headings}
 \tableofcontents
 
 
@@ -60,12 +80,12 @@ breakatwhitespace=false,
 OpenPattern  est une librairie python, orientée objet,  dont l'objectif est de permettre le tracé de patrons, en particulier de vêtements, à l'échelle 1:1 et leur sauvegarde au format pdf ou svg. Les patrons ainsi construits peuvent soit être directement imprimés pour utilisation soit être repris dans un logiciel de dessin comme Inkscape ou Illustrator.
 OpenPattern offre la possibilité de créer des patrons «from scratch», d'utiliser des librairies de patrons existants (patrons de bases notamment) et de les reprendre pour les adapter et les transformer.
 
-Les patrons peuvent être construits sur-mesures à partir d'un ensemble de mesures effectuées sur les corps d'une personne particulière (j'ai créé OpenPattern pour dessiner des vêtements pour ma famille), ou construits à partir de mesures de prêt à porter classique.
+Les patrons peuvent être construits sur-mesures à partir d'un ensemble de mesures effectuées sur le corps d'une personne particulière (j'ai créé OpenPattern pour dessiner des vêtements pour ma famille), ou construits à partir de mesures de prêt à porter classique.
 
 Les sources que j'ai utilisées pour tracer les patrons proviennent d'ouvrage de patronnages classiques. Ces ouvrages, destinés au couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat c'est-à-dire  la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini).
 
 J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux.
-En premier lieu j'ai utilisé les quatre tomes de la série \textit{Le modélisme de mode} de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiapetta  \cite{Chiappetta1999} (mon préféré). Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc.
+En premier lieu j'ai utilisé les quatre tomes de la série \textit{Le modélisme de mode} de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiappetta  \cite{Chiappetta1999} (mon préféré). Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc.
 
 la création d'un patron est donc une suite d'instruction comme «tracer un segment AB de longueur égale au 1/4 du tour de bassin» ou encore «ajouter une pince de 1.5 cm de 9cm de profondeur entre les points F1 et H» etc...
 OpenPattern reprend de façon quasi litérale ces techniques et leur principe de construction en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
@@ -91,7 +111,7 @@ Pour dessiner un patron il faut
 
 Le dessin du patron peut aussi  directement se faire à partir des classes Pattern et Point comme nous allons le voir dans le tuto suivant.
 
-\chapter{Tuto}
+\chapter{Tutoriel}
 
 
 \section{Dessine moi un carré}
@@ -108,7 +128,7 @@ les opérations consistent en
 
 \lstinputlisting[language=Python]{./sample/simple_scripts_0.py}
 
-la figure \ref{fig:carre} montre le résultat. Le patron du carré est constitué d'un carré grisé délimité par quatres segments dont les quatre sommets sont marqués par un point rouge avec son nom.  Le carroyage, qui donnent l'échelle et permet les raccords, fait 1 cm quand on imprime le patron en taille réelle. Le patron est enfin entouré d'une bande de 5cm de tous les côtés. Vous noterez qu'une échelle apparaît dans cette bande. Elle est automatiquement ajoutée avec l'option \texttt{save = True} c'est à dire quand votre patron finit mérite impression. Cela vous permettra de vérifier rapidement que votre patron est bien à l'échelle\footnote{Normalement les carrés font 1cm de côté mais une requête d'un ami m'a fait ajouter cette échelle (pour être certain que tout va bien dirons nous).}.
+la figure \ref{fig:carre} montre le résultat. Le patron du carré est constitué d'un carré grisé délimité par quatres segments dont les quatre sommets sont marqués par un point rouge avec son nom.  Le carroyage, qui donnent l'échelle et permet les raccords, fait 1 cm quand on imprime le patron en taille réelle. Le patron est enfin entouré d'une bande de 5cm de tous les côtés. Vous noterez qu'une échelle apparaît dans cette bande. Elle est automatiquement ajoutée avec l'option \texttt{save = True} c'est à dire quand votre patron finit mérite impression. Cela vous permettra de vérifier rapidement que votre patron est bien à l'échelle\footnote{Normalement les carrés font 1cm de côté mais une requête d'un ami m'a fait ajouter cette échelle (pour être certain que tout va bien dirons nous).}. Vous l'aurez donc compris l'unité de base d'OpenPattern est le centimètre (ah bon pourquoi ?).
 
 \begin{figure}
 \begin{center}
@@ -119,7 +139,7 @@ la figure \ref{fig:carre} montre le résultat. Le patron du carré est constitu�
 \end{figure}
 
 
-\section{Dessine moi une pince}
+\section{Dessines moi une pince}
 
 Imaginons que nous allons transformer notre carré un peu pour en faire un demi-trapèze et lui ajouter une pince (Attention ça va faire jupe !). Les étapes sont les mêmes l'ajout de la pince se faisant évidemment après la définition des points du segment impacté par cet ajout.
 
@@ -133,9 +153,9 @@ Imaginons que nous allons transformer notre carré un peu pour en faire un demi-
 \label{fig:trapeze}
 \end{figure}
 
-Comme on le voit ici la création de la pince se fait en deux étapes. On définit la position du sommet de la pince puis on appelle la fonction \texttt{add\_dart} en lui passant quatre arguments (il y en a plus que nous verrons plus tard) le sommet, les deux points définissant le segment qui doit être pincé et la largeur de la pince. la fonction renvoie la position des deux points qui, avec le sommet, constitueront la pince sur le patron.  Il ne reste alors plus qu'à intercaler les points de pince lors de la définition du trajet du tracé. La figure \ref{fig:trapeze} montre le résultat. Comment ça elle ne vous plait pas ma jupe...
+Comme on le voit ici la création de la pince se fait en deux étapes. On définit la position du sommet de la pince (ligne 21) puis on appelle la fonction \texttt{add\_dart} en lui passant quatre arguments (ligne 22; il y en a plus que nous verrons plus tard) le sommet, les deux points définissant le segment qui doit être pincé et la largeur de la pince. la fonction renvoie la position des deux points qui, avec le sommet, constitueront la pince sur le patron.  Il ne reste alors plus qu'à intercaler les points de pince lors de la définition du trajet du tracé. La figure \ref{fig:trapeze} montre le résultat. Comment ça elle ne vous plait pas ma jupe ?
 
-\section{Les légendes, marques et commentaires}
+\section{Les annotations: légendes, marques et commentaires}
 
 Un patron vient souvent accompagné de commentaires et de signes particulier comme l'indication du droit fil, les pliures et les crans de montages. Il est possible de les insérer sur votre patron à l'aide des commandes correspondantes comme le montre le script suivant et la figure qui l'accompagne (les commandes sont insérées dans le script précédent avant la commande \texttt{draw}).
 
@@ -163,12 +183,27 @@ myPattern.add_comment(OP.Point([2.8,8,]),'VV',a*np.pi/180) # workaround for notc
 On notera au passage qu'à l'heure actuelle un cran de montage se place comme un commentaire constitué de V en série.
 
 \section{Les courbes et le pistolet}
+Bien arrondissons les angles. Une jupe ce n'est pas juste un tour de taille mais aussi un tour de hanches et un arrondi sur le côté qui permet un passage doux de la taille à la hanche justement. Nous verrons à la section suivante l'utilisation des mensurations mais pour l'heure ajoutons une hanche «au hasard» et jouons sur la courbe latérale afin de comprendre de quoi il retourne.
 
-\section{Les annotations}
+\lstinputlisting[language=Python]{./sample/simple_scripts_2-2.py}
 
-\section{Utiliser des mensurations}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../patterns/simple_scripts_2-2__FullSize}
+\end{center}
+\caption{Ma belle jupe}
+\label{fig:trapeze}
+\end{figure}
 
-\section{créer des patrons multiples}
+Les lignes nouvelles sont les 25,29,39 et 42. La 25 donne la déclaration du point de hanche H (hip en anglais). La 39 déclare ce point en l'ajoutant au dictionnaire de points. Ces deux instructions ont déjà été vues. La nouveauté est dans la ligne 39. On appelle la méthode \texttt{pistolet} de l'objet \texttt{pattern}. Cette méthode va tracer une courbe passant par les trois points D,H,A. l'ordre est important car la courbe est en fait approximée par une succession de 30 points qui sont renvoyés par le programme sous la forme d'une liste ici curve\_points. Le premier argument retourné correspond à la distance cumulée le long de la courbe et est surtout utile pour les calculs de manches. nos points iront donc de D à A en passant par H. cet ordre correspond à l'ordre dans lequel est défini le polygone du pourtour de la jupe. Ce dernier est définit en ligne 42 où l'on voit la façon dont on introduit la courbe
+dans la liste des points qui forment le pourtour de la jupe.
+
+Notons qu'il faut au moins trois points pour tracer une courbe et l'ordre de la courbe est au maximum egal au nombre de points moins 1. Ici l'ordre sera de 3-1 = 2 au maximum. Ces courbes ne sont pas de simples polynomes mais des b-splines qui permettent de remplacer de façon très satisfaisante les clotoïdes ou courbes d'Euler ou encore «French curves» des pistolets traditionnels. De façon générale les splines d'ordre 2 suffisent pour tracer les pinces de côté des jupes ou les courbes de tailles, les splines d'ordre 3 sont nécessaires pour les têtes de manches qui présentent des points d'inflexions et certaines courbes de pantalon. Les splines d'ordre supérieur sont à peu de choses près inutiles en coupe à plat.
+
+
+
+
+\section{Utiliser des sous-patrons}
 Il est fréquent de créer un patron à partir de plusieurs bases différentes, buste et pantalon pour les salopettes par, buste et jupe pour certaines robes, ou encore buste, manche, col et manchette pour une chemise\footnote{On verra cependant dans ce dernier cas que la manche est intrinsèquement liée au buste. Elle vient «après» le dessin du buste}.
 
 la classe \texttt{pattern} peut contenir d'autres \texttt{pattern} qui sont enregistrées dans la liste de patrons \texttt{pattern\_list}. Nous allons reprendre notre patron de jupe et le copier trois fois en utilisant des propriétés de translation et de rotation et de copie de la classe \texttt{pattern}.
@@ -187,10 +222,36 @@ la classe \texttt{pattern} peut contenir d'autres \texttt{pattern} qui sont enre
 La partie qui nous intéresse ici débute à la ligne 47. Il s'agit de copier le patron de départ dans P2, P3 et P4 puis de le translater ou lui faire faire une rotation par rapport à un de ses points. Enfin le patron est ajouter à la liste de sous-patrons de myPattern. Pour le dessin on commence par dessiner les sous patrons sur une même figure puis on dessine le patron principal et on ajoute les légendes. Enfin lors du dessin de sous-patrons vous pouvez activer l'overlay qui les dessine avec un remplissage plus léger dans le but de pouvoir dessiner les altérations par dessus ultérieurement dans la teinte de gris classique.
 
 
+\section{Utiliser des mensurations}
 
+Bespoke my dear ! l'intérêt de la classe \texttt{pattern} c'est qu'elle peut faire appel à des mensurations c'est à dire un ensemble de mesures corporelles. Il en existe deux types. Les mesures standards correspondent à des moyennes statistiques sur une population d'une certaine taille ou d'un certain âge et d'un sexe donné. Elles varient avec le temps et suivant les auteurs car les populations à l'origine de ces jeux de données varient elles aussi. Les mesures individuelles (ou sur-mesure ou encore bespoke) correspondent aux mesures prises sur une personne précise. Elles ne correspondent qu'à elle et n'ont aucune utilité pour les autres mais elles correspondent au mieux à cette personne.
+En utilisant des mensurations standards ou sur-mesure on peut ainsi adapter les patrons pour un publique divers ou ciblé.
+
+Les mesures sont enregistrées dans une base sqlite3 à laquelle accède la classe \texttt{pattern}. Lors de la créatin de l'objet patron on peut appeler une des mesures enregistrées dans la base. Par défaut la classe est instanciée en chargeant les mensurations féminine de 38 données par Gilewska \cite{Gilewska1}. Ces mensurations sont chargées dans un dictionnaire nommé \texttt{m}.
+
+Maintenant que vous savez tout faire le plus simple consiste à faire une vrai jupe. Nous allons donc tracer le patron d'une demi-jupe avant d'une fille de 8 ans selon la méthode de Jacqueline Chiappetta \cite{Chiappetta1999}.
+
+\lstinputlisting[language=Python]{./sample/simple_scripts_4.py}
+
+
+\begin{figure}[tb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../patterns/simple_scripts_4__FullSize}
+\end{center}
+\caption{Jupe droite, 8 ans, avec pinces, méthode de Jacqueline Chiappetta}
+\label{fig:trapeze}
+\end{figure}
+
+Quelques commentaires s'imposent. De façon générale et même si de nombreuses variations existent les patrons de vêtements sont présentés avec une partie frontale et une partie dorsale. Notre jupe aura donc une patron pour le devant (front) et le dos (back). Ceci explique la présence de deux dicionnaires et de deux listes de points pour le polygone de chacun des élements du patron (lignes 55 à 72).
+
+Notez la façon dont on appel les mesures \texttt{mfs.m["hauteur\_taille\_genou"]} par exemple qui renvoie la hauteur taille-genou correspondant à la taille appelée lors de la création du patron \texttt{mfs}. La liste des mesures disponibles en fonction des tailles et des sources est discutée plus en détail au \S\ref{par:tailles}
+
+Un vêtement est dessiné avec une aisance (ease) qui doit être donnée en début de dessin. Ici on prend une aisance de 8cm pour l'ensemble du patron (17). La profondeur de pince dépend souvent aussi de la taille et de l'âge du modèle. Pour 8 ans chez Chiappetta \cite{Chiappetta1999} on a une pince de 7.25 cm (16). Les lignes de 19 à 35 permettent de tracer les points principaux du tracé de la jupe. Les lignes 39 et 41 permettent de créer deux points qui n'apparaîtront pas mais sont important. il s'agit de points de contrôle pour le tracé de la courbe du côté. En effet la courbe va de la ligne de taille à la ligne de hanche. Chiappetta ne  prend pas la peine de dire comment faire car avec un pistolet c'est évident (essayez pour voir et vous comprendrez). Par contre pour un spline et de façon générale en informatique il faut tout expliquer au programme qui ne fait que ce qu'on lui dit de faire (ce n'est pas un réseau de neurones !). Il faut donc définir le point milieu de la ligne de hanche (39) puis un point situé 1 cm au dessus qui permettra un tombé vertical de la courbe au point de hanches (41). Ces deux points ajoutés au point de taille H ou G suffisent à tracer une courbe pour le demi-devant et le demi-dos (43-46). La suite ne pose aucun problème maintenant: ajout des pinces, enregistrement des points et des positions qui définissent chaque polygone de demi-jupe, ajout des commentaires  et enfin dessin ! Ce patron peut-être imprimé en taille réelle et directement utilisé pour une jupe droite d'une fille de 8 ans. Manque juste la ceinture  que vous pourriez réaliser très facilement maintenant (on y viendra plus tard rassurez-vous) !
 
 
 \section{Utiliser une classe dérivée}
+
+Les classes dérivées permettent d'éviter de faire le premier travail, le plus difficile parfois, qui consiste à tracer une base de patron. Base de buste, base de pantalon, base de manche, base de jupes, autant de patrons à partir desquels il est possible de créer ce que l'on veut. Les classes dérivées permettent de s'affranchir de ce travail. le codage a déjà été fait pour vous. Il alors soit possible d'utiliser directement la base (pour une jupe droite ou un pantalon basique par exemple) ou de les «altérer»
 
 Le script suivant montre par exemple comment tracer et sauver un patron de Body de femme sans pinces en 36 selon la méthode de Gilewska.
 \begin{lstlisting}[language=python]
@@ -199,140 +260,187 @@ sys.path.append('./..')
 import matplotlib.pyplot as plt
 import OpenPattern as OP
 
-p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska') # Creation de l'instance
-p.draw_bodice({"Pattern":"Bodice without dart"}, save=True) # appel de la fonction de dessin
-plt.show() # si vous voulez voir la figure s'afficher
+# Creation de l'instance
+p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
+# appel de la fonction de dessin
+p.draw_bodice({"Pattern":"Bodice without dart"}, save=True)
+plt.show()
 \end{lstlisting}
+
+C'est plus simple non ? On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf. Les différentes options sont passées dans les arguments des différentes méthodes de classe (\texttt{draw\_bodice}) ou lors des instanciations de classe (\texttt{Basic\_Bodice} dans cet exemple).
+
+
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_36.pdf}
-\caption{Gilweska style Women bodice with no dart. (size 36)}
+\caption{Buste de base de femme, taille 36, sans pinces, d'après Gilweska.}
 \label{fig:bodice_WG36}
 \end{figure}
 
-On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf.
 
 
-Les différentes options sont passées dans les arguments des différentes méthodes de classe (draw\_bodice) ou lors des instanciations de classe (Basic\_Bodice dans cet exemple).
 
 \begin{lstlisting}[language=python]
-Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12, ease=8, hip=True):
-	"""
-	Initilizes parent class &  attributes
-	launches the calculation of bodice and sleeve
-	saves measurements performed like armscye depth in the json measurements file for further processing in other classes
+Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
+  ease=8, hip=True):
 
-	Args:
-		pname: size measurements
-		gender: ..
-		style: style to be used for drafting at present Gilewska, Donnanno and Chiapetta (for kids)
-		age: used if for a child and style = Chiappetta.
-		ease: ease in cm; used in Donnanno patterns
-		hip: True/False use to decide for men whether to draw a fullbodice
-	"""
+draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False,\
+  fname = None, paper='FullSize'):
 
-draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False, fname = None, paper='FullSize'):
-	""" Draws Basic Bodice with legends and save it if asked for
-
-	Args:
-		dic: dictionnary of informations to be printed
-		save: if true save to file
-		fname: filename
-		paper: paper size on which to save (for cuts)
-	"""
 \end{lstlisting}
 
-les figures~\ref{fig:bodice_DW36}, \ref{fig:bodice_MG36} et \ref{fig:CB14} montrent quelques exemples de body obtenus pour différents styles
+Les figures~\ref{fig:bodice_DW36}, \ref{fig:bodice_MG36} et \ref{fig:CB14} montrent quelques exemples de body obtenus pour différents styles.
 
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.7\linewidth]{../patterns/Donnanno_Bodice_withour_dart_36.pdf}
-\caption{Donnanno style Women bodice with no dart. (size 36)}
+\caption{Buste de base de femme, taille 36, sans pinces, d'après Donnanno.}
 \label{fig:bodice_DW36}
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_M36.pdf}
-\caption{Gilweska style Men bodice with no dart. (size 36)}
+\caption{Buste de base d'homme, taille 36, sans pinces, d'après Gilewska}
 \label{fig:bodice_MG36}
 \end{figure}
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.7\linewidth]{../patterns/Chiappetta_bodice_G14.pdf}
-\caption{Chiappetta style Boy (14 years old) bodice with no dart.}
+\caption{Buste de base de garçon, 14 ans, sans pince, d'après Chiappetta.}
 \label{fig:CB14}
 \end{figure}
 
+La liste des classes dérivées actuellement disponibles est la suivante:
+\begin{lstlisting}[language=python]
+Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
+  ease=8, hip=True)
+Basic_Trousers(pname="M44D", gender='m', style='Donnanno',darts= True)
+Basic_Skirt(pname="W6C", style='Chiappetta', gender = 'G', ease=8)
+\end{lstlisting}
+
+à ces trois classes s'ajoutent des classes accessoires pour les manchettes et les colles
+et en cours (et que je ne mets pas) des classes pour les gilets et pour les chemises et pour les robes...
+
+\begin{lstlisting}[language=python]
+
+Cuffs(pname = "sophie", gender = 'w', style = 'Donnanno', age = 12, cuff_style = 'Simple',\
+  overlap = 2, width = 5, ease = 3 )
+Placket(pname = "sophie", gender = 'w', placket_style = 'Simple', slit_length = 10)
+Collars(pname="sophie", gender='w', style='Gilewska', collar_style = 'Officer',\
+  overlap=0, collar_height=3)
+
+\end{lstlisting}
+\chapter{Pour aller plus loin}
+
+\section{Les tailles}
+\label{par:tailles}
+Le tableau \ref{tab:meas_sum} recense l'état des mesures que contient la base sql d'OpenPattern, sans compter les quelques mesures personnelles que j'ai prises sur mes proches.
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{llcccl} \hline
+Source & Genre & Taille min. & Taille max. & Mesures & Code\\ \hline
+Gilewska & Femmes & 34 & 48 & 25 &  W34G\\
+Gilewska & Hommes & 36 & 54 & 24 & M36G\\
+Donnanno & Femmes & 40 & 50 & 21 & W40D\\
+Donnanno & Hommes & 44 & 54 & 19 & M44D\\
+Wargnier & Hommes & 38 & 48 & 25 & M38W\\
+Chiappetta & Filles & 2 ans & 16 ans &23& W3C\\
+Chiappetta & Garçons & 6 ans & 16 ans &20& G6C\\ \hline
+\end{tabular}
+\end{center}
+\label{tab:meas_sum}
+\caption{Tailles disponibles dans la base measurements. Le code donné en exemple correspond au code d'appel de la taille minimum.}
+\end{table}
+
+Notons que la distinction garçon, homme n'est pas anodine. En effet si les effets de la puberté sur les filles sont connus et aboutissent notamment à l'usage  des pinces de buste et de taille, les patrons de bases sans pinces ne changent pratiquement pas. Chez les hommes la puberté produit une inversion de la forme du buste. Le tour de poitrine d'un garçon est en effet plus petit que  son tour de bassin à l'instar d'une femme. De ce point de vue, important pour le dessin d'un patron, le garçon et la fille sont de morphologies proches et plus proche de la femme que de l'homme. La puberté inverse la situation chez l'homme dont le tour de poitrine devient plus grand que son tour de bassin. Ce changement influence de façon nette le traçage du patron masculin et ce qu'on y projette dans tous les sens du terme même si de façon étonnante ceci n'est jamais discuté.
+
+J'ai recensé 51 mesures différentes chez mes sources. La répartition de ces différentes mesures en fonction des sources (tableau~\ref{tab:meas_det}) donne la mesure (:=)) des ennuis à venir. Chacun utilise un jeu de mesures communes mais brode en ajoutant ou pas des mesures différentes. Cela posera problème par exemple pour le tracé des épaules de l'homme qui présente des incohérence suivant les auteurs ou autrices. De façon générale l'homme est moins bien traité que la femme dans ces ouvrages (à l'exception des garçons de Chiappetta), probablement à cause du marché restreint qu'il représente et du moindre intérêt de son vestiraire (chemise, veste, pantalon pour faire simple). De fait ça part dans tous les sens chez les hommes... le plus gros écart sépare ceux qui mesurent la largeur des épaules et ceux qui mesurent la longueur des épaules. Quelques un mesurent les deux mais c'est plus rare. On notera que les mesures type varient d'un livre à l'autre. Pas toujours de mesure du tour de bras, du tour de jaret, du tour de cuisse.
+
+Enfin pour ne rien gâcher les correspondances de tailles varient d'un pays à l'autre donc un 38 de Gilewska n'est pas un 38 de Donnanno... Officiellement il faut rajouter 4 aux tailles italiennes pour retrouver, approximativement, la taille française. Un 36 de Gilewska correspond donc à un 40 de Donnanno. Sauf que dans les fait quand on compare les valeurs on est plutôt sur une différence de 2 (un 38 Gilewska correspondant à un 40 Donnanno).
+
+\begin{table}
+\begin{center}
+\begin{tabular}{lccccccc} \hline
+Mesures & \multicolumn{2}{c}{Gilewska} & \multicolumn{2}{c}{Donnanno} & Wargnier & \multicolumn{2}{c}{Chiappetta}\\
+& F & H & F & H & H & F & G\\  \hline
+carrure devant&&&X&&&&\\ \hline
+carrure\_devant&X&X&&&X&X&\\ \hline
+carrure\_dos&X&X&X&&X&X&X\\ \hline
+cheville\_terre&&&&&&X&X\\ \hline
+crane&&&&&&X&X\\ \hline
+ecart\_poitrine&X&&X&&&&\\ \hline
+encolure\_dos&&&X&&&&\\ \hline
+enfourchure&&&&&X&&\\ \hline
+entrejambe&&X&&&X&&\\ \hline
+entrejambe\_terre&&&&&&&X\\ \hline
+fourche&X&&&&&&\\ \hline
+genou\_terre&&&&&&&X\\ \hline
+hauteur\_bassin&X&X&X&X&X&X&\\ \hline
+hauteur\_carrure&X&&&&&&\\ \hline
+hauteur\_corps&&&&&X&&\\ \hline
+hauteur\_coude&X&X&&X&&X&X\\ \hline
+hauteur\_emmanchure&X&&&&&&\\ \hline
+hauteur\_petites\_hanches&X&&&&&&\\ \hline
+hauteur\_poitrine&X&&&&&&\\ \hline
+hauteur\_taille\_genou&X&&X&X&X&X&\\ \hline
+hauteur\_taille\_terre&&&X&&X&&\\ \hline
+hauteur\_tete&&&&&X&&\\ \hline
+largeur\_encolure&X&&&&&&\\ \hline
+largeur\_epaule&&X&&X&&&\\ \hline
+largeur\_secteur&&&&X&&&\\ \hline
+longueur\_col\_devant&X&&&&&&\\ \hline
+longueur\_col\_dos&X&&&&&&\\ \hline
+longueur\_devant&X&X&X&X&X&X&\\ \hline
+longueur\_devant\_7c&&&&&X&&\\ \hline
+longueur\_dos&X&X&X&X&X&X&X\\ \hline
+longueur\_emmanchure\_devant&X&&&X&&&\\ \hline
+longueur\_emmanchure\_dos&X&&&X&&&\\ \hline
+longueur\_epaule&X&X&X&X&X&X&X\\ \hline
+longueur\_manche&X&X&X&X&X&X&X\\ \hline
+longueur\_taille\_terre&X&X&&X&&X&\\ \hline
+montant&X&X&X&X&X&X&X\\ \hline
+profondeur\_emmanchure&X&&&X&&&\\ \hline
+profondeur\_encolure\_devant&X&&&&&&\\ \hline
+profondeur\_encolure\_dos&X&&&&&&\\ \hline
+profondeur\_poitrine&&&X&&&&\\ \hline
+stature&&&X&X&&&\\ \hline
+tour\_bassin&X&X&X&X&X&X&X\\ \hline
+tour\_bras&X&X&X&&&X&X\\ \hline
+tour\_cheville&X&&&&&X&X\\ \hline
+tour\_cou&&&X&&&&\\ \hline
+tour\_cuisse&X&X&&&X&&\\ \hline
+tour\_encolure&X&X&&X&X&X&X\\ \hline
+tour\_genou&X&&&&&X&X\\ \hline
+tour\_jarret&&&&&X&&\\ \hline
+tour\_mollet&&&&&X&X&X\\ \hline
+tour\_petites\_hanches&X&&&&&&\\ \hline
+tour\_poignet&X&X&X&&X&X&X\\ \hline
+tour\_poitrine&X&X&X&X&X&X&X\\ \hline
+tour\_poitrine\_haute&&&X&&&&\\ \hline
+tour\_taille&X&X&X&X&X&X&X\\ \hline
+tour\_tete&&&&&X&&\\ \hline
+\end{tabular}
+\end{center}
+\label{tab:meas_det}
+\caption{Répartition des mesures par source}
+\end{table}
 
 
 
-\chapter{Les classes}
-
-\section{Classe Pattern}
-La liste des méthodes de cette classe est donnée ci-dessous. Ces méthodes sont à ce jour de trois types.
-
-\begin{enumerate}
-\item Les méthodes liées aux mesures qui permettent de charger ou d'enregistrer les modifications des mesures. Le choix pour l'instant est fait d'enregistrer les mesures dans des fichiers json.
-\item Les méthodes de calculs couramment effectués en patronnage, mesurer une distance, un angle, chercher le point milieu d'un segment ou encore tracer une courbe. Ici le choix est fait d'utiliser des b-spline pour approximer le sacro-saint pistolet (on reviendra sur ce choix guidé au départ par la simplicité).
-\item Les méthodes de dessin avec matplotlib.
-\end{enumerate}
-
-\subsection{Mesures}
-Les mesures sont enregistrées dans une base de données sqlite3. Elles peuvent être enregistrées dans des fichiers json dans le répertoire measurements.
-
-\begin{itemize}
-
-\item Différences H/F
-\subitem tour de poitrine vs tour de bassin: > chez les hommes, < chez les femmes
-\subitem hauteur taille dos, taille devant: > chez les hommes, < chez les femmes
-
-\item Intéressant de noter qu'en fait l'enfant garçon passe de l'un à l'autre à la puberté (cf Chiapetta)
-
-\item Est-ce que ces différences sont à l'origine des différences de dessin ? probablement mais rien n'est expliqué (ou j'ai mal lu).
-\end{itemize}
 
 
-\section{Bodice}
-
-\subsection{Naming convention}
-
-trying to get standard
-\begin{itemize}
-\item		first letter Caps [then minor]
-\begin{itemize}
-\item		W: waist
-\item		Sl: sleeve
-\item		B: bust
-\item		H: height
-\item		C: collar
-\item		Sh: shoulder
-\item		DSl: depth of sleeve
-\item		Cp: Control Point
-\item		Hi: Hip
-\end{itemize}
-
-\item		Last Letter
-\begin{itemize}
-\item		B: Back
-\item		F: Front
-\end{itemize}
-
-\item		No numbering when on the fold line numbering when on the sleeve side
-\end{itemize}
 
 
-Not done for Donnanno yet
+
+
 
 \chapter{Commentaires}
 
-Une fois n'est pas coutume, marché aidant probablement, les femmes sont mieux traitées que les enfants qui sont mieux traités que les hommes.
-
-\section{Mesures}
-ça part dans tous les sens notamment pour les hommes... le plus gros écart sépare ceux qui mesurent la largeur des épaules et ceux qui mesurent la longueur des épaules. Quelques un mesurent les deux mais c'est plus rare. On notera que les mesures type varient d'un livre à l'autre. Pas toujours de mesure du tour de bras, du tour de jaret, du tour de cuisse.
 
 \section{Shoulder line}
 
@@ -420,6 +528,15 @@ Donanno indique qu'il faut séparer les patrons avant et arrière de 6cm soit
 $$ceinture avant + ceinture arriere + 6 = Hip +8 = AV,$$
 d'où l'incohérence.
 
+\section{skirts}
+
+jupe de base une pince. position de la pince.
+
+Chiappetta: à mi-distance jusqu'à 12 ans. 2 pince au 1/3 et 2/3 de distance pour 14 et 16 car l'écart entre taille est bassin est trop grand pour être absorbé en une seule pince. Chiappetta rappelle qu'avant 10 ans on ne met que rarement les pinces car les jupes sont presque systématiquement élastiquées. Est-ce encore vrai ?
+
+Donnanno: à une distance d'1/2 bust point --- non défini mais qu'on imaginera être le téton--- que je comprends comme le demi écart poitrine.
+
+Gilewska: confirme l'utilisation du 1/2 écart poitrine. Si la différence taille/bassin est trop importante alors Gilewska recommande deux pinces devant une au 1/2 écart poitrine et une à mi distance entre la première pince et la pince de côté (le côté de fait). utlise une pince de milieu dos
 
 \bibliographystyle{plain}
 \bibliography{OpenPattern.bib}

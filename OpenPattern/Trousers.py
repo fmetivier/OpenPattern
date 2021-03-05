@@ -41,7 +41,7 @@ class Basic_Trousers(Pattern):
 
 	"""
 	############################################################
-	def __init__(self, pname="gregoire", gender='m', style='Donnanno',darts= True):
+	def __init__(self, pname="M44D", gender='m', style='Donnanno',darts= True):
 		"""
 		Class initialisator. Launches trouser calculation
 

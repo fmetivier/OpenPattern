@@ -35,7 +35,7 @@ class Basic_Skirt(Pattern):
 
 	"""
 
-    def __init__(self, pname="W6C", style='Chiappetta', gender = 'G', ease=8):
+    def __init__(self, pname="W6C", style='Chiappetta', gender = 'G', ease=8, curves=False):
         """
 		Initilizes parent class &  attributes
 		launches the calculation of skirt
@@ -50,6 +50,7 @@ class Basic_Skirt(Pattern):
 
         self.style=style
         self.ease = ease
+        self.curves = curves
 
 
         self.dic_list=[]
@@ -66,7 +67,7 @@ class Basic_Skirt(Pattern):
         # calculate Basic Skirt and sleeve
         if self.style == 'Donnanno':
             print("style Donnanno selected")
-            pass
+            self.donnanno_basic_skirt()
 
         elif self.style == 'Gilewska':
             print("style Gilewska selected")
@@ -74,11 +75,14 @@ class Basic_Skirt(Pattern):
 
         elif self.style == 'Chiappetta':
             print("style Chiappetta selected")
-            self.chiappetta_basic_Skirt()
+            self.chiappetta_basic_skirt()
 
-    def chiappetta_basic_Skirt(self):
+    def chiappetta_basic_skirt(self):
+        """Basic pencil skirt (jupe droite)
+           for girls between 2 and 16.
+        """
 
-        print(self.m)
+        # print(self.m)
         if self.pname in ['W2C','W3C','W4C','W5C','W6C','W8C','W10C','W12C']:
             pince = {'W2C':6,'W3C':6.25,'W4C':6.5,'W5C':6.75,'W6C':7,'W8C':7.25,'W10C':10,'W12C':10}
             if self.pname in ['W10C','W12C']:
@@ -194,44 +198,94 @@ class Basic_Skirt(Pattern):
 
             self.Front_vertices = [B2.pos(), I41.pos(), dart21.pos(), I31.pos(), I42.pos(), dart22.pos(), I32.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]
 
-    def draw_skirt(self, dic = {"Pattern":"Skirt"}, save = False, fname = None, paper='FullSize'):
-    	""" Draws Basic Bodice with legends and save it if asked for
+        self.set_fold_line(A1 + Point([0,-2]), C + Point([0,2]), 'left')
+        self.set_fold_line(B1 + Point([0,-2]), D + Point([0,2]), 'right')
+        self.add_labelled_line(A1, B1, 'HIP LINE','t')
+        self.add_labelled_line(A, B, 'WAIST LINE','t')
+        self.add_comment(self.middle(E,D)+Point([0,5]),'FRONT')
+        self.add_comment(self.middle(C,E)+Point([0,5]),'BACK')
+        if self.pname not in ['W14C','W16C']:
+            self.set_grainline(dart1 + Point([0,-20]))
+        else:
+            self.set_grainline(dart12 + Point([0,-20]))
 
-    	Args:
-    		dic: dictionnary of informations to be printed
-    		save: if true save to file
-    		fname: filename
-    		paper: paper size on which to save (for cuts)
+    def donnanno_basic_skirt(self):
+        """Pencil skirt
+        """
+        # the frame first
+        A = Point([0,self.m["hauteur_taille_genou"]-4])
+        B = Point([0,0])
+        C = B + Point([(self.m["tour_bassin"]+self.ease)/2,0])
+        D = A + Point([(self.m["tour_bassin"]+self.ease)/2,0])
 
-    	Returns:
-    		fig, ax
-    	"""
+        E = self.middle(A,D)
+        F = self.middle(B,C)
 
-    	dl, vl = self.generate_lists()
 
-    	# 1 draw
-    	fig, ax = self.draw_pattern(dl, vl)
+        G = A + Point([0,-self.m['hauteur_bassin']])
+        H = G + Point([(self.m["tour_bassin"]+self.ease)/2,0])
 
-    	# 2 print heading
-    	# ax = self.print_info(ax, dic)
+        E1 = E + Point([0,-self.m['hauteur_bassin']+5])
+        E2 = E + Point([0,-self.m['hauteur_bassin']])
 
-    	# 3 print specific drawings
-    	# if self.style == 'Donnanno':
-    		# print("to be done")
-    	# else:
-    		# ax = self.add_legends(ax)
+        A1 = A + Point([0,-2])
+        D1 = D + Point([0,-2])
 
-    	if save:
-    		if fname:
-    			pass
-    		else:
-    			fname = 'Basic_Skirt'
 
-    		of = '../patterns/'+ self.style + '_' + fname + '_' + self.pname +'_FullSize.pdf'
+        # darts
+        S3 = D + Point([-self.m['ecart_poitrine']/2,-14])
+        S4 = A + Point([self.m['ecart_poitrine']/2,-8])
 
-    		plt.savefig(of)
 
-    		if paper != 'FullSize':
-    			self.paper_cut(fig, ax, name = fname, paper = paper)
+        dw = 0.5*(self.m['tour_bassin']-self.m['tour_taille'])
 
-    	return fig, ax
+        if dw > 12:
+            dwfb  = 3 # max front and back dart = 3
+            dws = 0.5*dw - dwfb
+        else:
+            dwfb = np.floor(dw/4)
+            dws = np.ceil(dw/4)
+
+
+        W1 = E + Point([-dws,0])
+        W = E + Point([dws,0])
+
+        if self.curves:
+            T4,T5 = self.add_dart(S4,A1,W1,dwfb,draw_curves=True)
+            T2,T3 = self.add_dart(S3,W,D1,dwfb,draw_curves=True)
+        else:
+            T4,T5 = self.add_dart(S4,A1,W1,dwfb)
+            T2,T3 = self.add_dart(S3,D1,W,dwfb)
+
+        #sides
+        points_skirt_front = [W1,E1,E2]
+        dbskirt_f, skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
+        points_skirt_back = [E2,E1,W]
+        dbskirt_b, skirt_back_side = self.pistolet(points_skirt_back, 2, tot = True)
+
+        #dics and lists
+        key = ['A','A1','G','B','F','E1','W1','S4']
+        val = [A,A1,G,B,F,E1,W1,S4]
+
+        for i in range(len(key)):
+            self.Front_dic[key[i]] = val[i]
+
+        key = ['C','H','D1','D','W','S3']
+        val=[C,H,D1,D,W,S3]
+        for i in range(len(key)):
+            self.Back_dic[key[i]] = val[i]
+
+        if self.curves:
+            self.Back_vertices = [C.pos(),F.pos(),E2.pos()] + skirt_back_side + [W.pos()] + T2 + [S3.pos()] + T3 + [D1.pos(),C.pos()]
+            self.Front_vertices = [B.pos(),A1.pos()] + T4 + [S4.pos()] + T5 + [W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]
+        else:
+            self.Back_vertices = [F.pos(),C.pos(),D1.pos(), T3.pos(),S3.pos(),T2.pos(),W.pos()] + skirt_back_side[::-1] + [F.pos(),C.pos()]
+            self.Front_vertices = [B.pos(),A1.pos(),T4.pos(),S4.pos(),T5.pos(),W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]
+
+        self.set_fold_line(G + Point([0,-2]), B + Point([0,2]), 'left')
+        self.set_fold_line(H + Point([0,-2]), C + Point([0,2]), 'right')
+        self.add_labelled_line(G, H, 'HIP LINE','t')
+        self.add_labelled_line(A, D, 'WAIST LINE','t')
+        self.add_comment(self.middle(B,F)+Point([0,5]),'FRONT')
+        self.add_comment(self.middle(F,C)+Point([0,5]),'BACK')
+        self.set_grainline(S3 + Point([0,-20]))

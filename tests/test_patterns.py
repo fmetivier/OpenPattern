@@ -6,6 +6,7 @@ sys.path.append('./..')
 
 import matplotlib.pyplot as plt
 #~ from OpenPattern.Points import Point
+
 import OpenPattern as OP
 import numpy as np
 
@@ -13,8 +14,9 @@ import numpy as np
 
 
 #
-p = OP.Basic_Skirt(pname='W14C')
-p.draw_skirt()
+# p = OP.Basic_Skirt(pname='W16C')
+p = OP.Basic_Skirt(pname='W40D',style='Donnanno',curves=True)
+p.draw()
 
 # Women
 # p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')

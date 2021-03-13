@@ -90,6 +90,7 @@ En premier lieu j'ai utilisé les quatre tomes de la série \textit{Le modélism
 la création d'un patron est donc une suite d'instruction comme «tracer un segment AB de longueur égale au 1/4 du tour de bassin» ou encore «ajouter une pince de 1.5 cm de 9cm de profondeur entre les points F1 et H» etc...
 OpenPattern reprend de façon quasi litérale ces techniques et leur principe de construction en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
 
+Contrairement aux logiciels payant ou gratuits de patronnage le parti-pris ici est de créer  un patron au moyen d'un script, c'est à dire d'une série d'instructions, et non de le dessiner avec un interface utilisateurs graphiques. cela peut sembler rébarbatif au premier abord mais cela offre toute la souplesse d'un langage de programmation comme python.
 
 \section{How is it organized}
 
@@ -138,6 +139,7 @@ la figure \ref{fig:carre} montre le résultat. Le patron du carré est constitu�
 \label{fig:carre}
 \end{figure}
 
+Vous noterez en ligne (27) que l'ordre du dessin du polygone est définit A-B-C-D-A. On aurait pu mettre A-D-C-B-A pour un résultat identique à première vue. On parle ici d'un polygone fermé. l'ordre indiqué va permettre à la librairie graphique de tracer les segments dans l'ordre souhaité. On verra plus tard, à mesure que la forme du patron et donc de son contour se complexifie que cet ordre  est important et conditionne la façon dont on incluera une pince ou tracera une courbe.
 
 \section{Dessines moi une pince}
 
@@ -195,8 +197,7 @@ Bien arrondissons les angles. Une jupe ce n'est pas juste un tour de taille mais
 \label{fig:trapeze}
 \end{figure}
 
-Les lignes nouvelles sont les 25,29,39 et 42. La 25 donne la déclaration du point de hanche H (hip en anglais). La 39 déclare ce point en l'ajoutant au dictionnaire de points. Ces deux instructions ont déjà été vues. La nouveauté est dans la ligne 39. On appelle la méthode \texttt{pistolet} de l'objet \texttt{pattern}. Cette méthode va tracer une courbe passant par les trois points D,H,A. l'ordre est important car la courbe est en fait approximée par une succession de 30 points qui sont renvoyés par le programme sous la forme d'une liste ici curve\_points. Le premier argument retourné correspond à la distance cumulée le long de la courbe et est surtout utile pour les calculs de manches. nos points iront donc de D à A en passant par H. cet ordre correspond à l'ordre dans lequel est défini le polygone du pourtour de la jupe. Ce dernier est définit en ligne 42 où l'on voit la façon dont on introduit la courbe
-dans la liste des points qui forment le pourtour de la jupe.
+Les lignes nouvelles sont les 25,29,39 et 42. La 25 donne la déclaration du point de hanche H (hip en anglais). La 39 déclare ce point en l'ajoutant au dictionnaire de points. Ces deux instructions ont déjà été vues. La nouveauté est dans la ligne 39. On appelle la méthode \texttt{pistolet} de l'objet \texttt{pattern}. Cette méthode va tracer une courbe passant par les trois points D,H,A. l'ordre est important car la courbe est en fait approximée par une succession de 30 points qui sont renvoyés par le programme sous la forme d'une liste ici curve\_points. Le premier argument retourné correspond à la distance cumulée le long de la courbe et est surtout utile pour les calculs de manches. nos points iront donc de D à A en passant par H. cet ordre correspond à l'ordre dans lequel est défini le polygone du pourtour de la jupe (rappelez-vous ce que nous avons écrit lors de l'établissement de notre premier patron)). Ce dernier est définit en ligne 42 où l'on voit la façon dont on introduit la courbe
 
 Notons qu'il faut au moins trois points pour tracer une courbe et l'ordre de la courbe est au maximum egal au nombre de points moins 1. Ici l'ordre sera de 3-1 = 2 au maximum. Ces courbes ne sont pas de simples polynomes mais des b-splines qui permettent de remplacer de façon très satisfaisante les clotoïdes ou courbes d'Euler ou encore «French curves» des pistolets traditionnels. De façon générale les splines d'ordre 2 suffisent pour tracer les pinces de côté des jupes ou les courbes de tailles, les splines d'ordre 3 sont nécessaires pour les têtes de manches qui présentent des points d'inflexions et certaines courbes de pantalon. Les splines d'ordre supérieur sont à peu de choses près inutiles en coupe à plat.
 

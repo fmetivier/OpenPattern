@@ -15,9 +15,11 @@ import numpy as np
 
 #
 # p = OP.Basic_Skirt(pname='W16C')
+ease=8
 p = OP.Basic_Skirt(pname='W40D',style='Donnanno',curves=True)
 p.draw()
-
+w = OP.Waistband(pname='W40D')
+w.draw()
 # Women
 # p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
 # p.add_bust_dart()

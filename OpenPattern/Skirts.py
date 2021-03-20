@@ -69,6 +69,7 @@ class Basic_Skirt(Pattern):
             print("style Donnanno selected")
             self.donnanno_basic_skirt()
 
+
         elif self.style == 'Gilewska':
             print("style Gilewska selected")
             self.Gilewska_basic_skirt()
@@ -163,10 +164,10 @@ class Basic_Skirt(Pattern):
 
             if back_curves:
                 #in this case I1 and I2 are lists of positions
-                self.Back_vertices = [A2.pos()]+ I1 + [dart1.pos()] + I2 + [G.pos()] + skirt_back_side + [E.pos(), C.pos()]
+                self.Back_vertices = [[A2.pos()]+ I1 + [dart1.pos()] + I2 + [G.pos()] + skirt_back_side + [E.pos(), C.pos()]]
             else:
                 # in this case I1 and I2 are points
-                self.Back_vertices = [A2.pos(), I1.pos(), dart1.pos(), I2.pos(), G.pos()] + skirt_back_side + [E.pos(), C.pos()]
+                self.Back_vertices = [[A2.pos(), I1.pos(), dart1.pos(), I2.pos(), G.pos()] + skirt_back_side + [E.pos(), C.pos()]]
 
             # key=['B', 'B1', 'B2', 'I4', 'I3', 'dart2', 'H','F','E','D']
             # val=[B,B1,B2,I4,I3,dart2,H,F,E,D]
@@ -178,9 +179,9 @@ class Basic_Skirt(Pattern):
 
             #redraw the front bodice with the added dart
             if front_curves:
-                self.Front_vertices = [B2.pos()] + I3 + [dart2.pos()] + I4 + [H.pos()] + skirt_front_side + [E.pos(), D.pos()]
+                self.Front_vertices = [[B2.pos()] + I3 + [dart2.pos()] + I4 + [H.pos()] + skirt_front_side + [E.pos(), D.pos()]]
             else:
-                self.Front_vertices = [B2.pos(), I4.pos(), dart2.pos(), I3.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]
+                self.Front_vertices = [[B2.pos(), I4.pos(), dart2.pos(), I3.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]]
         else:
             key=['A', 'A1','A2',  'dart11', 'dart12','I11','I12','I21','I22', 'G','C']
             val=[A, A1, A2, dart11, dart12, I11, I12, I21, I22, G, C]
@@ -188,7 +189,7 @@ class Basic_Skirt(Pattern):
             for i in range(len(key)): # add new points to the dictionnary
                 self.Back_dic[key[i]] = val[i]
 
-            self.Back_vertices = [A2.pos(), I11.pos(), dart11.pos(), I21.pos(), I12.pos(),dart12.pos(),I22.pos(), G.pos()] + skirt_back_side + [E.pos(), C.pos()]
+            self.Back_vertices = [[A2.pos(), I11.pos(), dart11.pos(), I21.pos(), I12.pos(),dart12.pos(),I22.pos(), G.pos()] + skirt_back_side + [E.pos(), C.pos()]]
 
             key=['B', 'B1', 'B2', 'dart21','dart22','I31','I32','I41','I42' ,'H','F','E','D']
             val=[B, B1, B2, dart21, dart22, I31, I32, I41, I42, H, F, E, D]
@@ -196,7 +197,7 @@ class Basic_Skirt(Pattern):
             for i in range(len(key)): # add new points to the dictionnary
                 self.Front_dic[key[i]] = val[i]
 
-            self.Front_vertices = [B2.pos(), I41.pos(), dart21.pos(), I31.pos(), I42.pos(), dart22.pos(), I32.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]
+            self.Front_vertices = [[B2.pos(), I41.pos(), dart21.pos(), I31.pos(), I42.pos(), dart22.pos(), I32.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]]
 
         self.set_fold_line(A1 + Point([0,-2]), C + Point([0,2]), 'left')
         self.set_fold_line(B1 + Point([0,-2]), D + Point([0,2]), 'right')
@@ -276,11 +277,11 @@ class Basic_Skirt(Pattern):
             self.Back_dic[key[i]] = val[i]
 
         if self.curves:
-            self.Back_vertices = [C.pos(),F.pos(),E2.pos()] + skirt_back_side + [W.pos()] + T2 + [S3.pos()] + T3 + [D1.pos(),C.pos()]
-            self.Front_vertices = [B.pos(),A1.pos()] + T4 + [S4.pos()] + T5 + [W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]
+            self.Back_vertices = [[C.pos(),F.pos(),E2.pos()] + skirt_back_side + [W.pos()] + T2 + [S3.pos()] + T3 + [D1.pos(),C.pos()]]
+            self.Front_vertices = [[B.pos(),A1.pos()] + T4 + [S4.pos()] + T5 + [W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]]
         else:
-            self.Back_vertices = [F.pos(),C.pos(),D1.pos(), T3.pos(),S3.pos(),T2.pos(),W.pos()] + skirt_back_side[::-1] + [F.pos(),C.pos()]
-            self.Front_vertices = [B.pos(),A1.pos(),T4.pos(),S4.pos(),T5.pos(),W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]
+            self.Back_vertices = [[F.pos(),C.pos(),D1.pos(), T3.pos(),S3.pos(),T2.pos(),W.pos()] + skirt_back_side[::-1] + [F.pos(),C.pos()]]
+            self.Front_vertices = [[B.pos(),A1.pos(),T4.pos(),S4.pos(),T5.pos(),W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]]
 
         self.set_fold_line(G + Point([0,-2]), B + Point([0,2]), 'left')
         self.set_fold_line(H + Point([0,-2]), C + Point([0,2]), 'right')
@@ -289,3 +290,63 @@ class Basic_Skirt(Pattern):
         self.add_comment(self.middle(B,F)+Point([0,5]),'FRONT')
         self.add_comment(self.middle(F,C)+Point([0,5]),'BACK')
         self.set_grainline(S3 + Point([0,-20]))
+
+
+class Waistband(Pattern):
+    """draws a waist band with different styles depending on init arguments
+    """
+
+    def __init__(self, pname="W6C", ease=8, height=5):
+        """
+        Initilizes parent class &  attributes
+        launches the calculation of waistband
+
+        Args:
+            pname: size measurements
+            style: style to be used for drafting
+            age: used if for a child and style = Chiappetta.
+
+        """
+        Pattern.__init__(self, pname)
+
+        self.ease = ease
+
+        self.dic_list=[]
+        self.vertices_list=[]
+
+        self.Front_dic = {}
+        self.Back_dic = {}
+
+        self.Front_vertices = []
+        self.Back_vertices = []
+
+        self.add_waistband(height)
+
+    def add_waistband(self, wb_height = 5):
+
+
+        B = Point([0, 0])
+        A = B + Point([0, 2*wb_height])
+        E = B + Point([0, wb_height])
+        C = B + Point([self.m['tour_taille'] + 4 + self.ease, 0])
+        D = C + Point([0, 2*wb_height])
+        F = C + Point([0, wb_height])
+
+        A1 = A + Point([2, 0])
+        B1 = B + Point([2, 0])
+        C1 = C + Point([-2, 0])
+        D1 = D + Point([-2, 0])
+        key = ['wA', 'wA1', 'wB', 'wB1', 'wC', 'wC1', 'wD', 'wD1', 'wE', 'wF']
+        val = [A,A1,B,B1,C,C1,D,D1,E,F]
+
+        for k,v in zip(key,val):
+            self.Front_dic[k] = v
+
+            wb = [B.pos(),A.pos(),D.pos(),C.pos(),B.pos()]
+            self.Front_vertices.append(wb)
+
+        self.add_labelled_line(E, F, 'FOLD','t')
+        self.add_labelled_line(A1, B1, '')
+        self.add_labelled_line(D1, C1, '')
+        self.add_comment(self.middle(B,C)+Point([0,-1]),'CENTRE FRONT')
+        self.add_comment(self.middle(B,C),'o')

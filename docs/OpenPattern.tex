@@ -316,12 +316,30 @@ Les figures~\ref{fig:bodice_DW36}, \ref{fig:bodice_MG36} et \ref{fig:CB14} montr
 \end{figure}
 
 La liste des classes dérivées actuellement disponibles est la suivante:
-\begin{lstlisting}[language=python]
-Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
-  ease=8, hip=True)
-Basic_Trousers(pname="M44D", gender='m', style='Donnanno',darts= True)
-Basic_Skirt(pname="W6C", style='Chiappetta', gender = 'G', ease=8)
-\end{lstlisting}
+\begin{itemize}
+  \item Basic\_Bodice
+  \begin{enumerate}
+    \item Donnanno femme et homme,
+    \item Gilewska femme et homme + manches
+    \item Chiappetta fille du 10 au 16 ans\footnote{À vérifier mais il y a des variations avant 10 ans et il faudra probablement le reprendre car j'ai voulu dans un mauvais souci d'harmonisation inverser le dos et le devant.}.
+  \end{enumerate}
+  \item Basic\_Trousers
+  \begin{enumerate}
+  \item Donnanno femme et homme.
+  \end{enumerate}
+  \item Basic\_Skirt
+  \begin{enumerate}
+    \item Chiappetta filles du 2 au 16 ans,
+    \item Donnanno femmes.
+  \end{enumerate}
+\end{itemize}
+
+% \begin{lstlisting}[language=python]
+% Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
+%   ease=8, hip=True)
+% Basic_Trousers(pname="M44D", gender='m', style='Donnanno',darts= True)
+% Basic_Skirt(pname="W6C", style='Chiappetta', gender = 'G', ease=8)
+% \end{lstlisting}
 
 à ces trois classes s'ajoutent des classes accessoires pour les manchettes et les colles
 et en cours (et que je ne mets pas) des classes pour les gilets et pour les chemises et pour les robes...

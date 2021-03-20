@@ -341,7 +341,7 @@ class Pattern:
 
             return (xi,yi)
 
-
+    ############################################################
 
     def intersec_manches(self, A, B, C, theta):
         """ Intersection calculation
@@ -603,6 +603,8 @@ class Pattern:
         if rotate = none: rotation of the curves or segment decreases linearly to reach 0 at the end points.
         if rotate =  left or right or both: also rotates the end points. The angle of rotation remains constant in this case NOT IMPLEMENTED YET
 
+        BEWARE : bug. At present draw_curves works if the pattern polygon is drawn in lr hence
+        in a clockwise manner.
 
         :param    center: Point position of the dart edge and center of rotation
         :param    A, B: Points segment to cut
@@ -693,6 +695,8 @@ class Pattern:
 
             return I1, I2
 
+    ############################################################
+
     def translate(self,dx,dy):
         """translation of the entire pattern by dx, dy
 
@@ -709,6 +713,8 @@ class Pattern:
             for i in range(len(vl[j])):
                 vl[j][i][0] += dx
                 vl[j][i][1] += dy
+
+    ############################################################
 
     def rotate(self,C = Point([0,0]), theta=0):
         """ Rotation of the entire patter of angle theta around center class.
@@ -736,6 +742,82 @@ class Pattern:
 
                 vl[j][i][0] = xo
                 vl[j][i][1] = yo
+
+    ############################################################
+    def project_point(self, M, A, B):
+        """returns the coordinates of the projection of M on the line (AB)
+
+        :param M: points to be projected
+        :param A,B: points defining the line on which M is projected
+
+        :returns: projected point
+        :rtype: Point
+        """
+        #print(type(M),type(A),type(B))
+        dx = B.x - A.x
+        dy = B.y - A.y
+
+        if dx == 0:
+            X = A.x
+            Y = M.y
+        else:
+            X = (M.x*dx + A.x*dy**2 / dx - dy*(A.y-M.y))/(dx+dy**2/dx)
+            Y = (dy/dx)*(X - M.x) + A.y
+
+        return Point([X,Y])
+
+    def mirror_point(self, A, M):
+        """ returns the mirror point of a point A with respect to point M
+        <=> translate A by 2AM
+
+        :param A: Point to mirror
+        :param M: center of symetry
+
+        :returns: mirrored point
+        :rtype: Point
+        """
+
+        #print(type(A.x),type(M.x))
+        dx = M.x - A.x
+        dy = M.y - A.y
+
+        X = A.x + 2*dx
+        Y = A.y + 2*dy
+
+        return Point([X,Y])
+
+
+    def unfold(self, d, v, A,B):
+        """Unfolds a pattern
+
+        Unfolds a pattern stored on the vertices list  where AB represents the fold line.
+
+
+        :param v: list of vertices
+        :param d: dictionnary of points
+        :param A,B: Points defining the fold line
+
+        :returns: vu, du dictionnary and list of original and mirrored points
+        :rtype: list and dic
+        """
+
+        vu = []
+        du = {}
+
+        for key,val in d.items():
+            M = self.project_point(val, A, B)
+            P = self.mirror_point(val, M)
+            nkey = key+'m'
+            du[nkey] = P
+
+        for p in v:
+            P = Point(p)
+            M = self.project_point(P, A, B)
+            MP = self.mirror_point(P, M)
+            vu.append(MP.pos())
+
+
+        return du, vu
 
 
     ############################################################

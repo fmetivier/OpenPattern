@@ -68,10 +68,11 @@ val=[B,B1,B2,dart2,H,F,E,D]
 for i in range(len(key)): # add points to the dictionnary
     mfs.add_point(key[i], val[i], dic='front')
 
-mfs.Back_vertices = [A2.pos(), I1.pos(), dart1.pos(), I2.pos(), G.pos()]\
-    + skirt_back_side + [E.pos(), C.pos()]
-mfs.Front_vertices = [B2.pos(), I4.pos(), dart2.pos(), I3.pos(), H.pos()]\
-    + skirt_front_side + [E.pos(), D.pos()]
+mfs.Back_vertices = [[A2.pos(), I1.pos(), dart1.pos(), I2.pos(), G.pos()]\
+    + skirt_back_side + [E.pos(), C.pos()]]
+mfs.Front_vertices = [[B2.pos(), I4.pos(), dart2.pos(), I3.pos(), H.pos()]\
+    + skirt_front_side + [E.pos(), D.pos()]]
+
 
 # add legends
 mfs.set_grainline(OP.Point([8,15]), 8, -np.pi/2)

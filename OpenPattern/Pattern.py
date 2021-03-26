@@ -18,23 +18,6 @@ from matplotlib.backends.backend_pdf import PdfPages
 from OpenPattern.Points import Point
 from copy import deepcopy
 
-"""
-TODO:  24/02/21
-
-Measurements:
-- translate measurement names to english n
-- measurement input procedure
-
-- Write drawing routines with lines and comments IN PROGRESS
-Drawing:
-- proposer la sauvegarde en svg
-
-Patterns:
-- add darts IN PROGRESS
-- add cut
-
-"""
-
 
 ###############################################################
 # Class defining tools to draw patterns

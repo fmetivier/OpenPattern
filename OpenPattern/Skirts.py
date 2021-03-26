@@ -63,6 +63,9 @@ class Basic_Skirt(Pattern):
         self.Front_vertices = []
         self.Back_vertices = []
 
+        # self.skirt_back_side = []
+        # self.skirt_front_side = []
+
 
         # calculate Basic Skirt and sleeve
         if self.style == 'Donnanno':
@@ -127,11 +130,15 @@ class Basic_Skirt(Pattern):
         C1 = self.middle(A1, B1)
         # add a second just upp by one cm to control the tangents
         C2 = C1 + Point([0,-1])
-        # get the curves
+
+        # get the sides curves
+        #here we add the front and back sides to the properties of the skirt
+        #so we can alter them individually by transformations
+
         points_skirt_front = [H, C1, C2]
-        dbskirt_f, skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
+        dbskirt_f, self.skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
         points_skirt_back = [G, C1, C2]
-        dbskirt_b, skirt_back_side = self.pistolet(points_skirt_back, 2, tot = True)
+        dbskirt_b, self.skirt_back_side = self.pistolet(points_skirt_back, 2, tot = True)
 
         #back
         if self.pname not in ['W14C','W16C']:
@@ -179,9 +186,9 @@ class Basic_Skirt(Pattern):
 
             #redraw the front bodice with the added dart
             if front_curves:
-                self.Front_vertices = [[B2.pos()] + I3 + [dart2.pos()] + I4 + [H.pos()] + skirt_front_side + [E.pos(), D.pos()]]
+                self.Front_vertices = [[B2.pos()] + I3 + [dart2.pos()] + I4 + [H.pos()] + self.skirt_front_side + [E.pos(), D.pos()]]
             else:
-                self.Front_vertices = [[B2.pos(), I4.pos(), dart2.pos(), I3.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]]
+                self.Front_vertices = [[B2.pos(), I4.pos(), dart2.pos(), I3.pos(), H.pos()] + self.skirt_front_side + [E.pos(), D.pos()]]
         else:
             key=['A', 'A1','A2',  'dart11', 'dart12','I11','I12','I21','I22', 'G','C']
             val=[A, A1, A2, dart11, dart12, I11, I12, I21, I22, G, C]
@@ -189,7 +196,7 @@ class Basic_Skirt(Pattern):
             for i in range(len(key)): # add new points to the dictionnary
                 self.Back_dic[key[i]] = val[i]
 
-            self.Back_vertices = [[A2.pos(), I11.pos(), dart11.pos(), I21.pos(), I12.pos(),dart12.pos(),I22.pos(), G.pos()] + skirt_back_side + [E.pos(), C.pos()]]
+            self.Back_vertices = [[A2.pos(), I11.pos(), dart11.pos(), I21.pos(), I12.pos(),dart12.pos(),I22.pos(), G.pos()] + elf.skirt_back_side + [E.pos(), C.pos()]]
 
             key=['B', 'B1', 'B2', 'dart21','dart22','I31','I32','I41','I42' ,'H','F','E','D']
             val=[B, B1, B2, dart21, dart22, I31, I32, I41, I42, H, F, E, D]
@@ -197,7 +204,7 @@ class Basic_Skirt(Pattern):
             for i in range(len(key)): # add new points to the dictionnary
                 self.Front_dic[key[i]] = val[i]
 
-            self.Front_vertices = [[B2.pos(), I41.pos(), dart21.pos(), I31.pos(), I42.pos(), dart22.pos(), I32.pos(), H.pos()] + skirt_front_side + [E.pos(), D.pos()]]
+            self.Front_vertices = [[B2.pos(), I41.pos(), dart21.pos(), I31.pos(), I42.pos(), dart22.pos(), I32.pos(), H.pos()] + self.skirt_front_side + [E.pos(), D.pos()]]
 
         self.set_fold_line(A1 + Point([0,-2]), C + Point([0,2]), 'left')
         self.set_fold_line(B1 + Point([0,-2]), D + Point([0,2]), 'right')
@@ -254,34 +261,42 @@ class Basic_Skirt(Pattern):
         if self.curves:
             T4,T5 = self.add_dart(S4,A1,W1,dwfb,draw_curves=True)
             T2,T3 = self.add_dart(S3,W,D1,dwfb,draw_curves=True)
+            self.waist_curves = [T2,T3,T4,T5]
         else:
             T4,T5 = self.add_dart(S4,A1,W1,dwfb)
             T2,T3 = self.add_dart(S3,D1,W,dwfb)
 
-        #sides
+
+        #sides here we add the front and back sides to the properties of the skirt
+        #so we can alter them individually by transformations
         points_skirt_front = [W1,E1,E2]
-        dbskirt_f, skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
+        dbskirt_f, self.skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
         points_skirt_back = [E2,E1,W]
-        dbskirt_b, skirt_back_side = self.pistolet(points_skirt_back, 2, tot = True)
+        dbskirt_b, self.skirt_back_side = self.pistolet(points_skirt_back, 2, tot = True)
 
         #dics and lists
-        key = ['A','A1','G','B','F','E1','W1','S4']
-        val = [A,A1,G,B,F,E1,W1,S4]
+        key = ['A','A1','G','B','F','E1','E2','W1','S4']
+        val = [A,A1,G,B,F,E1,E2,W1,S4]
 
         for i in range(len(key)):
             self.Front_dic[key[i]] = val[i]
 
-        key = ['C','H','D1','D','W','S3']
-        val=[C,H,D1,D,W,S3]
+        key = ['C','H','D1','D','W','S3','E1','E2','F']
+        val=[C,H,D1,D,W,S3,E1.copy(),E2.copy(),F.copy()]
         for i in range(len(key)):
             self.Back_dic[key[i]] = val[i]
 
         if self.curves:
-            self.Back_vertices = [[C.pos(),F.pos(),E2.pos()] + skirt_back_side + [W.pos()] + T2 + [S3.pos()] + T3 + [D1.pos(),C.pos()]]
-            self.Front_vertices = [[B.pos(),A1.pos()] + T4 + [S4.pos()] + T5 + [W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]]
+            self.Back_vertices = [[C.pos(),F.pos(),E2.pos()] + self.skirt_back_side + [W.pos()] + T2 + [S3.pos()] + T3 + [D1.pos(),C.pos()]]
+            self.Front_vertices = [[B.pos(),A1.pos()] + T4 + [S4.pos()] + T5 + [W1.pos()] + self.skirt_front_side + [E2.pos(),F.pos(),B.pos()]]
         else:
-            self.Back_vertices = [[F.pos(),C.pos(),D1.pos(), T3.pos(),S3.pos(),T2.pos(),W.pos()] + skirt_back_side[::-1] + [F.pos(),C.pos()]]
-            self.Front_vertices = [[B.pos(),A1.pos(),T4.pos(),S4.pos(),T5.pos(),W1.pos()] + skirt_front_side + [E2.pos(),F.pos(),B.pos()]]
+            self.Back_dic['T3'] = T3
+            self.Back_dic['T2'] = T2
+            self.Front_dic['T4'] = T4
+            self.Front_dic['T5'] = T5
+
+            self.Back_vertices = [[F.pos(),C.pos(),D1.pos(), T3.pos(),S3.pos(),T2.pos(),W.pos()] + self.skirt_back_side[::-1] + [F.pos(),C.pos()]]
+            self.Front_vertices = [[B.pos(),A1.pos(),T4.pos(),S4.pos(),T5.pos(),W1.pos()] + self.skirt_front_side + [E2.pos(),F.pos(),B.pos()]]
 
         self.set_fold_line(G + Point([0,-2]), B + Point([0,2]), 'left')
         self.set_fold_line(H + Point([0,-2]), C + Point([0,2]), 'right')
@@ -291,6 +306,8 @@ class Basic_Skirt(Pattern):
         self.add_comment(self.middle(F,C)+Point([0,5]),'BACK')
         self.set_grainline(S3 + Point([0,-20]))
 
+###################################################################################################
+###################################################################################################
 
 class Waistband(Pattern):
     """draws a waist band with different styles depending on init arguments
@@ -350,3 +367,189 @@ class Waistband(Pattern):
         self.add_labelled_line(D1, C1, '')
         self.add_comment(self.middle(B,C)+Point([0,-1]),'CENTRE FRONT')
         self.add_comment(self.middle(B,C),'o')
+
+###################################################################################################
+###################################################################################################
+
+class Skirt_transform(Basic_Skirt):
+    """Transformations of the Basic pencil skirt
+
+    Donnanno
+        - shifted side seams with kick pleats
+
+    """
+
+    def __init__(self, pname="W6C", style='Chiappetta', gender = 'G', ease = 8, curves = False, overlay = False, model = 'shifted', side_offset=5):
+
+        Basic_Skirt.__init__(self, pname, style, gender, ease, curves)
+
+        self.style = style
+        self.ease = ease
+        self.curves = curves
+        self.model = model
+        self.overlay = overlay
+
+        # We DO NOT initialize the disc and list because they are initialized by the parent class
+        # but we keep a copy of it before transforming it
+        self.pattern_list.append(self.copy())
+
+        if self.style == 'Donnanno':
+            if self.model == 'shifted':
+                self.shifted_side_seams()
+            elif self.model == 'A-line':
+                self.A_line(side_offset)
+
+    def shifted_side_seams(self, offset = 2, pleat_height = 20, pleat_width = 8):
+        """ Moves the side by offset cm so the seam is positionned slightly at the back of the Skirt
+
+        :param offset: float or int value of side offset
+        """
+
+        #move points
+        self.Front_dic['W1'].move([offset,0])
+        self.Front_dic['E1'].move([offset,0])
+        self.Front_dic['E2'].move([offset,0])
+        self.Front_dic['F'].move([offset,0])
+
+        self.Back_dic['W'].move([offset,0])
+        self.Back_dic['E1'].move([offset,0])
+        self.Back_dic['E2'].move([offset,0])
+        self.Back_dic['F'].move([offset,0])
+
+        #add kick pleats
+        X = self.Back_dic['C'] + Point([0,pleat_height])
+        X1 = X + Point([pleat_width,0])
+        C1 = self.Back_dic['C'] + Point([pleat_width,0])
+        self.Back_dic['X'] = X
+        self.Back_dic['X1'] = X1
+        self.Back_dic['C1'] = C1
+        #move curves
+        for i in range(len(self.skirt_front_side)):
+            self.skirt_front_side[i][0] += offset
+
+        for i in range(len(self.skirt_back_side)):
+            self.skirt_back_side[i][0] += offset
+
+        if self.curves:
+            # redraw the waist curves
+            dw = 0.5*(self.m['tour_bassin']-self.m['tour_taille'])
+
+            if dw > 12:
+                dwfb  = 3 # max front and back dart = 3
+            else:
+                dwfb = np.floor(dw/4)
+
+            T4,T5 = self.add_dart(self.Front_dic['S4'],self.Front_dic['A1'],self.Front_dic['W1'],dwfb,draw_curves=True)
+            T2,T3 = self.add_dart(self.Back_dic['S3'],self.Back_dic['W'],self.Back_dic['D1'],dwfb,draw_curves=True)
+
+            self.Back_vertices = [ [self.Back_dic['C'].pos(), self.Back_dic['F'].pos(), self.Back_dic['E1'].pos()] +\
+             self.skirt_back_side + [self.Back_dic['W'].pos()] + T2 + [self.Back_dic['S3'].pos()] +\
+              T3 + [self.Back_dic['D1'].pos(),self.Back_dic['C'].pos()],\
+             [self.Back_dic['C'].pos(), C1.pos(), X1.pos(), X.pos()]]
+
+            self.Front_vertices = [[self.Front_dic['B'].pos(),self.Front_dic['A1'].pos()] + T4 +\
+            [self.Front_dic['S4'].pos()] + T5 + [self.Front_dic['W1'].pos()] + self.skirt_front_side\
+             + [self.Front_dic['E2'].pos(),self.Front_dic['F'].pos(),self.Front_dic['B'].pos()]]
+
+        else:
+            self.Back_vertices = [[self.Back_dic['F'].pos(),self.Back_dic['C'].pos(), self.Back_dic['D1'].pos(),\
+             self.Back_dic['T3'].pos(),self.Back_dic['S3'].pos(),self.Back_dic['T2'].pos(),self.Back_dic['W'].pos()]\
+             + self.skirt_back_side[::-1] + [self.Back_dic['F'].pos(),self.Back_dic['C'].pos()],\
+             [self.Back_dic['C'].pos(), C1.pos(), X1.pos(), X.pos()]]
+
+            self.Front_vertices = [[self.Front_dic['B'].pos(),self.Front_dic['A1'].pos(),self.Front_dic['T4'].pos(),\
+            self.Front_dic['S4'].pos(),self.Front_dic['T5'].pos(),self.Front_dic['W1'].pos()] + self.skirt_front_side\
+             + [self.Front_dic['E2'].pos(),self.Front_dic['F'].pos(),self.Front_dic['B'].pos()]]
+
+        self.add_labelled_line(self.middle(X,X1),self.middle(self.Back_dic['C'],C1),'FOLD','l')
+        del self.fold_line[1]
+
+    def A_line(self,side_offset=5):
+        """ A-line adapted from the basic pencil skirt
+
+        - R = [E1F]
+        - theta = side_offset/R the most simple way to draw a correct side
+        - add F1 a control point at side_offset from the original position of F
+        - rotate F by theta around E1
+        - rotate E2 by theta around E1
+        - redraw the side curves
+        - draw the curve F-F1-C for the Hem.
+        - do the opposite for the front
+        - offset all points before drawing
+
+        :param side_offset: the value of the lateral enlargement of the side.
+        """
+        #parameters
+        R =self.distance(self.Back_dic['F'],self.Back_dic['E1'])
+        theta = np.arctan(side_offset/R)
+
+        ###########
+        #Back
+        ###########
+        F1 = self.Back_dic['F'] + Point([side_offset,0])
+        self.Back_dic['F1'] = F1
+
+        #translate all points so skirt sides do not overlap
+        for key,val in self.Back_dic.items():
+            val.move([3*side_offset,0])
+
+        self.Back_dic['F'].rotate(self.Back_dic['E1'].pos(), -theta, unit='rad')
+        self.Back_dic['E2'].rotate(self.Back_dic['E1'].pos(), -theta, unit='rad')
+
+        #draw curves
+        points_hem_back = [self.Back_dic['C'],self.Back_dic['F1'],self.Back_dic['F']]
+        hem_length, hem_curve_back = self.pistolet(points_hem_back, 2, tot = True)
+
+        points_skirt_back = [self.Back_dic['E2'],self.Back_dic['E1'],self.Back_dic['W']]
+        dbskirt_b, self.skirt_back_side = self.pistolet(points_skirt_back, 2, tot = True)
+
+
+        ###############
+        #Front
+        ##############
+
+        F1 = self.Front_dic['F'] + Point([-side_offset,0])
+        self.Front_dic['F1'] = F1
+
+
+        self.Front_dic['F'].rotate(self.Front_dic['E1'].pos(), theta, unit='rad')
+        self.Front_dic['E2'].rotate(self.Front_dic['E1'].pos(), theta, unit='rad')
+
+        points_hem_front = [self.Front_dic['F'],self.Front_dic['F1'],self.Front_dic['B']]
+        hem_length, hem_curve_front = self.pistolet(points_hem_front, 2, tot = True)
+
+        points_skirt_front = [self.Front_dic['W1'],self.Front_dic['E1'],self.Front_dic['E2']]
+        dbskirt_b, self.skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
+
+
+        ######################
+        #built skirt vertices
+        ######################
+        if self.curves:
+            # redraw the waist curves
+            dw = 0.5*(self.m['tour_bassin']-self.m['tour_taille'])
+
+            if dw > 12:
+                dwfb  = 3 # max front and back dart = 3
+            else:
+                dwfb = np.floor(dw/4)
+
+            T4,T5 = self.add_dart(self.Front_dic['S4'],self.Front_dic['A1'],self.Front_dic['W1'],dwfb,draw_curves=True)
+            T2,T3 = self.add_dart(self.Back_dic['S3'],self.Back_dic['W'],self.Back_dic['D1'],dwfb,draw_curves=True)
+
+            self.Back_vertices = [ hem_curve_back + [self.Back_dic['E2'].pos()] +\
+             self.skirt_back_side + [self.Back_dic['W'].pos()] + T2 + [self.Back_dic['S3'].pos()] +\
+              T3 + [self.Back_dic['D1'].pos(),self.Back_dic['C'].pos()]]
+
+            self.Front_vertices = [[self.Front_dic['B'].pos(),self.Front_dic['A1'].pos()] + T4 +\
+            [self.Front_dic['S4'].pos()] + T5 + [self.Front_dic['W1'].pos()] + self.skirt_front_side\
+             + [self.Front_dic['E2'].pos()] + hem_curve_front]
+
+        else:
+            self.Back_vertices = [hem_curve_back[::-1] + [self.Back_dic['D1'].pos(),\
+             self.Back_dic['T3'].pos(),self.Back_dic['S3'].pos(),self.Back_dic['T2'].pos(),self.Back_dic['W'].pos()]\
+             + self.skirt_back_side[::-1] + [self.Back_dic['F'].pos()]]
+
+            self.Front_vertices = [[self.Front_dic['B'].pos(),self.Front_dic['A1'].pos(),self.Front_dic['T4'].pos(),\
+            self.Front_dic['S4'].pos(),self.Front_dic['T5'].pos(),self.Front_dic['W1'].pos()] + self.skirt_front_side\
+             + [self.Front_dic['E2'].pos()] + hem_curve_front]

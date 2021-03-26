@@ -228,7 +228,7 @@ La partie qui nous intéresse ici débute à la ligne 47. Il s'agit de copier le
 Bespoke my dear ! l'intérêt de la classe \texttt{pattern} c'est qu'elle peut faire appel à des mensurations c'est à dire un ensemble de mesures corporelles. Il en existe deux types. Les mesures standards correspondent à des moyennes statistiques sur une population d'une certaine taille ou d'un certain âge et d'un sexe donné. Elles varient avec le temps et suivant les auteurs car les populations à l'origine de ces jeux de données varient elles aussi. Les mesures individuelles (ou sur-mesure ou encore bespoke) correspondent aux mesures prises sur une personne précise. Elles ne correspondent qu'à elle et n'ont aucune utilité pour les autres mais elles correspondent au mieux à cette personne.
 En utilisant des mensurations standards ou sur-mesure on peut ainsi adapter les patrons pour un publique divers ou ciblé.
 
-Les mesures sont enregistrées dans une base sqlite3 à laquelle accède la classe \texttt{pattern}. Lors de la créatin de l'objet patron on peut appeler une des mesures enregistrées dans la base. Par défaut la classe est instanciée en chargeant les mensurations féminine de 38 données par Gilewska \cite{Gilewska1}. Ces mensurations sont chargées dans un dictionnaire nommé \texttt{m}.
+Les mesures sont enregistrées dans une base sqlite3 à laquelle accède la classe \texttt{pattern}. Lors de la création de l'objet patron on peut appeler une des mesures enregistrées dans la base. Par défaut la classe est instanciée en chargeant les mensurations féminine de 38 données par Gilewska \cite{Gilewska1}. Ces mensurations sont chargées dans un dictionnaire nommé \texttt{m}.
 
 Maintenant que vous savez tout faire le plus simple consiste à faire une vrai jupe. Nous allons donc tracer le patron d'une demi-jupe avant d'une fille de 8 ans selon la méthode de Jacqueline Chiappetta \cite{Chiappetta1999}.
 
@@ -331,6 +331,10 @@ La liste des classes dérivées actuellement disponibles est la suivante:
   \begin{enumerate}
     \item Chiappetta filles du 2 au 16 ans,
     \item Donnanno femmes.
+  \end{enumerate}
+  \item Waistband
+  \begin{enumerate}
+  \item Donnanno cas simple
   \end{enumerate}
 \end{itemize}
 
@@ -452,7 +456,22 @@ tour\_tete&&&&&X&&\\ \hline
 
 
 
+\section{Déplier un patron}
+Déplier un patron peut-être utile pour des transformations. En effet très souvent les demi patrons de buste, de jupe et de robes sont au pli afin d'éviter des coutures inesthétiques au milieu (devant et dos). Lors des transformations par contre, comme pour transformer une jupe de base en jupe portefeuille par exemple, il peut être utile de travailler sur le patron déplié.   La méthode \texttt{unfold} permet cela. Sur le principe on fournit  un axe AB de symétrie, et pour chaque point du patron on cherche le point miroir. Ici cela est fait en deux temps: (1) projeter un point $O$ du patron sur la droite $(AB)$ pour obtenir le point $M$ et (2) chercher le point $O'$ qui se trouve à deux fois la distance de projection soit
+$$\overrightarrow{OO'} = 2\overrightarrow{OM}.$$
 
+Le script suivant montre comment procéder et la figure~\ref{fig:unfold} donne le résultat
+
+\lstinputlisting[language=Python]{./sample/simple_scripts_5.py}
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../patterns/simple_scripts_5__FullSize}
+\end{center}
+\caption{Mon beau trapèze déplié}
+\label{fig:unfold}
+\end{figure}
 
 
 
@@ -556,6 +575,8 @@ Chiappetta: à mi-distance jusqu'à 12 ans. 2 pince au 1/3 et 2/3 de distance po
 Donnanno: à une distance d'1/2 bust point --- non défini mais qu'on imaginera être le téton--- que je comprends comme le demi écart poitrine.
 
 Gilewska: confirme l'utilisation du 1/2 écart poitrine. Si la différence taille/bassin est trop importante alors Gilewska recommande deux pinces devant une au 1/2 écart poitrine et une à mi distance entre la première pince et la pince de côté (le côté de fait). utlise une pince de milieu dos
+
+la bande de taille chez Donnanno est donnée à 5cm
 
 \bibliographystyle{plain}
 \bibliography{OpenPattern.bib}

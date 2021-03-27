@@ -17,12 +17,14 @@ import numpy as np
 # p = OP.Basic_Skirt(pname='W16C')
 ease=8
 
+##################
+
 p = OP.Basic_Skirt(pname='W40D',style='Donnanno',curves=True)
-p.draw()
+p.draw(dic = {"Pattern":"Pencil skirt"}, save=True, info=True)
 # w = OP.Waistband(pname='W40D')
 # w.draw()
 
-p2 = OP.Skirt_transform(pname = 'W40D', style = 'Donnanno',model = 'A-line', curves = True)
+p2 = OP.Skirt_transform(pname = 'W40D', style = 'Donnanno',model = 'Flared-A-Line',curves=True)
 p2.draw()
 
 

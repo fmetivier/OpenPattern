@@ -700,7 +700,7 @@ class Pattern:
     ############################################################
 
     def rotate(self,C = Point([0,0]), theta=0):
-        """ Rotation of the entire patter of angle theta around center class.
+        """ Rotation of the entire pattern of angle theta around center class.
 
         In the case of points uses the rotate method for points if not does the rotation "manually".
         BEWARE not to pass dic points directly as the center because this might induce spurious rotations.

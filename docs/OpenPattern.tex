@@ -110,10 +110,182 @@ Pour dessiner un patron il faut
 \item dessiner et, au besoin, sauvegarder le patron.
 \end{enumerate}
 
-Le dessin du patron peut aussi  directement se faire à partir des classes Pattern et Point comme nous allons le voir dans le tuto suivant.
+Le dessin du patron peut aussi  directement se faire à partir des classes Pattern et Point comme nous allons le voir dans la suite de ce document.
 
 \chapter{Tutoriel}
 
+
+
+\section{Introduction: le patron de base}
+
+Ce tutoriel montre comment utiliser les classes permettant de tracer des patrons complets à partir de mesures moyennes (un 38 français par exemple) ou à partir de mesures prises sur la personne de votre choix.
+Différentes classes permettent de faire ce premier travail, le plus difficile parfois, qui consiste à tracer une base de patron:  base de pantalon, base de jupes, base de buste et de manche. À partir de ces patrons  il est alors  possible soit d'utiliser directement la base (pour une jupe droite ou un pantalon basique par exemple) soit de les «altérer» ou «transformer».
+
+Le script suivant montre le principe d'utilisation de la librairie OpenPattern en prenant l'exemple d'un Body.  Nous allons tracer et enregistrer un patron de Body de femme sans pinces en 36 (taille française) selon la méthode de Gilewska.
+
+\begin{lstlisting}[language=python]
+import matplotlib.pyplot as plt
+import OpenPattern as OP
+
+# Creation de l'instance
+p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
+
+# appel de la fonction de dessin
+p.draw_bodice({"Pattern":"Bodice without dart"}, save=True)
+
+plt.show()
+\end{lstlisting}
+
+C'est simple non ? On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf. Les différentes options sont passées dans les arguments des différentes méthodes de classe (\texttt{draw\_bodice}) ou lors des instanciations de classe (\texttt{Basic\_Bodice} dans cet exemple).
+
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_36.pdf}
+\caption{Buste de base de femme, taille 36, sans pinces, d'après Gilweska.}
+\label{fig:bodice_WG36}
+\end{figure}
+
+La liste des bases actuellement disponibles est donnée table \ref{tab:basic_classes}. Nous allons dans la suite voir en détail chacune des bases et leurs options.
+
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{llll} \hline
+\multicolumn{4}{c}{\textbf{Body}}\\
+Style & Femmes & Hommes & Enfants \\ \hline
+ Chiappetta & & & 10-16\\
+ Donnanno & x & x &\\
+ Gilewska & x & x &\\ \hline
+ \multicolumn{4}{c}{\textbf{Manche}}\\
+ Style & Femmes & Hommes & Enfants \\ \hline
+  Chiappetta & & & \\
+  Donnanno &  &  &\\
+  Gilewska & x & x &\\ \hline
+ \multicolumn{4}{c}{\textbf{Pantalon}}\\
+ Style & Femmes & Hommes & Enfants \\ \hline
+ Chiappetta & & & \\
+ Donnanno & x & x &\\
+ Gilewska & & &\\ \hline
+ \multicolumn{4}{c}{\textbf{Jupe}}\\
+ Style & Femmes & Hommes & Enfants \\ \hline
+ Chiappetta & & & 2-16 \\
+ Donnanno & x &  &\\
+ Gilewska & & &\\ \hline
+\end{tabular}
+\end{center}
+\label{tab:basic_classes}
+\caption{Classes de bases et styles implémantés. Les manches font partie de la classe body car elles sont calculées à partir des profondeurs d'emmanchure mesurées sur les body.}
+\end{table}
+% À vérifier mais il y a des variations avant 10 ans et il faudra probablement le reprendre car j'ai voulu dans un mauvais souci d'harmonisation inverser le dos et le devant.}.
+
+
+
+\section{La jupe}
+
+Le script suivant montre comment créer une jupe de base (ou jupe crayon ou encore fuseau ou pencil en anglais) et la figure~\ref{fig:pencil} montre le résultat.
+
+\begin{lstlisting}[language=python]
+import OpenPattern as OP
+p = OP.Basic_Skirt(pname="W6C", style='Chiappetta', gender = 'G', ease=8, curves=False)
+p.draw()
+\end{lstlisting}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../patterns/Donnanno_myPattern_W40D_FullSize}
+\end{center}
+\label{fig:pencil}
+\caption{Jupe de base ou jupe crayon ou pencil skirt. Modèle d'après Donnanno, taille 40 italienne.}
+\end{figure}
+
+
+
+Les arguments à l'instanciation de la classe sont
+
+\begin{tabular}{lllc}\\
+Argument & type &  Définition & valeur par défaut\\ \hline
+pname & str & code de la taille& W6C\\
+style & str & modèle utilisé& Chiappetta\\
+gender & str & genre & G\\
+ease & int ou float & aisance à appliquer au patron& 8\\
+curves & boolean & doit on oui ou non dessiner une taille courbe& False\\
+\end{tabular}
+
+
+\section{Le pantalon}
+
+\section{Le body}
+
+\begin{lstlisting}[language=python]
+Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
+  ease=8, hip=True):
+
+draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False,\
+  fname = None, paper='FullSize'):
+
+\end{lstlisting}
+
+Les figures~\ref{fig:bodice_DW36}, \ref{fig:bodice_MG36} et \ref{fig:CB14} montrent quelques exemples de body obtenus pour différents styles.
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Donnanno_Bodice_withour_dart_36.pdf}
+\caption{Buste de base de femme, taille 36, sans pinces, d'après Donnanno.}
+\label{fig:bodice_DW36}
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_M36.pdf}
+\caption{Buste de base d'homme, taille 36, sans pinces, d'après Gilewska}
+\label{fig:bodice_MG36}
+\end{figure}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.7\linewidth]{../patterns/Chiappetta_bodice_G14.pdf}
+\caption{Buste de base de garçon, 14 ans, sans pince, d'après Chiappetta.}
+\label{fig:CB14}
+\end{figure}
+
+
+% \begin{lstlisting}[language=python]
+% Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
+%   ease=8, hip=True)
+% Basic_Trousers(pname="M44D", gender='m', style='Donnanno',darts= True)
+% Basic_Skirt(pname="W6C", style='Chiappetta', gender = 'G', ease=8)
+% \end{lstlisting}
+
+\section{Les Transformations}
+
+
+Aux trois classes de bases s'ajoutent des classes accessoires pour les manchettes et les colles
+et en cours (et que je ne mets pas) des classes pour les gilets et pour les chemises et pour les robes...
+
+\begin{itemize}
+  \item Waistband
+  \begin{enumerate}
+  \item Donnanno cas simple
+  \end{enumerate}
+  \item Cuffs
+  \item Placket
+  \item Collars
+\end{itemize}
+
+\begin{lstlisting}[language=python]
+
+Cuffs(pname = "sophie", gender = 'w', style = 'Donnanno', age = 12, cuff_style = 'Simple',\
+  overlap = 2, width = 5, ease = 3 )
+Placket(pname = "sophie", gender = 'w', placket_style = 'Simple', slit_length = 10)
+Collars(pname="sophie", gender='w', style='Gilewska', collar_style = 'Officer',\
+  overlap=0, collar_height=3)
+
+\end{lstlisting}
+
+\chapter{Pour aller plus loin: OpenPattern from scratch}
 
 \section{Dessine moi un carré}
 
@@ -250,113 +422,6 @@ Notez la façon dont on appel les mesures \texttt{mfs.m["hauteur\_taille\_genou"
 Un vêtement est dessiné avec une aisance (ease) qui doit être donnée en début de dessin. Ici on prend une aisance de 8cm pour l'ensemble du patron (17). La profondeur de pince dépend souvent aussi de la taille et de l'âge du modèle. Pour 8 ans chez Chiappetta \cite{Chiappetta1999} on a une pince de 7.25 cm (16). Les lignes de 19 à 35 permettent de tracer les points principaux du tracé de la jupe. Les lignes 39 et 41 permettent de créer deux points qui n'apparaîtront pas mais sont important. il s'agit de points de contrôle pour le tracé de la courbe du côté. En effet la courbe va de la ligne de taille à la ligne de hanche. Chiappetta ne  prend pas la peine de dire comment faire car avec un pistolet c'est évident (essayez pour voir et vous comprendrez). Par contre pour un spline et de façon générale en informatique il faut tout expliquer au programme qui ne fait que ce qu'on lui dit de faire (ce n'est pas un réseau de neurones !). Il faut donc définir le point milieu de la ligne de hanche (39) puis un point situé 1 cm au dessus qui permettra un tombé vertical de la courbe au point de hanches (41). Ces deux points ajoutés au point de taille H ou G suffisent à tracer une courbe pour le demi-devant et le demi-dos (43-46). La suite ne pose aucun problème maintenant: ajout des pinces, enregistrement des points et des positions qui définissent chaque polygone de demi-jupe, ajout des commentaires  et enfin dessin ! Ce patron peut-être imprimé en taille réelle et directement utilisé pour une jupe droite d'une fille de 8 ans. Manque juste la ceinture  que vous pourriez réaliser très facilement maintenant (on y viendra plus tard rassurez-vous) !
 
 
-\section{Utiliser une classe dérivée}
-
-Les classes dérivées permettent d'éviter de faire le premier travail, le plus difficile parfois, qui consiste à tracer une base de patron. Base de buste, base de pantalon, base de manche, base de jupes, autant de patrons à partir desquels il est possible de créer ce que l'on veut. Les classes dérivées permettent de s'affranchir de ce travail. le codage a déjà été fait pour vous. Il alors soit possible d'utiliser directement la base (pour une jupe droite ou un pantalon basique par exemple) ou de les «altérer»
-
-Le script suivant montre par exemple comment tracer et sauver un patron de Body de femme sans pinces en 36 selon la méthode de Gilewska.
-\begin{lstlisting}[language=python]
-import sys
-sys.path.append('./..')
-import matplotlib.pyplot as plt
-import OpenPattern as OP
-
-# Creation de l'instance
-p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
-# appel de la fonction de dessin
-p.draw_bodice({"Pattern":"Bodice without dart"}, save=True)
-plt.show()
-\end{lstlisting}
-
-C'est plus simple non ? On obtient alors la figure~\ref{fig:bodice_WG36} enregistrée par defaut à l'échelle 1:1 dans un fichier pdf. Les différentes options sont passées dans les arguments des différentes méthodes de classe (\texttt{draw\_bodice}) ou lors des instanciations de classe (\texttt{Basic\_Bodice} dans cet exemple).
-
-
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_36.pdf}
-\caption{Buste de base de femme, taille 36, sans pinces, d'après Gilweska.}
-\label{fig:bodice_WG36}
-\end{figure}
-
-
-
-
-\begin{lstlisting}[language=python]
-Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
-  ease=8, hip=True):
-
-draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False,\
-  fname = None, paper='FullSize'):
-
-\end{lstlisting}
-
-Les figures~\ref{fig:bodice_DW36}, \ref{fig:bodice_MG36} et \ref{fig:CB14} montrent quelques exemples de body obtenus pour différents styles.
-
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.7\linewidth]{../patterns/Donnanno_Bodice_withour_dart_36.pdf}
-\caption{Buste de base de femme, taille 36, sans pinces, d'après Donnanno.}
-\label{fig:bodice_DW36}
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.7\linewidth]{../patterns/Gilewska_Bodice_withour_dart_M36.pdf}
-\caption{Buste de base d'homme, taille 36, sans pinces, d'après Gilewska}
-\label{fig:bodice_MG36}
-\end{figure}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.7\linewidth]{../patterns/Chiappetta_bodice_G14.pdf}
-\caption{Buste de base de garçon, 14 ans, sans pince, d'après Chiappetta.}
-\label{fig:CB14}
-\end{figure}
-
-La liste des classes dérivées actuellement disponibles est la suivante:
-\begin{itemize}
-  \item Basic\_Bodice
-  \begin{enumerate}
-    \item Donnanno femme et homme,
-    \item Gilewska femme et homme + manches
-    \item Chiappetta fille du 10 au 16 ans\footnote{À vérifier mais il y a des variations avant 10 ans et il faudra probablement le reprendre car j'ai voulu dans un mauvais souci d'harmonisation inverser le dos et le devant.}.
-  \end{enumerate}
-  \item Basic\_Trousers
-  \begin{enumerate}
-  \item Donnanno femme et homme.
-  \end{enumerate}
-  \item Basic\_Skirt
-  \begin{enumerate}
-    \item Chiappetta filles du 2 au 16 ans,
-    \item Donnanno femmes.
-  \end{enumerate}
-  \item Waistband
-  \begin{enumerate}
-  \item Donnanno cas simple
-  \end{enumerate}
-\end{itemize}
-
-% \begin{lstlisting}[language=python]
-% Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
-%   ease=8, hip=True)
-% Basic_Trousers(pname="M44D", gender='m', style='Donnanno',darts= True)
-% Basic_Skirt(pname="W6C", style='Chiappetta', gender = 'G', ease=8)
-% \end{lstlisting}
-
-à ces trois classes s'ajoutent des classes accessoires pour les manchettes et les colles
-et en cours (et que je ne mets pas) des classes pour les gilets et pour les chemises et pour les robes...
-
-\begin{lstlisting}[language=python]
-
-Cuffs(pname = "sophie", gender = 'w', style = 'Donnanno', age = 12, cuff_style = 'Simple',\
-  overlap = 2, width = 5, ease = 3 )
-Placket(pname = "sophie", gender = 'w', placket_style = 'Simple', slit_length = 10)
-Collars(pname="sophie", gender='w', style='Gilewska', collar_style = 'Officer',\
-  overlap=0, collar_height=3)
-
-\end{lstlisting}
 \chapter{Pour aller plus loin}
 
 \section{Les tailles}

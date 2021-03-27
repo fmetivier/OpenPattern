@@ -396,8 +396,10 @@ class Skirt_transform(Basic_Skirt):
         if self.style == 'Donnanno':
             if self.model == 'shifted':
                 self.shifted_side_seams()
-            elif self.model == 'A-line':
-                self.A_line(side_offset)
+            elif self.model == 'A-Line':
+                self.A_Line(side_offset)
+            elif self.model == 'Flared-A-Line':
+                self.Flared_A_Line(side_offset)
 
     def shifted_side_seams(self, offset = 2, pleat_height = 20, pleat_width = 8):
         """ Moves the side by offset cm so the seam is positionned slightly at the back of the Skirt
@@ -464,7 +466,7 @@ class Skirt_transform(Basic_Skirt):
         self.add_labelled_line(self.middle(X,X1),self.middle(self.Back_dic['C'],C1),'FOLD','l')
         del self.fold_line[1]
 
-    def A_line(self,side_offset=5):
+    def A_Line(self,side_offset=5):
         """ A-line adapted from the basic pencil skirt
 
         - R = [E1F]
@@ -553,3 +555,133 @@ class Skirt_transform(Basic_Skirt):
             self.Front_vertices = [[self.Front_dic['B'].pos(),self.Front_dic['A1'].pos(),self.Front_dic['T4'].pos(),\
             self.Front_dic['S4'].pos(),self.Front_dic['T5'].pos(),self.Front_dic['W1'].pos()] + self.skirt_front_side\
              + [self.Front_dic['E2'].pos()] + hem_curve_front]
+
+        del self.fold_line[1]
+        self.set_fold_line(self.Back_dic['H'] + Point([0,-2]), self.Back_dic['C'] + Point([0,2]), 'right')
+
+    def Flared_A_Line(self, side_offset = 5):
+        """Flared A line.
+        add the closure of darts and corresponding expansion at the hem.
+
+        to rotate a portion of the pattern
+        calculate angle of rotation = angle of dart to be closed
+        select points to be rotated
+        select curves to be rotated
+        rotate around the dart point
+        """
+        # start by making an
+        self.A_Line(side_offset)
+
+        #offset all the back points
+        for key,val in self.Back_dic.items():
+            val.move([3*side_offset,0])
+
+        #cutting points
+        HR = Point([self.Front_dic['S4'].x,0]) # vertical projection of S4 on hem = cutting point
+        self.Front_dic['HR'] = HR
+
+        HR = Point([self.Back_dic['S3'].x,0]) # vertical projection of S3 on hem = cutting point
+        self.Back_dic['HR'] = HR
+
+        if self.curves:
+            # calculate angle
+            # self.waist_curves = [T2,T3,T4,T5]
+            num_f = self.distance(Point(self.waist_curves[2][-1]),Point(self.waist_curves[3][0]))
+            self.Front_dic['S4'].y = self.Back_dic['S3'].y #lower S4 to the level of S3 so the rotation is the same
+            den_f = self.distance(Point(self.waist_curves[2][-1]),self.Front_dic['S4'])
+            alpha_f = num_f/den_f
+
+            self.Front_dic['T4'] = Point(self.waist_curves[2][-1])
+
+            Front_Point_names = ['HR','F1','F','E2','E1','W1','T4']
+
+            # calculate angle back
+            T2 = Point(self.waist_curves[0][-1])
+            T2.move([6*side_offset,0]) # offset times 2  because we start from the A-line skirt.
+            T3 = Point(self.waist_curves[1][0])
+            T3.move([6*side_offset,0])
+
+            num_b = self.distance(T2,T3)
+            den_b = self.distance(T2,self.Back_dic['S3'])
+            alpha_b = -num_b/den_b
+
+            self.Back_dic['T2'] = T2
+            Back_Point_names = ['HR','F1','F','E2','E1','W', 'T2']
+
+        else:
+
+            # calculate angle front
+            num_f = self.distance(self.Front_dic['T4'],self.Front_dic['T5'])
+            self.Front_dic['S4'].y = self.Back_dic['S3'].y #lower S4 to the level of S3 so the rotation is the same
+            den_f = self.distance(self.Front_dic['T4'],self.Front_dic['S4'])
+            alpha_f = num_f/den_f
+
+            Front_Point_names = ['HR','F1','F','E2','E1','W1','T5']
+
+            # calculate angle back
+            num_b = self.distance(self.Back_dic['T2'],self.Back_dic['T3'])
+            den_b = self.distance(self.Back_dic['T2'],self.Back_dic['S3'])
+            alpha_b = -num_b/den_b
+
+            Back_Point_names = ['HR','F1','F','E2','E1','W','T2']
+
+        #FRONT
+        for key in Front_Point_names:
+            self.Front_dic[key].rotate(self.Front_dic['S4'], alpha_f, unit='rad')
+
+        #BACK
+        for key in Back_Point_names:
+            self.Back_dic[key].rotate(self.Back_dic['S3'], alpha_b, unit='rad')
+
+        #redraw hem and side curve
+        #FRONT
+        points_hem_front = [self.Front_dic['F'],self.Front_dic['F1'],self.Front_dic['HR'],self.Front_dic['B']]
+        hem_length, hem_curve_front = self.pistolet(points_hem_front, 2, tot = True)
+
+        points_skirt_front = [self.Front_dic['W1'],self.Front_dic['E1'],self.Front_dic['E2']]
+        dbskirt_b, self.skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
+
+        #BACK
+        points_hem_Back = [self.Back_dic['C'],self.Back_dic['HR'],self.Back_dic['F1'],self.Back_dic['F']]
+        hem_length, hem_curve_back = self.pistolet(points_hem_Back, 2, tot = True)
+
+        points_skirt_Back = [self.Back_dic['E2'],self.Back_dic['E1'],self.Back_dic['W']]
+        dbskirt_b, self.skirt_back_side = self.pistolet(points_skirt_Back, 2, tot = True)
+
+        if self.curves:
+
+            points_front_waist = [self.Front_dic['A1'],self.Front_dic['T4'],self.Front_dic['W1']]
+            fwl, front_waist_curve =  self.pistolet(points_front_waist, 2, tot = True)
+
+            points_back_waist = [self.Back_dic['W'],self.Back_dic['T2'],self.Back_dic['D1']]
+            bwl, back_waist_curve =  self.pistolet(points_back_waist, 2, tot = True)
+
+            self.Back_vertices = [ hem_curve_back + [self.Back_dic['E2'].pos()] +\
+             self.skirt_back_side + [self.Back_dic['W'].pos()] + back_waist_curve +\
+             [self.Back_dic['D1'].pos(),self.Back_dic['C'].pos()]]
+
+            self.Front_vertices = [[self.Front_dic['B'].pos(),self.Front_dic['A1'].pos()] + front_waist_curve +\
+            [self.Front_dic['W1'].pos()] + self.skirt_front_side +\
+            [self.Front_dic['E2'].pos()] + hem_curve_front]
+
+
+        else:
+            #redraw vertices
+            self.Front_vertices = [[self.Front_dic['B'].pos(),self.Front_dic['A1'].pos(),self.Front_dic['T5'].pos(),\
+            self.Front_dic['W1'].pos()] + self.skirt_front_side + [self.Front_dic['E2'].pos()] + hem_curve_front]
+
+            #redraw vertices
+            self.Back_vertices = [hem_curve_back + [self.Back_dic['E2'].pos()] +  self.skirt_back_side +\
+             [self.Back_dic['T2'].pos(),self.Back_dic['D1'].pos(), self.Back_dic['C'].pos()]]
+
+            del self.labelled_line[:]
+            del self.grainline[:]
+            del self.fold_line[1]
+            self.set_grainline(self.Back_dic['E2']+Point([10,-20]),20, np.pi/2)
+            self.set_fold_line(self.Back_dic['H'] + Point([0,-2]), self.Back_dic['C'] + Point([0,2]), 'right')
+
+        del self.fold_line[1]
+        del self.labelled_line[:]
+        del self.grainline
+        self.set_grainline(self.Back_dic['E2']+Point([10,-20]),20 , np.pi/2)
+        self.set_fold_line(self.Back_dic['H'] + Point([0,-2]), self.Back_dic['C'] + Point([0,2]), 'right')

@@ -81,6 +81,79 @@ class Basic_Skirt(Pattern):
             print("style Chiappetta selected")
             self.chiappetta_basic_skirt()
 
+
+    def Gilewska_basic_skirt(self):
+        """Basic pencil skirt whith slight asymmetry
+
+        """
+        A = Point([0,self.m["hauteur_taille_genou"]])
+        B = A + Point([self.m["tour_bassin"]/2,0])
+        D = Point([0,0])
+        F = D + Point([self.m["tour_bassin"]/2,0])
+        E = self.middle(D,F) + Point([-1,0])
+        C = self.middle(A,B) + Point([-1,0])
+
+        H = A + Point([0,-self.m["hauteur_bassin"]])
+        H2 = B + Point([0,-self.m["hauteur_bassin"]])
+        H1 = self.middle(H,H2) + Point([-1,0])
+
+
+        # dart calculation for two darts
+        # dart centers
+        DF = B + Point([-self.m['ecart_poitrine']/2,-9])
+        DB = A + Point([self.m['ecart_poitrine']/2,-12])
+
+        dw = 0.5*(self.m['tour_bassin']-self.m['tour_taille'])
+
+        if dw > 12:
+            dwfb  = 3 # max front and back dart = 3
+            dwbc = 1 # center back
+            dws = 0.5*dw - dwfb - dwbc # side dart
+        else:
+            dwfb = np.floor((dw-1)/4) # front and back darts
+            dwbc = 1 # center back
+            dws = np.ceil((dw-1)/4) # sides
+
+
+        K = B + Point([0,-1.5])
+        J = C + Point([dws,0])
+        L = C + Point([-dws,0])
+        P = A + Point([1,-1.5])
+
+        T4,T5 = self.add_dart(DB,P,L,dwfb,draw_curves=True)
+        T2,T3 = self.add_dart(DF,J,K,dwfb,draw_curves=True)
+        self.waist_curves = [T2,T3,T4,T5]
+
+        #sides
+        H3 = C +Point([0,-14]) # place a control point slightly below the depth of the back dart
+        points_back_side = [L,H3,H1]
+        ds, skirt_back_side = self.pistolet(points_back_side, 2,tot=True)
+        points_front_side = [H1, H3, J]
+        ds, skirt_front_side = self.pistolet(points_front_side, 2,tot=True)
+
+        self.Back_vertices = [[D.pos(),H.pos(),P.pos()] + T4 + [DB.pos()] + T5 + skirt_back_side +\
+        [E.pos(),D.pos()]]
+        self.Front_vertices = [[E.pos()] + skirt_front_side +  T2 + [DF.pos()] + T3 +\
+        [H2.pos(),F.pos(),E.pos()]]
+
+        key = ['D','H','P','A','L','H1','E','DB']
+        val = [D,H,P,A,L,H1,E,DB]
+        for k,v in zip(key,val):
+            self.Back_dic[k] = v
+
+        key = ['E','H1','J','DF','B','K','H2','F']
+        val = [E,H1,J,DF,B,K,H2,F]
+        for k,v in zip(key,val):
+            self.Front_dic[k] = v
+
+        self.set_fold_line(H2 + Point([0,-2]), F + Point([0,2]), 'right')
+        self.set_fold_line(H + Point([0,-2]), D + Point([0,2]), 'left')
+        self.add_labelled_line(H, H2, 'HIP LINE','t')
+        self.add_labelled_line(A, B, 'WAIST LINE','t')
+        self.add_comment(self.middle(E,F)+Point([0,5]),'FRONT')
+        self.add_comment(self.middle(D,E)+Point([0,5]),'BACK')
+        self.set_grainline(DF + Point([0,-30]))
+
     def chiappetta_basic_skirt(self):
         """Basic pencil skirt (jupe droite)
            for girls between 2 and 16.

@@ -19,13 +19,11 @@ ease=8
 
 ##################
 
-p = OP.Basic_Skirt(pname='W40D',style='Donnanno',curves=True)
-p.draw(dic = {"Pattern":"Pencil skirt"}, save=True, info=True)
+p = OP.Basic_Skirt(pname='W38G',style='Gilewska',curves=True)
+p.draw()
 # w = OP.Waistband(pname='W40D')
 # w.draw()
 
-p2 = OP.Skirt_transform(pname = 'W40D', style = 'Donnanno',model = 'Flared-A-Line',curves=True)
-p2.draw()
 
 
 # Women

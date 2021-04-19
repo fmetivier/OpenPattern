@@ -81,25 +81,23 @@ def chiapetta_load():
     conn = sqlite3.connect('measurements.db')
     c = conn.cursor()
 
-    f = open("/home/metivier/Nextcloud/Personnel/couture/OpenPattern/measurements/chiapettaKids.csv")
+    f = open("/home/metivier/Nextcloud/Personnel/couture/OpenPattern/measurements/chiapettaMen.csv")
 
     entete = f.readline()
     entete = entete.strip("\n").split(";")
-    # for i in np.arange(len(entete)-1)+1:
-    # for i in [10]:
-    #     if entete[i] != '':
-    #         key = 'W' + str(entete[i]) + 'C'
-    #         c.execute("""insert into who (wkey, comment, gender) values (?,?,?)""", (key,"Chiappetta for kids","Girl"))
+    for i in np.arange(len(entete)-1)+1:
+        if entete[i] != '':
+            key = 'M' + str(entete[i]) + 'mC'
+            c.execute("""insert into who (wkey, comment, gender) values (?,?,?)""", (key,"Chiappetta for Men, medium size 175cm","M"))
 
 
     meas =  f.readlines()
     for m in meas:
         m  = m.strip("\n").split(";")
         for i in np.arange(len(m)-1)+1:
-        # for i in [10]:
             if m[i] != '':
-                key = 'W' + str(entete[i]) + 'C'
-                print('age', entete[i],m[0],m[i])
+                key = 'M' + str(entete[i]) + 'mC'
+                print('taille', entete[i],m[0],m[i])
                 c. execute("insert into measurements values (?,?,?)", (key,m[0],m[i]))
 
 
@@ -165,7 +163,7 @@ def table_meas():
 # measlist = ["sophie","G6C","G8C","G10C","G12C","G14C","G16C","gregoire","M36G","M38G","M38W","M40G","M40W","M42G","M42W","M44D","M44G","M44W","M46D","M46G","M46W","M48D","M48G","M48W","M50D","M50G","M52D","M52G","M54D","M54G","W34G","W36G","W38G","W40G","W42G","W44G","W46G","W48G"]
 # for pname in measlist:
 #     load_data(pname)
-# chiapetta_load()
+chiapetta_load()
 
 #donnanno_w_load()
-table_meas()
+# table_meas()

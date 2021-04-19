@@ -19,8 +19,8 @@ ease=8
 
 ##################
 
-p = OP.Basic_Skirt(pname='W38G',style='Gilewska',curves=True)
-p.draw()
+# p = OP.Basic_Skirt(pname='W38G',style='Gilewska',curves=True)
+# p.draw()
 # w = OP.Waistband(pname='W40D')
 # w.draw()
 
@@ -34,8 +34,8 @@ p.draw()
 # p.draw_sleeves()
 
 # Men
-# p = OP.Basic_Bodice(hip=False)
-# p.draw_bodice()
+p = OP.Basic_Bodice(pname="M40mC", style='Chiappetta')
+p.draw()
 
 # p = OP.Waist_Coat()
 

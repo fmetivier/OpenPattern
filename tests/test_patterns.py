@@ -36,7 +36,9 @@ ease=8
 # Men
 p = OP.Basic_Bodice(pname="M40mC", style='Chiappetta')
 p.draw()
-
+# p.draw_sleeves()
+p.chiappetta_armhole_sleeve_m()
+p.draw_sleeves()
 # p = OP.Waist_Coat()
 
 

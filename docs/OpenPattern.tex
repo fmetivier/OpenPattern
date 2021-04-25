@@ -85,7 +85,7 @@ Les patrons peuvent être construits sur-mesures à partir d'un ensemble de mesu
 Les sources que j'ai utilisées pour tracer les patrons proviennent d'ouvrage de patronnages classiques. Ces ouvrages, destinés au couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat c'est-à-dire  la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini).
 
 J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux.
-En premier lieu j'ai utilisé les quatre tomes de la série \textit{Le modélisme de mode} de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants j'ai utilisé le tome correspondant de Jacqueline Chiappetta  \cite{Chiappetta1999} (mon préféré). Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc.
+En premier lieu j'ai utilisé les quatre tomes de la série \textit{Le modélisme de mode} de Teresa Gilewska pour la femme et pour l'homme\cite{Gilewska1,Gilewska2,Gilewska4,Gilewska5}. J'ai aussi eu recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et homme également \cite{Donnanno2005,Donnanno2016}. Pour les enfants et l'homme j'ai utilisé les tomes correspondants de Jacqueline Chiappetta  \cite{Chiappetta1998,Chiappetta2000}\footnote{Ces livres peuvent apparaitre un peu peu ringards de prime abord. Ne vous y fiez pas ! ok le dessin est vieillot et les modèles ultra classiques mais ils sont remarquables par la clareté des explications et leur reproductibilité. Ce sont mes préférés.}. Enfin pour l'homme j'ai aussi eu recours au livre de  Claire Wargnier sur le vestiaire masculin \cite{wargnier2012}. Ces ouvrages sont tous rédigés de façon similaire. Ils exposent, en procédant pas à pas, les techniques empiriques de tracé d'un body, d'un pantalon, d'une chemise etc.
 
 la création d'un patron est donc une suite d'instruction comme «tracer un segment AB de longueur égale au 1/4 du tour de bassin» ou encore «ajouter une pince de 1.5 cm de 9cm de profondeur entre les points F1 et H» etc...
 OpenPattern reprend de façon quasi litérale ces techniques et leur principe de construction en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
@@ -155,12 +155,12 @@ La liste des bases actuellement disponibles est donnée table \ref{tab:basic_cla
 \begin{tabular}{lccc} \hline
 \multicolumn{4}{c}{\textbf{Body}}\\
 Style & Femmes & Hommes & Enfants \\ \hline
- Chiappetta & & & 10-16\\
+ Chiappetta & & x & 2-16\\
  Donnanno & x & x &\\
  Gilewska & x & x &\\ \hline
  \multicolumn{4}{c}{\textbf{Manche}}\\
  Style & Femmes & Hommes & Enfants \\ \hline
-  Chiappetta & & & \\
+  Chiappetta & & x & \\
   Donnanno &  &  &\\
   Gilewska & x & x &\\ \hline
  \multicolumn{4}{c}{\textbf{Pantalon}}\\
@@ -439,7 +439,8 @@ Donnanno & Femmes & 40 & 50 & 21 & W40D\\
 Donnanno & Hommes & 44 & 54 & 19 & M44D\\
 Wargnier & Hommes & 38 & 48 & 25 & M38W\\
 Chiappetta & Filles & 2 ans & 16 ans &23& W3C\\
-Chiappetta & Garçons & 6 ans & 16 ans &20& G6C\\ \hline
+Chiappetta & Garçons & 6 ans & 16 ans &20& G6C\\
+Chiappetta & Homme & 36 & 50 & 22 & M38mC\\ \hline
 \end{tabular}
 \end{center}
 \label{tab:meas_sum}
@@ -448,71 +449,74 @@ Chiappetta & Garçons & 6 ans & 16 ans &20& G6C\\ \hline
 
 Notons que la distinction garçon, homme n'est pas anodine. En effet si les effets de la puberté sur les filles sont connus et aboutissent notamment à l'usage  des pinces de buste et de taille, les patrons de bases sans pinces ne changent pratiquement pas. Chez les hommes la puberté produit une inversion de la forme du buste. Le tour de poitrine d'un garçon est en effet plus petit que  son tour de bassin à l'instar d'une femme. De ce point de vue, important pour le dessin d'un patron, le garçon et la fille sont de morphologies proches et plus proche de la femme que de l'homme. La puberté inverse la situation chez l'homme dont le tour de poitrine devient plus grand que son tour de bassin. Ce changement influence de façon nette le traçage du patron masculin et ce qu'on y projette dans tous les sens du terme même si de façon étonnante ceci n'est jamais discuté.
 
-J'ai recensé 51 mesures différentes chez mes sources. La répartition de ces différentes mesures en fonction des sources (tableau~\ref{tab:meas_det}) donne la mesure (:=)) des ennuis à venir. Chacun utilise un jeu de mesures communes mais brode en ajoutant ou pas des mesures différentes. Cela posera problème par exemple pour le tracé des épaules de l'homme qui présente des incohérence suivant les auteurs ou autrices. De façon générale l'homme est moins bien traité que la femme dans ces ouvrages (à l'exception des garçons de Chiappetta), probablement à cause du marché restreint qu'il représente et du moindre intérêt de son vestiraire (chemise, veste, pantalon pour faire simple). De fait ça part dans tous les sens chez les hommes... le plus gros écart sépare ceux qui mesurent la largeur des épaules et ceux qui mesurent la longueur des épaules. Quelques un mesurent les deux mais c'est plus rare. On notera que les mesures type varient d'un livre à l'autre. Pas toujours de mesure du tour de bras, du tour de jaret, du tour de cuisse.
+J'ai recensé 52 mesures différentes chez mes sources. La répartition de ces différentes mesures en fonction des sources (tableau~\ref{tab:meas_det}) donne la mesure (:=)) des ennuis à venir. Chacun utilise un jeu de mesures communes mais brode en ajoutant ou pas des mesures différentes. Cela posera problème par exemple pour le tracé des épaules de l'homme qui présente des incohérence suivant les auteurs ou autrices. De façon générale l'homme est moins bien traité que la femme dans ces ouvrages (à l'exception des garçons de Chiappetta), probablement à cause du marché restreint qu'il représente et du moindre intérêt de son vestiraire (chemise, veste, pantalon pour faire simple). De fait ça part dans tous les sens chez les hommes... le plus gros écart sépare ceux qui mesurent la largeur des épaules et ceux qui mesurent la longueur des épaules. Quelques un mesurent les deux mais c'est plus rare. On notera que les mesures type varient d'un livre à l'autre. Pas toujours de mesure du tour de bras, du tour de mollet, du tour de cuisse. Chiappetta différencie les tailles de chemises et les tailles de pantalon (celle que je conserve ici), le drop associé (différence entre demi tour de poitrine et demi tour de taille) et la stature (trois hauteurs sont données 170,175 et 180 cm).
 
 Enfin pour ne rien gâcher les correspondances de tailles varient d'un pays à l'autre donc un 38 de Gilewska n'est pas un 38 de Donnanno... Officiellement il faut rajouter 4 aux tailles italiennes pour retrouver, approximativement, la taille française. Un 36 de Gilewska correspond donc à un 40 de Donnanno. Sauf que dans les fait quand on compare les valeurs on est plutôt sur une différence de 2 (un 38 Gilewska correspondant à un 40 Donnanno).
 
 \begin{table}
 \begin{center}
-\begin{tabular}{lccccccc} \hline
-Mesures & \multicolumn{2}{c}{Gilewska} & \multicolumn{2}{c}{Donnanno} & Wargnier & \multicolumn{2}{c}{Chiappetta}\\
-& F & H & F & H & H & F & G\\  \hline
-carrure devant&&&X&&&&\\ \hline
-carrure\_devant&X&X&&&X&X&\\ \hline
-carrure\_dos&X&X&X&&X&X&X\\ \hline
-cheville\_terre&&&&&&X&X\\ \hline
-crane&&&&&&X&X\\ \hline
-ecart\_poitrine&X&&X&&&&\\ \hline
-encolure\_dos&&&X&&&&\\ \hline
-enfourchure&&&&&X&&\\ \hline
-entrejambe&&X&&&X&&\\ \hline
-entrejambe\_terre&&&&&&&X\\ \hline
-fourche&X&&&&&&\\ \hline
-genou\_terre&&&&&&&X\\ \hline
-hauteur\_bassin&X&X&X&X&X&X&\\ \hline
-hauteur\_carrure&X&&&&&&\\ \hline
-hauteur\_corps&&&&&X&&\\ \hline
-hauteur\_coude&X&X&&X&&X&X\\ \hline
-hauteur\_emmanchure&X&&&&&&\\ \hline
-hauteur\_petites\_hanches&X&&&&&&\\ \hline
-hauteur\_poitrine&X&&&&&&\\ \hline
-hauteur\_taille\_genou&X&&X&X&X&X&\\ \hline
-hauteur\_taille\_terre&&&X&&X&&\\ \hline
-hauteur\_tete&&&&&X&&\\ \hline
-largeur\_encolure&X&&&&&&\\ \hline
-largeur\_epaule&&X&&X&&&\\ \hline
-largeur\_secteur&&&&X&&&\\ \hline
-longueur\_col\_devant&X&&&&&&\\ \hline
-longueur\_col\_dos&X&&&&&&\\ \hline
-longueur\_devant&X&X&X&X&X&X&\\ \hline
-longueur\_devant\_7c&&&&&X&&\\ \hline
-longueur\_dos&X&X&X&X&X&X&X\\ \hline
-longueur\_emmanchure\_devant&X&&&X&&&\\ \hline
-longueur\_emmanchure\_dos&X&&&X&&&\\ \hline
-longueur\_epaule&X&X&X&X&X&X&X\\ \hline
-longueur\_manche&X&X&X&X&X&X&X\\ \hline
-longueur\_taille\_terre&X&X&&X&&X&\\ \hline
-montant&X&X&X&X&X&X&X\\ \hline
-profondeur\_emmanchure&X&&&X&&&\\ \hline
-profondeur\_encolure\_devant&X&&&&&&\\ \hline
-profondeur\_encolure\_dos&X&&&&&&\\ \hline
-profondeur\_poitrine&&&X&&&&\\ \hline
-stature&&&X&X&&&\\ \hline
-tour\_bassin&X&X&X&X&X&X&X\\ \hline
-tour\_bras&X&X&X&&&X&X\\ \hline
-tour\_cheville&X&&&&&X&X\\ \hline
-tour\_cou&&&X&&&&\\ \hline
-tour\_cuisse&X&X&&&X&&\\ \hline
-tour\_encolure&X&X&&X&X&X&X\\ \hline
-tour\_genou&X&&&&&X&X\\ \hline
-tour\_jarret&&&&&X&&\\ \hline
-tour\_mollet&&&&&X&X&X\\ \hline
-tour\_petites\_hanches&X&&&&&&\\ \hline
-tour\_poignet&X&X&X&&X&X&X\\ \hline
-tour\_poitrine&X&X&X&X&X&X&X\\ \hline
-tour\_poitrine\_haute&&&X&&&&\\ \hline
-tour\_taille&X&X&X&X&X&X&X\\ \hline
-tour\_tete&&&&&X&&\\ \hline
+\begin{tabular}{lcccccccc} \hline
+Mesures & \multicolumn{2}{c}{Gilewska} & \multicolumn{2}{c}{Donnanno} & Wargnier & \multicolumn{3}{c}{Chiappetta}\\
+& F & H & F & H & H & F & G & H\\  \hline
+Mesure& FG & MG & WD & MD & MW & WC & GC & MC\\
+carrure devant&&&X&&&&&\\ \hline
+carrure\_devant&X&X&&&X&X&&X\\ \hline
+carrure\_dos&X&X&X&&X&X&X&X\\ \hline
+cheville\_terre&&&&&&X&X&X\\ \hline
+crane&&&&&&X&X&X\\ \hline
+ecart\_poitrine&X&&X&&&&&\\ \hline
+encolure\_dos&&&X&&&&&\\ \hline
+enfourchure&&&&&X&&&\\ \hline
+entrejambe&&X&&&X&&&\\ \hline
+entrejambe\_terre&&&&&&&X&X\\ \hline
+fourche&X&&&&&&&\\ \hline
+genou\_sol&&&&&&&&X\\ \hline
+genou\_terre&&&&&&&X&\\ \hline
+hauteur\_bassin&X&X&X&X&X&X&&\\ \hline
+hauteur\_carrure&X&&&&&&&\\ \hline
+hauteur\_corps&&&&&X&&&X\\ \hline
+hauteur\_coude&X&X&&X&&X&X&\\ \hline
+hauteur\_emmanchure&X&&&&&&&\\ \hline
+hauteur\_petites\_hanches&X&&&&&&&\\ \hline
+hauteur\_poitrine&X&&&&&&&\\ \hline
+hauteur\_taille\_genou&X&&X&X&X&X&&\\ \hline
+hauteur\_taille\_terre&&&X&&X&&&\\ \hline
+hauteur\_tete&&&&&X&&&\\ \hline
+largeur\_encolure&X&&&&&&&\\ \hline
+largeur\_epaule&&X&&X&&&&\\ \hline
+largeur\_secteur&&&&X&&&&\\ \hline
+longueur\_7cerv\_enc&&&&&&&&X\\ \hline
+longueur\_col\_devant&X&&&&&&&X\\ \hline
+longueur\_col\_dos&X&&&&&&&X\\ \hline
+longueur\_devant&X&X&X&X&X&X&&\\ \hline
+longueur\_devant\_7c&&&&&X&&&\\ \hline
+longueur\_dos&X&X&X&X&X&X&X&X\\ \hline
+longueur\_emmanchure\_devant&X&&&X&&&&X\\ \hline
+longueur\_emmanchure\_dos&X&&&X&&&&X\\ \hline
+longueur\_epaule&X&X&X&X&X&X&X&X\\ \hline
+longueur\_manche&X&X&X&X&X&X&X&X\\ \hline
+longueur\_taille\_terre&X&X&&X&&X&&\\ \hline
+montant&X&X&X&X&X&X&X&X\\ \hline
+profondeur\_emmanchure&X&&&X&&&&\\ \hline
+profondeur\_encolure\_devant&X&&&&&&&\\ \hline
+profondeur\_encolure\_dos&X&&&&&&&\\ \hline
+profondeur\_poitrine&&&X&&&&&\\ \hline
+stature&&&X&X&&&&\\ \hline
+tour\_bassin&X&X&X&X&X&X&X&X\\ \hline
+tour\_bras&X&X&X&&&X&X&X\\ \hline
+tour\_cheville&X&&&&&X&X&X\\ \hline
+tour\_cou&&&X&&&&&\\ \hline
+tour\_cuisse&X&X&&&X&&&X\\ \hline
+tour\_encolure&X&X&&X&X&X&X&X\\ \hline
+tour\_genou&X&&&&&X&X&X\\ \hline
+tour\_jarret&&&&&X&&&\\ \hline
+tour\_mollet&&&&&X&X&X&X\\ \hline
+tour\_petites\_hanches&X&&&&&&&\\ \hline
+tour\_poignet&X&X&X&&X&X&X&X\\ \hline
+tour\_poitrine&X&X&X&X&X&X&X&X\\ \hline
+tour\_poitrine\_haute&&&X&&&&&\\ \hline
+tour\_taille&X&X&X&X&X&X&X&X\\ \hline
+tour\_tete&&&&&X&&&\\ \hline
 \end{tabular}
 \end{center}
 \label{tab:meas_det}

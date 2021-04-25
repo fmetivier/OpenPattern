@@ -745,7 +745,7 @@ class Pattern:
             Y = M.y
         else:
             X = (M.x*dx + A.x*dy**2 / dx - dy*(A.y-M.y))/(dx+dy**2/dx)
-            Y = (dy/dx)*(X - M.x) + A.y
+            Y = (dy/dx)*(X - A.x) + A.y
 
         return Point([X,Y])
 
@@ -837,7 +837,7 @@ class Pattern:
 
         :param    dic_list: list of dictionnaries of points to be plotted as points
                 with label
-        :param    vertices_list: list of vertices_list to be plotted as lines
+        :param    vertices_list: list of vertices list to be plotted as lines
 
 
         :returns:    fig, ax

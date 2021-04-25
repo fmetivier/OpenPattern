@@ -93,6 +93,7 @@ class Basic_Bodice(Pattern):
 				self.chiappetta_basic_bodice(self.age)
 			else:
 				self.chiappetta_basic_bodice_m()
+				self.chiappetta_basic_sleeve_m()
 
 		else:
 			print("style %s unknown, using Donnanno instead" % (self.style))
@@ -130,40 +131,7 @@ class Basic_Bodice(Pattern):
 			ax = self.add_legends(ax)
 
 		if save:
-			if fname:# def add_legends(self, ax):
-	# 	"""Adds common legends to the Bodice pattern
-	#
-	# 	Args:
-	# 		ax on which to plot
-	#
-	# 	Returns:
-	# 		ax
-	# 	"""
-	#
-	# 	bpd = self.Bodice_points_dic
-	# 	fs=14
-	#
-	# 	pos = self.middle(bpd['WB'], bpd['SlB'])
-	# 	ax.text(pos.x- 0.5, pos.y, 'FOLD LINE', fontsize=fs, rotation = 90)
-	#
-	# 	pos = self.middle(bpd['WF'], bpd['SlF'])
-	# 	ax.text(pos.x+ 0.5, pos.y, 'MIDDLE FRONT', fontsize=fs, rotation = 90)
-	#
-	# 	ldic={'color':'blue', 'alpha':0.4, 'linestyle':'dashed'}
-	#
-	# 	self.segment(bpd['WF'], bpd['WB'], ax, ldic)
-	# 	pos = self.middle(bpd['WF'], bpd['WB'])
-	# 	ax.text(pos.x, pos.y+0.5, 'WAIST LINE', fontsize=fs, ha='center')
-	#
-	# 	self.segment(bpd['SlF'], bpd['SlB'], ax, ldic)
-	# 	pos = self.middle(bpd['SlF'], bpd['SlB'])
-	# 	ax.text(pos.x, pos.y+0.5, 'SLEEVE LINE', fontsize=fs, ha='center')
-	#
-	# 	self.segment(bpd['BF'], bpd['BB'], ax, ldic)
-	# 	pos = self.middle(bpd['BF'], bpd['BB'])
-	# 	ax.text(pos.x, pos.y+0.5, 'BUST LINE', fontsize=fs, ha='center')
-	#
-	# 	return ax
+			if fname:
 				pass
 			else:
 				fname = 'Basic_Bodice'
@@ -192,44 +160,50 @@ class Basic_Bodice(Pattern):
 		#1 draw
 		fig, ax = self.draw_pattern([self.Sleeve_points_dic], [self.Sleeve_vertices])
 
-		bl_dic={'color':'blue','linestyle':'dashed','alpha':0.5}
+		bl_dic = {'color':'blue','linestyle':'dashed','alpha':0.5}
 
 		spd = self.Sleeve_points_dic
 
-		self.segment(spd['A'], Point([0, 0]), ax, bl_dic)
-
-		if self.gender=='w':
-			PF = self.middle(spd['W'], spd['W1'])
-			ax.text(PF.x, PF.y, 'FRONT', ha='center')
-
-			PB = self.middle(spd['W'], spd['W0'])
-			ax.text(PB.x, PB.y, 'BACK', ha='center')
-
-		else:
-			x = spd['B'].x
-			y = spd['B'].y/2
-			ax.text(x+5, y, 'FRONT', ha='left')
-			ax.text(x-5, y, 'BACK', ha='right')
-
-
 
 		#2 add specific info
+
 		if self.style == 'Gilewska':
+			self.segment(spd['A'], Point([0, 0]), ax, bl_dic)
+
 			if self.gender == 'm':
+
+				x = spd['B'].x
+				y = spd['B'].y/2
+				ax.text(x+5, y, 'FRONT', ha='left')
+				ax.text(x-5, y, 'BACK', ha='right')
+
 				width=self.distance(spd['C'], spd['D'])
 				self.segment(spd['C'], spd['D'], ax, bl_dic)
 				self.segment(spd['C1'], spd['E'], ax, bl_dic)
 				self.segment(spd['F'], spd['D1'], ax, bl_dic)
 			elif self.gender == 'w':
+				PF = self.middle(spd['W'], spd['W1'])
+				ax.text(PF.x, PF.y, 'FRONT', ha='center')
+
+				PB = self.middle(spd['W'], spd['W0'])
+				ax.text(PB.x, PB.y, 'BACK', ha='center')
+
 				width=self.distance(spd['E'], spd['D'])
 				self.segment(spd['E'], spd['D'], ax, bl_dic)
 				self.segment(spd['E'], spd['A'], ax, bl_dic)
 				self.segment(spd['A'], spd['D'], ax, bl_dic)
-		elif self.style == 'Donnanno':
+		elif self.style == 'Chiappetta':
+
+			self.segment(spd['A'],spd['C'],ax,bl_dic)
+			self.segment(spd['A'],spd['E'],ax,bl_dic)
+			self.segment(spd['A'],spd['D'],ax,bl_dic)
+			self.segment(spd['E'],spd['D'],ax,bl_dic)
+
+		else:
 			pass
 
 		#3 add Heading
-		ax = self.print_info(ax, {"Sleeve length": round(spd['A'].y,1), "Sleeve width": round(width,1)})
+		# ax = self.print_info(ax, {"Sleeve length": round(spd['A'].y,1), "Sleeve width": round(width,1)})
 
 		if save:
 			if fname:
@@ -257,27 +231,29 @@ class Basic_Bodice(Pattern):
 	# 		ax
 	# 	"""
 	#
-	# 	bpd = self.Bodice_points_dic
+	# 	bbd = self.Back_dic
+	# 	bfd = self.Front_dic
+	#
 	# 	fs=14
 	#
-	# 	pos = self.middle(bpd['WB'], bpd['SlB'])
+	# 	pos = self.middle(bbd['WB'], bbd['SlB'])
 	# 	ax.text(pos.x- 0.5, pos.y, 'FOLD LINE', fontsize=fs, rotation = 90)
 	#
-	# 	pos = self.middle(bpd['WF'], bpd['SlF'])
+	# 	pos = self.middle(bfd['WF'], bfd['SlF'])
 	# 	ax.text(pos.x+ 0.5, pos.y, 'MIDDLE FRONT', fontsize=fs, rotation = 90)
 	#
 	# 	ldic={'color':'blue', 'alpha':0.4, 'linestyle':'dashed'}
 	#
-	# 	self.segment(bpd['WF'], bpd['WB'], ax, ldic)
-	# 	pos = self.middle(bpd['WF'], bpd['WB'])
+	# 	self.segment(bfd['WF'], bbd['WB'], ax, ldic)
+	# 	pos = self.middle(bfd['WF'], bbd['WB'])
 	# 	ax.text(pos.x, pos.y+0.5, 'WAIST LINE', fontsize=fs, ha='center')
 	#
-	# 	self.segment(bpd['SlF'], bpd['SlB'], ax, ldic)
-	# 	pos = self.middle(bpd['SlF'], bpd['SlB'])
+	# 	self.segment(bfd['SlF'], bbd['SlB'], ax, ldic)
+	# 	pos = self.middle(bfd['SlF'], bbd['SlB'])
 	# 	ax.text(pos.x, pos.y+0.5, 'SLEEVE LINE', fontsize=fs, ha='center')
 	#
-	# 	self.segment(bpd['BF'], bpd['BB'], ax, ldic)
-	# 	pos = self.middle(bpd['BF'], bpd['BB'])
+	# 	self.segment(bfd['BF'], bbd['BB'], ax, ldic)
+	# 	pos = self.middle(bfd['BF'], bbd['BB'])
 	# 	ax.text(pos.x, pos.y+0.5, 'BUST LINE', fontsize=fs, ha='center')
 	#
 	# 	return ax
@@ -562,7 +538,8 @@ class Basic_Bodice(Pattern):
 	def chiappetta_basic_bodice(self, age=14, d_FB = 5):
 		""" Calculation of bodice with no dart
 			for children using Chiapetta technique
-
+			differences arise with age and sex on the shoulder angle and the use
+			of carrure devant for the girls.
 
 		Args:
 			age: age of the child, the pattern drafting depends on the age
@@ -594,9 +571,13 @@ class Basic_Bodice(Pattern):
 			ClCB2 = HB - [2, 0]
 
 			if age <10:
-				sa = 25 # shoulder angle
+				sa = 25 # shoulder angle for every one below 10
 			else:
-				sa = 22
+				if self.gender == "m":
+					sa = 22 # for boys
+				else:
+					sa = 20 # for girls
+
 			ShB1 = CB2 + [self.m['longueur_epaule']*np.cos(np.pi*(1 + sa/180)), \
 			self.m['longueur_epaule']*np.sin(np.pi*(1 + sa/180))]
 
@@ -616,12 +597,15 @@ class Basic_Bodice(Pattern):
 			SlF1 = SlF + WF1
 
 			BF = WF + [0, BB.y]
-			# Chiappetta only use one carrure, the back one, and applied on the front too
+			# Chiappetta only use one carrure below 10 and for boys, the back one
+			# only girls above 10 have a carrure devant
 			if age < 10:
 				BF1 = BF + [self.m["carrure_dos"]/2, 0]
 			else:
-				BF1 = BF + [self.m["carrure_dos"]/2 - 1, 0]
-
+				if self.gender == "m":
+					BF1 = BF + [self.m["carrure_dos"]/2 - 1, 0]
+				else:
+					BF1 = BF + [self.m["carrure_devant"]/2, 0]
 
 			CF1 = HF - [0, self.m["tour_encolure"]/6+1.5]
 			CF2 = HF + [self.m["tour_encolure"]/6 + 1, 0]
@@ -651,7 +635,7 @@ class Basic_Bodice(Pattern):
 			self.Back_vertices = [WB.pos(), HB.pos()] + back_collar_curve + [ShB1.pos()] + back_sleeve_curve + [SlB1.pos(), WB1.pos()]
 			self.Front_vertices = [WF.pos(), CF1.pos()] + front_collar_curve + [ShF1.pos()] +  front_sleeve_curve + [SlF1.pos(), WF1.pos()]
 
-	def chiappetta_basic_bodice_m(self, BF_space=2):
+	def chiappetta_basic_bodice__ori_m(self, BF_space=2):
 		"""Calculation of the basic bodice for men
 
 			Chiappetta has it (as always)!
@@ -738,7 +722,352 @@ class Basic_Bodice(Pattern):
 			print(key,val.pos())
 			self.Back_dic[key]=val
 
+	def chiappetta_basic_bodice_m(self, BF_space=4):
+		"""Calculation of the basic bodice for men
 
+			Chiappetta has it (as always)!
+			front left, back right as always in Chiappetta
+
+
+		"""
+
+		# points du 1/2 devant
+
+		WF = Point([0,0])
+		WF1 = WF + Point([self.m["tour_poitrine"]/4 + 1,0])
+		HF = WF +  Point([0,self.m["longueur_dos"]])
+
+		SlF = HF - Point([0,self.m["longueur_dos"]/2 + 2])
+		SlF1 = SlF + Point([self.m["tour_poitrine"]/4 + 1,0])
+
+		d23 = (2/3) * self.distance(HF,SlF)
+		BF = HF - Point([0,d23])
+		BF1 = BF + Point([self.m["carrure_devant"]/2+1,0])
+
+		CF = HF - Point([0,self.m["tour_encolure"]/5])
+		CF1 = CF + Point([self.m["tour_encolure"]/5,0])
+		ClCF = CF1 + Point([-(1/10)*self.m["tour_encolure"]*np.cos(np.pi/4),+(1/10)*self.m["tour_encolure"]*np.sin(np.pi/4)])
+		ClCF2 = HF + Point([self.m["tour_encolure"]/5,0])
+		CF2 = ClCF2 + Point([0,1])
+
+		a = np.arctan(2.4/5.)
+
+		ShF1 = CF2 + Point([self.m["longueur_epaule"]*np.cos(a),-self.m["longueur_epaule"]*np.sin(a)])
+
+		#points du 1/2 dos
+		WB = WF + Point([self.m["tour_poitrine"]/2 + 2 + BF_space,0])
+		WB1 = WB - Point([self.m["tour_poitrine"]/4 + 1,0])
+		HB = WB + Point([0,self.m["longueur_dos"]])
+		SlB = HB - Point([0,self.m["longueur_dos"]/2 + 2])
+		SlB1 = SlB - Point([self.m["tour_poitrine"]/4 + 1,0])
+
+		dBC = (2/3) * self.distance(HB,SlB)
+		BB = HB - Point([0,dBC])
+		BB1 = BB - Point([self.m["carrure_dos"]/2+1, 0])
+
+		CB = HB - Point([self.m["tour_encolure"]/5, 0])
+		CB2 = CB + Point([0, self.m["tour_encolure"]/18])
+		ClCB = CB + Point([np.cos(np.pi/4)*self.m["tour_encolure"]/20, np.sin(np.pi/4)*self.m["tour_encolure"]/20])
+
+		b = np.arctan(2/5)
+		ShB1 = CB2 - Point([np.cos(b)*(self.m["longueur_epaule"]+1),np.sin(b)*(self.m["longueur_epaule"]+1)])
+
+		#courbes
+		#encolure
+		self.m['longueur_col_devant'], self.front_collar_curve = self.pistolet([CF,ClCF,CF2], 2, tot=True)
+		self.m['longueur_col_dos'], self.back_collar_curve = self.pistolet([HB,ClCB,CB2], 2, tot = True)
+
+		#armhole
+		bb = b - np.pi/2
+		ClShB = ShB1 + Point([np.cos(bb)*2,np.sin(bb)*2])
+		ClBB = BB1 + Point([0,-1])
+		# ClBB = Point([BB1.x,SlB1.y]) + Point([-1.5*np.cos(np.pi/4),1.5*np.sin(np.pi/4)])
+
+		aa = a + np.pi/2
+		ClShF = ShF1 + Point([np.cos(aa)*2,-np.sin(aa)*2])
+		ClBF = BF1 + Point([0,-1])
+		# ClBF1 = Point([BF1.x,SlF1.y]) + Point([2*np.cos(np.pi/4),2*np.sin(np.pi/4)])
+
+		self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1,ClShB,BB1,ClBB,SlB1], 3, tot=True)
+		print("emmanchure dos",self.m["longueur_emmanchure_dos"])
+		self.m["longueur_emmanchure_devant"], self.front_sleeve_curve =  self.pistolet([ShF1,ClShF,BF1,ClBF,SlF1], 3, tot=True)
+		print("emmanchure devant",self.m["longueur_emmanchure_devant"])
+
+		#armhole depth
+		X = self.middle(ShB1,ShF1)
+		Y = self.middle(SlB1,SlF1)
+		self.m["profondeur_emmanchure"] = self.distance(X,Y)
+
+		self.Back_vertices = [[WB.pos(), HB.pos()] + self.back_collar_curve + [ShB1.pos()] + self.back_sleeve_curve + [WB1.pos(), WB.pos()]]
+		self.Front_vertices = [[WF.pos(), CF.pos()] + self.front_collar_curve + [ShF1.pos()] +  self.front_sleeve_curve + [WF1.pos(), WF.pos()]]
+
+		FPl = ['HF','WF','WF1','BF','BF1','CF','CF1','CF2','SlF','SlF1','ShF1','ClCF','ClCF2','X','Y']
+		FP = [HF,WF,WF1,BF,BF1,CF,CF1,CF2,SlF,SlF1,ShF1,ClCF,ClCF2,X,Y]
+
+		for key,val in zip(FPl,FP):
+			self.Front_dic[key]=val
+
+		BPl = ['WB','HB','SlB','BB','SlB1','WB1','BB1','CB','ClCB','CB2','ShB1']
+		BP = [WB,HB,SlB,BB,SlB1,WB1,BB1,CB,ClCB,CB2,ShB1]
+
+		for key,val in zip(BPl,BP):
+			print(key,val.pos())
+			self.Back_dic[key]=val
+
+		# comments
+		self.set_fold_line(BB + Point([0,-2]), WB + Point([0,2]), 'right')
+		self.set_fold_line(BF + Point([0,-2]), WF + Point([0,2]), 'left')
+		self.add_labelled_line(BF, BB, 'BUST LINE','t')
+		self.add_labelled_line(WF, WB, 'WAIST LINE','t')
+		self.add_comment(self.middle(SlF,SlF1)+Point([0,5]),'FRONT')
+		self.add_comment(self.middle(SlB,SlB1)+Point([0,5]),'BACK')
+		self.set_grainline(self.middle(SlF,SlF1) + Point([0,-10]))
+
+	def chiappetta_armhole_sleeve_m(self):
+		""" Sleeve drawn from armhole curves
+			Often used for shirts
+		"""
+
+		bc = []
+		fc = []
+
+
+		# f = plt.figure()
+
+
+		# rotate and position front curve
+
+		P0 = self.front_sleeve_curve[0]
+		P1 = self.front_sleeve_curve[1]
+
+
+		a = 90 + (P1[0]-P0[0])/(P1[1]-P0[1])*180/np.pi + 180
+
+
+		for pos in self.front_sleeve_curve:
+			p = Point(pos)
+			p.move([-P0[0],-P0[1]])
+			p.rotate([0,0],a)
+			fc.append(p.pos())
+			# f = plt.plot(pos[0],pos[1],'go')
+			# f = plt.plot(p.x,p.y,'go')
+
+		apex_point = Point(fc[0])
+
+		# rotate and position back curve
+		P0 = self.back_sleeve_curve[0]
+		P1 = self.back_sleeve_curve[1]
+
+		a = (P1[0]-P0[0])/(P1[1]-P0[1])*180/np.pi - 90 + 180
+
+		for pos in self.back_sleeve_curve:
+			p = Point(pos)
+			p.move([-P0[0],-P0[1]])
+			p.rotate([0,0],a)
+			bc.append(p.pos())
+			# f = plt.plot(pos[0],pos[1],'bo')
+			# f = plt.plot(p.x,p.y,'gs')
+
+		plt.plot(apex_point.x,apex_point.y,'bo')
+
+		# mirror the last 6cms of front curve
+		d = 0
+		fc2 = []
+		N = len(fc)-1
+		for i in np.arange(len(fc)-1):
+			d += np.sqrt((fc[N-i][0]-fc[N-i-1][0])**2 + (fc[N-i][1]-fc[N-i-1][1])**2 )
+			if d <= 6:
+				fc2.append(fc[N-i])
+				last_point = Point(fc[N-i])
+
+
+		# calculate the mirror angle
+		d0 = self.distance(Point(fc2[0]),last_point)
+		left_point = last_point - Point([d0,0])
+		# plt.plot(left_point.x, left_point.y, 'bo')
+		d1 = self.distance(left_point,Point(fc2[0]))
+
+		a_mirror = np.arctan(d1/(2*np.sqrt(d0**2-d1**2 / 4)))
+
+		# draw the symmetry line
+		A = Point(fc2[len(fc2)-1])
+		B = A - Point([10*np.cos(a_mirror),10*np.sin(a_mirror)])
+		# plt.plot([A.x,B.x],[A.y,B.y],'b--')
+		end_front_curve=[]
+		for pos in fc2:
+			p = Point(pos)
+			# plt.plot(p.x,p.y,'r.')
+			M = self.project_point(p, A, B)
+			# plt.plot(M.x,M.y,'r.')
+			Pp = self.mirror_point(p, M)
+			# plt.plot(Pp.x,Pp.y,'r.')
+			end_front_curve.append(Pp.pos())
+
+		# plt.plot(last_point.x, last_point.y, 'bo')
+
+		# find center point and back_point
+		center_point = Point([apex_point.x, last_point.y])
+		# plt.plot(center_point.x, center_point.y, 'bo')
+
+
+
+		hd = center_point.x - last_point.x
+		back_point = center_point + Point([hd,0])
+
+		# rotate until one point of back curves approches back_point
+		# by less then 0.1 cm
+		alist = np.arange(0.1,50,0.1)
+
+		i=0
+		d = 10
+		P0 = bc[0]
+		while d > 0.1:
+			tmp_bc = []
+			dlist=[]
+			for pos in bc:
+				p = Point(pos)
+				p.rotate(P0,alist[i])
+				tmp_bc.append(p.pos())
+				dlist.append(self.distance(p,back_point))
+
+			d = min(dlist)
+			bc = tmp_bc
+			i+=1
+
+
+		j = np.nonzero(dlist == min(dlist))
+		j = int(j[0])
+		real_back_point = Point(bc[j])
+
+		# print(alist[i])
+		# for pos in bc:
+		# 	plt.plot(pos[0],pos[1],'ms')
+		# plt.axis('square')
+
+		# Mirror the points after the real_back_point
+		# calculate the mirror angle
+		d0 = self.distance(Point(bc[-1]),real_back_point)
+		right_point = real_back_point + Point([d0,0])
+		# plt.plot(right_point.x, right_point.y, 'bo')
+		d1 = self.distance(right_point,Point(bc[-1]))
+
+
+		a_mirror = np.arctan(d1/(2*np.sqrt(d0**2-d1**2 / 4)))
+
+		A = real_back_point
+		B = A + Point([10*np.cos(-a_mirror),10*np.sin(-a_mirror)])
+		# plt.plot([A.x,B.x],[A.y,B.y],'b--')
+
+		#extract last curve
+		end_back_curve = []
+
+		for pos in bc[j:len(bc)-1]:
+			p = Point(pos)
+			# plt.plot(p.x,p.y,'r.')
+			M = self.project_point(p, A, B)
+			# plt.plot(M.x,M.y,'r.')
+			Pp = self.mirror_point(p, M)
+			# plt.plot(Pp.x,Pp.y,'r.')
+			end_back_curve.append(Pp.pos())
+
+
+		# plt.plot(real_back_point.x, real_back_point.y,'bs')
+		# plt.plot(back_point.x, back_point.y, 'bo')
+
+		#redraw armcurve
+		control_points = [last_point, apex_point, real_back_point]
+		darm , arm_curve = self.pistolet(control_points, 2, tot=True)
+
+
+
+		# for p in arm_curve:
+		# 	plt.plot(p[0],p[1],'ks')
+
+		#renew point dictionnary
+		self.Sleeve_points_dic = {}
+
+		self.Sleeve_points_dic['A'] = apex_point
+		self.Sleeve_points_dic['B'] = center_point
+		self.Sleeve_points_dic['E'] = left_point
+		self.Sleeve_points_dic['D'] = right_point
+		self.Sleeve_points_dic['E2'] = last_point
+		self.Sleeve_points_dic['D2'] = real_back_point
+
+		C = apex_point - Point([0, self.m["longueur_manche"]])
+		G = C - Point([self.m["tour_poignet"]/2 +2, 0])
+		F = C + Point([self.m["tour_poignet"]/2 +2, 0])
+
+		self.Sleeve_points_dic['C'] = C
+		self.Sleeve_points_dic['G'] = G
+		self.Sleeve_points_dic['F'] = F
+		self.Sleeve_vertices = end_front_curve + arm_curve + end_back_curve + [F.pos(), G.pos(),left_point.pos()]
+
+		#check lengths
+		dfront = 0
+		for i in np.arange(len(end_front_curve)-1):
+			dfront += np.sqrt((end_front_curve[i+1][0] - end_front_curve[i][0])**2 +\
+			(end_front_curve[i+1][1] - end_front_curve[i][1])**2 )
+		dback = 0
+		for i in np.arange(len(end_back_curve)-1):
+			dback += np.sqrt((end_back_curve[i+1][0] - end_back_curve[i][0])**2 +\
+			 (end_back_curve[i+1][1] - end_back_curve[i][1])**2 )
+
+		print(dfront+darm+dback)
+
+
+	def chiappetta_basic_sleeve_m(self):
+		"""Basic Sleeve for men
+
+		   Straight sleeve base without cuff
+
+		"""
+
+		C = Point([0,0])
+		G = C - Point([self.m["tour_poignet"]/2 + 2, 0])
+		F = C + Point([self.m["tour_poignet"]/2 + 2, 0])
+
+		A = C + Point([0,self.m["longueur_manche"]])
+		B = A - Point([0, (4./5)*self.m["profondeur_emmanchure"]-1])
+
+		E = B - Point([(3./4)*self.m["longueur_emmanchure_devant"],0])
+		D = B + Point([(3./4)*self.m["longueur_emmanchure_dos"],0])
+
+		A1 = self.middle(A,B)
+
+		# control points
+		E0 = self.intersec_manches(A, E, A1, 135)
+		CPE0 = E0 + Point([2*np.cos(3*np.pi/4), 2*np.sin(3*np.pi/4)])
+		D0 = self.intersec_manches(A, D, A1, 45)
+		CPD0 = D0 + Point([1.8*np.cos(np.pi/4), 1.8*np.sin(np.pi/4)])
+
+		E1 = self.intersec_manches(A, E, B, 135)
+		CPE1 = E1 + Point([np.cos(3*np.pi/4), np.sin(3*np.pi/4)])
+
+		D1 = self.intersec_manches(A, D, B, 45)
+		CPD1 = D1 + Point([1.5*np.cos(np.pi/4), 1.5*np.sin(np.pi/4)])
+
+		E2 = self.middle(E1,E)
+		CPE2 = E2 - Point([0.8*np.cos(3*np.pi/4), 0.8*np.sin(3*np.pi/4)])
+		D2 = self.middle(D1,D)
+		CPD2 = self.middle(D2,D) - Point([0.5*np.cos(np.pi/4), 0.5*np.sin(np.pi/4)])
+
+		# calculate curves
+		fpoints = [E,CPE2,CPE1,CPE0,A]
+		dfc, front_curve_points = self.pistolet(fpoints, 4, tot=True)
+		print('front sleeve', dfc)
+
+		bpoints = [A,CPD0,CPD1,D2,CPD2,D]
+		dbc, back_curve_points = self.pistolet(bpoints, 4, tot=True)
+		print('back sleeve', dbc)
+
+		key_list = ['A','A1','B','C','D','D0','D1','D2','CPD0','CPD1','CPD2','E','E0','E1','E2','CPE0','CPE1','CPE2']
+		val_list = [A,A1,B,C,D,D0,D1,D2,CPD0,CPD1,CPD2,E,E0,E1,E2,CPE0,CPE1,CPE2]
+
+		for key, val in zip(key_list, val_list):
+			self.Sleeve_points_dic[key] = val
+
+		self.Sleeve_vertices = [G.pos(),E.pos()] + front_curve_points + [A.pos()] +\
+			back_curve_points + [F.pos(),G.pos()]
 
 	def Gilewska_basic_bodice_m(self, BF_space=10):
 		""" Calculation of bodice with no dart
@@ -782,6 +1111,7 @@ class Basic_Bodice(Pattern):
 		SlF1 = Point([x_dev, SlF.y]) #G1
 		#12
 		BF = Point([WF.x, BB.y]) #H
+		# BF1 = BF + [-self.m["carrure_devant"]/2, 0] #H1
 		BF1 = BF + [-self.m["carrure_devant"]/2, 0] #H1
 		#13
 		CF1 = HF + [-self.m["tour_encolure"]/6 -1, 0] #F2
@@ -853,8 +1183,8 @@ class Basic_Bodice(Pattern):
 		# Front Shoulder
 		#################################################
 		#16
-		#~ ShF1 = [HF1.x, HF1.y-7] #valeur Gilewska je la trouve très élevée et les longueurs d'épaules ne coincident pas
-		ShF1 = HF1 + [0, -5] # valeur Donnanno  et là les  longueurs d'épaules coincident...
+		ShF1 = Point([HF1.x, HF1.y-7]) #valeur Gilewska je la trouve très élevée et les longueurs d'épaules ne coincident pas
+		# ShF1 = HF1 + [0, -5] # valeur Donnanno  et là les  longueurs d'épaules coincident...
 
 		dShF = self.distance(CF1,  ShF1)
 		if self.m["longueur_epaule"]>0:
@@ -871,13 +1201,15 @@ class Basic_Bodice(Pattern):
 		# Front Sleeve
 		#################################################
 		#19
+		af = self.segment_angle(CF1, ShF1) + np.pi/2
+		CPShF1 = ShF1 + Point([-np.cos(af)*2,-np.sin(af)*2])
 		f_length = 2 #min 2 max 2.2
 		CPSlF = Point([ BF1.x-np.cos(np.pi/4)*f_length, SlF1.y+np.sin(np.pi/4)*f_length])
 		CPSlF1 = SlF1 + [0.5, 0] #point added to ensure correct tangents.
 		#~ CPSlF2 = BF1 + [0, -1] #point added to ensure correct tangents.
 		#~ CPSlF3 = self.middle(BF1, ShF1) #point added to ensure correct tangents.
 
-		self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.pistolet( [ShF1, BF1,  CPSlF, CPSlF1, SlF1], 2, tot=True)
+		self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.pistolet( [ShF1, CPShF1, BF1,  CPSlF, CPSlF1, SlF1], 2, tot=True)
 		#~ self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.pistolet([ShF1, BF1, SlF1], 2, tot=True)
 		print("Longueur emmanchure devant: %4.0f" % (self.m["longueur_emmanchure_devant"]))
 
@@ -910,10 +1242,10 @@ class Basic_Bodice(Pattern):
 			Front_Points_Names  =  ['WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
 
 		for i in range(len(Back_Points_Names)):
-			self.Bodice_points_dic[Back_Points_Names[i]] = Back_Points_list[i]
+			self.Back_dic[Back_Points_Names[i]] = Back_Points_list[i]
 
 		for i in range(len(Front_Points_Names)):
-			self.Bodice_points_dic[Front_Points_Names[i]] = Front_Points_list[i]
+			self.Front_dic[Front_Points_Names[i]] = Front_Points_list[i]
 
 
 		#########################################
@@ -932,6 +1264,14 @@ class Basic_Bodice(Pattern):
 
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
 
+		# comments
+		self.set_fold_line(BB + Point([0,-2]), WB + Point([0,2]), 'left')
+		self.set_fold_line(BF + Point([0,-2]), WF + Point([0,2]), 'right')
+		self.add_labelled_line(BF, BB, 'BUST LINE','t')
+		self.add_labelled_line(WF, WB, 'WAIST LINE','t')
+		self.add_comment(self.middle(SlF,SlF1)+Point([0,5]),'FRONT')
+		self.add_comment(self.middle(SlB,SlB1)+Point([0,5]),'BACK')
+		self.set_grainline(self.middle(SlF,SlF1) + Point([0,-10]))
 
 
 	def Gilewska_basic_sleeve_m(self):

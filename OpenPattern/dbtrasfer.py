@@ -138,17 +138,17 @@ def table_meas():
 
     sql="""select mtype, sum(wkey = 'W36G') as WG, sum(wkey='M36G') as MG,
     sum(wkey='W40D') as WD, sum(wkey='M44D') as MD, sum(wkey='M38W') as MW, sum(wkey='W10C') as WC,
-    sum(wkey='G10C') as GC from measurements group by mtype;"""
+    sum(wkey='G10C') as GC, sum(wkey='M38mC') as MC from measurements group by mtype;"""
 
     conn = sqlite3.connect('measurements.db')
     c = conn.cursor()
 
     f=open("tableau_croise.tex",'w')
-    f.write("""\\begin{tabular}{llllllll}\n
-    Mesure& FG & MG & WD & MD & MW & WC & GC\\\\ \n""")
+    f.write("""\\begin{tabular}{lllllllll}\n
+    Mesure& FG & MG & WD & MD & MW & WC & GC & MC\\\\ \n""")
     for row in c.execute(sql):
         st = row[0].replace('_','\_')
-        for i in range(7):
+        for i in range(8):
             if row[i+1]==1:
                 st += "&X"
             else:
@@ -163,7 +163,7 @@ def table_meas():
 # measlist = ["sophie","G6C","G8C","G10C","G12C","G14C","G16C","gregoire","M36G","M38G","M38W","M40G","M40W","M42G","M42W","M44D","M44G","M44W","M46D","M46G","M46W","M48D","M48G","M48W","M50D","M50G","M52D","M52G","M54D","M54G","W34G","W36G","W38G","W40G","W42G","W44G","W46G","W48G"]
 # for pname in measlist:
 #     load_data(pname)
-chiapetta_load()
+# chiapetta_load()
 
 #donnanno_w_load()
-# table_meas()
+table_meas()

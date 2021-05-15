@@ -14,8 +14,9 @@ import numpy as np
 
 
 # Skirts
-# p = OP.Basic_Skirt(pname='W16C')
-ease=8
+# # p = OP.Basic_Skirt(pname='W16C')
+# p.draw()
+# ease=8
 
 ##################
 
@@ -34,14 +35,15 @@ ease=8
 # p.draw_sleeves()
 
 # Men
-p = OP.Basic_Bodice(pname="M40mC", style='Chiappetta')
-p.draw()
+# p = OP.Basic_Bodice(pname="M40mC", style='Chiappetta')
+# p.draw()
 # p.draw_sleeves()
-p.chiappetta_armhole_sleeve_m()
-p.draw_sleeves()
 # p = OP.Waist_Coat()
 
-
+p = OP.Shirt(pname="gregoire")
+p.basic_shirt_bodice()
+p.draw()
+p.draw_subpatterns(True)
 
 # p = OP.Hospital_Gown()
 # p.draw_gown()

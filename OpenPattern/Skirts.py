@@ -269,7 +269,7 @@ class Basic_Skirt(Pattern):
             for i in range(len(key)): # add new points to the dictionnary
                 self.Back_dic[key[i]] = val[i]
 
-            self.Back_vertices = [[A2.pos(), I11.pos(), dart11.pos(), I21.pos(), I12.pos(),dart12.pos(),I22.pos(), G.pos()] + elf.skirt_back_side + [E.pos(), C.pos()]]
+            self.Back_vertices = [[A2.pos(), I11.pos(), dart11.pos(), I21.pos(), I12.pos(),dart12.pos(),I22.pos(), G.pos()] + self.skirt_back_side + [E.pos(), C.pos()]]
 
             key=['B', 'B1', 'B2', 'dart21','dart22','I31','I32','I41','I42' ,'H','F','E','D']
             val=[B, B1, B2, dart21, dart22, I31, I32, I41, I42, H, F, E, D]

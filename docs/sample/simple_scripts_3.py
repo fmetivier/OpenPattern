@@ -47,9 +47,6 @@ myPattern.add_comment(OP.Point([2.8,8,]),'VV',a*np.pi/180) # workaround for notc
 
 # draw
 # here comes the new part
-# create a figure and an axes
-fig = plt.figure()
-ax = fig.add_axes([0,0,1,1])
 
 # copy and translate/rotate  myPattern
 # then add the new pattern to myPattern list of patterns
@@ -68,9 +65,9 @@ P4.translate(35,30)
 myPattern.add_pattern(P4)
 
 # draw the subpatterns onf fig,ax
-f, a  = myPattern.draw_subpatterns(fig, ax, overlay = True)
+myPattern.draw_subpatterns(overlay = True)
 # in the end draw mypattern on top of it
-myPattern.draw(save=True, fname='simple_scripts_3', ifig = f, iax = a)
+myPattern.draw(save=True, fname='simple_scripts_3')
 
 plt.show()
 

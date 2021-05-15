@@ -34,7 +34,7 @@ class Basic_Bodice(Pattern):
 
 	"""
 
-	def __init__(self, pname="M44G", gender='m', style='Gilewska', age=99, ease=8, hip=True):
+	def __init__(self, pname="M44G", gender='m', style='Gilewska', age=99, ease=8, hip=True, Back_Front_space = 4):
 		"""
 		Initilizes parent class &  attributes
 		launches the calculation of bodice and sleeve
@@ -50,6 +50,7 @@ class Basic_Bodice(Pattern):
 		"""
 		Pattern.__init__(self, pname, gender)
 
+		self.Back_Front_space = Back_Front_space
 		self.style=style
 		self.age=age
 		self.hip=hip
@@ -722,7 +723,7 @@ class Basic_Bodice(Pattern):
 			print(key,val.pos())
 			self.Back_dic[key]=val
 
-	def chiappetta_basic_bodice_m(self, BF_space=4):
+	def chiappetta_basic_bodice_m(self):
 		"""Calculation of the basic bodice for men
 
 			Chiappetta has it (as always)!
@@ -730,6 +731,7 @@ class Basic_Bodice(Pattern):
 
 
 		"""
+		BF_space = self.Back_Front_space
 
 		# points du 1/2 devant
 

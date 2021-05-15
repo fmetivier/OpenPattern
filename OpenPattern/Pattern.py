@@ -934,7 +934,7 @@ class Pattern:
 
         for vertices in vertices_list:
             if overlay:
-                poly  =  Polygon(vertices,  facecolor = '0.96',  edgecolor = 'silver')
+                poly  =  Polygon(vertices,  facecolor = '0.96',  edgecolor = '0.6')
                 ax.add_patch(poly)
             else:
                 poly  =  Polygon(vertices,  facecolor = '0.9',  edgecolor = '0.5')
@@ -1078,7 +1078,7 @@ class Pattern:
 
         return ax
 
-    def draw(self, dic = {"Pattern":"My beautiful pattern"}, save = False, fname = None, info = False, legends = True, paper = 'FullSize', ifig = None, iax = None, scale_val = 5, overlay = False):
+    def draw(self, dic = {"Pattern":"My beautiful pattern"}, save = False, fname = None, info = False, legends = True, paper = 'FullSize', scale_val = 5, overlay = False):
         """ Draw pattern with legends and save it if asked for
 
 
@@ -1092,23 +1092,23 @@ class Pattern:
 
         dl, vl = self.generate_lists()
 
-        if ifig and iax:
+        if hasattr(self, 'fig') and hasattr(self, 'ax'):
             print('given fig and axes')
-            fig, ax = self.draw_pattern(dl, vl, [], ifig, iax, overlay)
+            self.draw_pattern(dl, vl, [], self.fig, self.ax, overlay)
         else:
             print('Nothing exists')
-            fig, ax = self.draw_pattern(dl, vl, [], None, None, overlay)
+            self.fig, self.ax = self.draw_pattern(dl, vl, [], None, None, overlay)
 
         # 2 print heading
         if info:
-            self.print_info(ax, dic)
+            self.print_info(self.ax, dic)
 
         # 3 print specific drawings
         if legends:
-            self.add_legends(ax)
+            self.add_legends(self.ax)
 
         if save:
-            self.add_scales(ax, scale_val)
+            self.add_scales(self.ax, scale_val)
             if fname:
                 pass
             else:
@@ -1121,28 +1121,27 @@ class Pattern:
             plt.savefig(of)
 
             if paper != 'FullSize':
-                self.paper_cut(fig, ax, name = fname, paper = paper)
+                self.paper_cut(fig, self.ax, name = fname, paper = paper)
 
-        return fig, ax
 
-    def draw_subpatterns(self, fig, ax, legends = False, info = False, overlay = False):
+    def draw_subpatterns(self, overlay = False):
         """Draws each sub_pattern on a figure
         enables for different levels of patterning and composite Patterns
 
-        :param ifig: figure to draw on if given
-        :param iax: axes to draw on if given
         """
-        if fig and ax:
-            # print("figure given")
-            for p in self.pattern_list:
-                p.draw(legends = legends, info = info, ifig = fig, iax = ax, overlay = overlay)
-        else:
-            # print("no figure given")
-            for p in self.pattern_list:
-                p.draw(legends = legends, info = info, overlay = overlay)
 
-        if fig and ax:
-            return fig, ax
+        for p in self.pattern_list:
+
+            dl, vl = p.generate_lists()
+
+            if hasattr(self, 'fig') and hasattr(self, 'ax'):
+                print('given fig and axes')
+                self.draw_pattern(dl, vl, [], self.fig, self.ax, overlay)
+            else:
+                print('Nothing exists')
+                self.fig, self.ax = self.draw_pattern(dl, vl, [], None, None, overlay)
+
+
 
     def set_grainline(self, A = Point([0,0]), length = 10, angle = np.pi/2):
         """ sets the droit-fil list porperty to be added to legends.

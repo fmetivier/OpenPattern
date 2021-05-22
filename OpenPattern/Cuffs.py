@@ -23,7 +23,7 @@ class Cuffs(Pattern):
 	styles available: Simple, French
 	"""
 
-	def __init__(self, pname = "sophie", gender = 'w', style = 'Donnanno', age = 12, cuff_style = 'Simple',\
+	def __init__(self, pname = "sophie", gender = 'w', style = 'Gilewska', age = 12, cuff_style = 'Simple',\
 		overlap = 2, width = 5, ease = 3 ):
 
 		Pattern.__init__(self,pname, gender)

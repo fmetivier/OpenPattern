@@ -11,7 +11,7 @@ class Placket(Pattern):
 	Sleeve placket and underlap (if wanted)
 
 	"""
-	def __init__(self, pname = "sophie", gender = 'w', placket_style = 'Simple', slit_length = 10):
+	def __init__(self, pname = "sophie", gender = 'w', placket_style = 'SimpleOneSide', slit_length = 11):
 
 		Pattern.__init__(self,pname, gender)
 

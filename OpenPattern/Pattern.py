@@ -934,7 +934,7 @@ class Pattern:
 
         for vertices in vertices_list:
             if overlay:
-                poly  =  Polygon(vertices,  facecolor = '0.96',  edgecolor = '0.6')
+                poly  =  Polygon(vertices,  facecolor = '0.96',  edgecolor = '0.6', alpha=0.5)
                 ax.add_patch(poly)
             else:
                 poly  =  Polygon(vertices,  facecolor = '0.9',  edgecolor = '0.5')

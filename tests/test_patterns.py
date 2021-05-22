@@ -36,14 +36,26 @@ import numpy as np
 
 # Men
 # p = OP.Basic_Bodice(pname="M40mC", style='Chiappetta')
+# p.chiappetta_armhole_sleeve_m()
 # p.draw()
 # p.draw_sleeves()
-# p = OP.Waist_Coat()
 
-p = OP.Shirt(pname="gregoire")
-p.basic_shirt_bodice()
+
+p = OP.Shirt(pname="gregoire", gender='m', age=16)
+p.basic_shirt_bodice(style="G")
+p.chiappetta_armhole_sleeve_m(ease=3,folds=1,fold_width=1,fente=11, wrist=5)
+p.draw_sleeves()
 p.draw()
-p.draw_subpatterns(True)
+# p.draw_subpatterns(overlay=True)
+
+cu = OP.Cuffs(pname="gregoire",gender='m',cuff_style='French',width=5,ease=3,overlap=2)
+cu.draw_cuffs()
+
+co = OP.Collars(pname='gregoire',gender='m',collar_style='TwoPieces',overlap=2)
+co.draw_collar()
+
+
+
 
 # p = OP.Hospital_Gown()
 # p.draw_gown()

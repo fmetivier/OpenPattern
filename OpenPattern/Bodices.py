@@ -91,7 +91,7 @@ class Basic_Bodice(Pattern):
 		elif self.style == 'Chiappetta':
 			print("style Chiappetta selected")
 			if age != 99:
-				self.chiappetta_basic_bodice(self.age)
+				self.chiappetta_basic_bodice(self.age, d_FB = Back_Front_space)
 			else:
 				self.chiappetta_basic_bodice_m()
 				self.chiappetta_basic_sleeve_m()
@@ -584,9 +584,9 @@ class Basic_Bodice(Pattern):
 
 			#collar
 			collar_back_points = [HB, ClCB2, ClCB, CB2]
-			self.m['longueur_col_dos'], back_collar_curve = self.pistolet(collar_back_points, 2, tot = True)
+			self.m['longueur_col_dos'], self.back_collar_curve = self.pistolet(collar_back_points, 2, tot = True)
 			#armhole
-			self.m["longueur_emmanchure_dos"], back_sleeve_curve =  self.pistolet([ShB1, BB1, SlB1], 2, tot=True)
+			self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1, BB1, SlB1], 2, tot=True)
 
 			# Front bodice
 			WF = Point([0, 0])
@@ -614,27 +614,33 @@ class Basic_Bodice(Pattern):
 				lcf = 2.2
 			else:
 				lcf = 3
-			ClCF = [CF2.x+lcf*np.cos(3*np.pi/4), CF1.y+lcf*np.sin(3*np.pi/4)]
+
+			ClCF = Point([CF2.x+lcf*np.cos(3*np.pi/4), CF1.y+lcf*np.sin(3*np.pi/4)])
 
 			collar_front_points = np.array([CF1, ClCF, CF2])
-			self.m['longueur_col_devant'], front_collar_curve = self.pistolet(collar_front_points, 2, tot=True)
+			self.m['longueur_col_devant'], self.front_collar_curve = self.pistolet(collar_front_points, 2, tot=True)
 
 			ShF1 = CF2 + [self.m['longueur_epaule']*np.cos(-25*np.pi/180), \
 			self.m['longueur_epaule']*np.sin(-25*np.pi /180)]
 
 			sleeve_front_points = np.array([ShF1, BF1, SlF1])
-			self.m["longueur_emmanchure_devant"], front_sleeve_curve = self.pistolet(sleeve_front_points, 2, tot=True)
+			self.m["longueur_emmanchure_devant"], self.front_sleeve_curve = self.pistolet(sleeve_front_points, 2, tot=True)
 
-			bodice_points_keys=['WF', 'WF1', 'SlF', 'SlF1', 'BF', 'BF1', 'CF1', 'CF2', 'HF', 'ShF1', 'ClCF', \
-			'WB', 'WB1', 'SlB', 'SlB1', 'BB', 'BB1', 'HB', 'CB2', 'ShB1', 'ClCB']
-			bodice_points_val=[WF, WF1, SlF, SlF1, BF, BF1, CF1, CF2, HF, ShF1, ClCF, \
-			WB, WB1, SlB, SlB1, BB, BB1, HB, CB2, ShB1, ClCB]
 
-			for key, val in zip(bodice_points_keys, bodice_points_val):
-				self.Bodice_points_dic[key] = val
+			front_points_keys =['WF', 'WF1', 'SlF', 'SlF1', 'BF', 'BF1', 'CF', 'CF2', 'HF', 'ShF1', 'ClCF']
+			front_points_val=[WF, WF1, SlF, SlF1, BF, BF1, CF1, CF2, HF, ShF1, ClCF]
 
-			self.Back_vertices = [WB.pos(), HB.pos()] + back_collar_curve + [ShB1.pos()] + back_sleeve_curve + [SlB1.pos(), WB1.pos()]
-			self.Front_vertices = [WF.pos(), CF1.pos()] + front_collar_curve + [ShF1.pos()] +  front_sleeve_curve + [SlF1.pos(), WF1.pos()]
+			for key,val in zip(front_points_keys,front_points_val):
+				self.Front_dic[key] = val
+
+			back_points_keys= ['WB', 'WB1', 'SlB', 'SlB1', 'BB', 'BB1', 'HB', 'CB2', 'ShB1', 'ClCB']
+			back_points_val=[WB, WB1, SlB, SlB1, BB, BB1, HB, CB2, ShB1, ClCB]
+
+			for key,val in zip(back_points_keys,back_points_val):
+				self.Back_dic[key] = val
+
+			self.Back_vertices = [WB.pos(), HB.pos()] + self.back_collar_curve + [ShB1.pos()] + self.back_sleeve_curve + [SlB1.pos(), WB1.pos()]
+			self.Front_vertices = [WF.pos(), CF1.pos()] + self.front_collar_curve + [ShF1.pos()] +  self.front_sleeve_curve + [SlF1.pos(), WF1.pos()]
 
 	def chiappetta_basic_bodice__ori_m(self, BF_space=2):
 		"""Calculation of the basic bodice for men
@@ -825,7 +831,7 @@ class Basic_Bodice(Pattern):
 		self.add_comment(self.middle(SlB,SlB1)+Point([0,5]),'BACK')
 		self.set_grainline(self.middle(SlF,SlF1) + Point([0,-10]))
 
-	def chiappetta_armhole_sleeve_m(self):
+	def chiappetta_armhole_sleeve_m(self, plot=False, ease=3,folds=1,fold_width=1,fente=11, wrist=5):
 		""" Sleeve drawn from armhole curves
 			Often used for shirts
 		"""
@@ -833,8 +839,8 @@ class Basic_Bodice(Pattern):
 		bc = []
 		fc = []
 
-
-		# f = plt.figure()
+		if plot:
+			f = plt.figure()
 
 
 		# rotate and position front curve
@@ -851,8 +857,9 @@ class Basic_Bodice(Pattern):
 			p.move([-P0[0],-P0[1]])
 			p.rotate([0,0],a)
 			fc.append(p.pos())
-			# f = plt.plot(pos[0],pos[1],'go')
-			# f = plt.plot(p.x,p.y,'go')
+			if plot:
+				f = plt.plot(pos[0],pos[1],'go')
+				f = plt.plot(p.x,p.y,'go')
 
 		apex_point = Point(fc[0])
 
@@ -867,10 +874,12 @@ class Basic_Bodice(Pattern):
 			p.move([-P0[0],-P0[1]])
 			p.rotate([0,0],a)
 			bc.append(p.pos())
-			# f = plt.plot(pos[0],pos[1],'bo')
-			# f = plt.plot(p.x,p.y,'gs')
+			if plot:
+				f = plt.plot(pos[0],pos[1],'bo')
+				f = plt.plot(p.x,p.y,'gs')
 
-		plt.plot(apex_point.x,apex_point.y,'bo')
+		if plot:
+			plt.plot(apex_point.x,apex_point.y,'bo')
 
 		# mirror the last 6cms of front curve
 		d = 0
@@ -886,7 +895,8 @@ class Basic_Bodice(Pattern):
 		# calculate the mirror angle
 		d0 = self.distance(Point(fc2[0]),last_point)
 		left_point = last_point - Point([d0,0])
-		# plt.plot(left_point.x, left_point.y, 'bo')
+		if plot:
+			plt.plot(left_point.x, left_point.y, 'bo')
 		d1 = self.distance(left_point,Point(fc2[0]))
 
 		a_mirror = np.arctan(d1/(2*np.sqrt(d0**2-d1**2 / 4)))
@@ -894,22 +904,28 @@ class Basic_Bodice(Pattern):
 		# draw the symmetry line
 		A = Point(fc2[len(fc2)-1])
 		B = A - Point([10*np.cos(a_mirror),10*np.sin(a_mirror)])
-		# plt.plot([A.x,B.x],[A.y,B.y],'b--')
+		if plot:
+			plt.plot([A.x,B.x],[A.y,B.y],'b--')
 		end_front_curve=[]
 		for pos in fc2:
 			p = Point(pos)
-			# plt.plot(p.x,p.y,'r.')
+			if plot:
+				plt.plot(p.x,p.y,'r.')
 			M = self.project_point(p, A, B)
-			# plt.plot(M.x,M.y,'r.')
+			if plot:
+				plt.plot(M.x,M.y,'r.')
 			Pp = self.mirror_point(p, M)
-			# plt.plot(Pp.x,Pp.y,'r.')
+			if plot:
+				plt.plot(Pp.x,Pp.y,'r.')
 			end_front_curve.append(Pp.pos())
 
-		# plt.plot(last_point.x, last_point.y, 'bo')
+		if plot:
+			plt.plot(last_point.x, last_point.y, 'bo')
 
 		# find center point and back_point
 		center_point = Point([apex_point.x, last_point.y])
-		# plt.plot(center_point.x, center_point.y, 'bo')
+		if plot:
+			plt.plot(center_point.x, center_point.y, 'bo')
 
 
 
@@ -918,7 +934,7 @@ class Basic_Bodice(Pattern):
 
 		# rotate until one point of back curves approches back_point
 		# by less then 0.1 cm
-		alist = np.arange(0.1,50,0.1)
+		alist = np.arange(0.05,100,0.01)
 
 		i=0
 		d = 10
@@ -933,6 +949,7 @@ class Basic_Bodice(Pattern):
 				dlist.append(self.distance(p,back_point))
 
 			d = min(dlist)
+			# print(d)
 			bc = tmp_bc
 			i+=1
 
@@ -995,13 +1012,43 @@ class Basic_Bodice(Pattern):
 		self.Sleeve_points_dic['E2'] = last_point
 		self.Sleeve_points_dic['D2'] = real_back_point
 
-		C = apex_point - Point([0, self.m["longueur_manche"]])
-		G = C - Point([self.m["tour_poignet"]/2 +2, 0])
-		F = C + Point([self.m["tour_poignet"]/2 +2, 0])
+
+		C = apex_point - Point([0, self.m["longueur_manche"] - wrist/2])
+
+		if folds==1:
+			G = C - Point([self.m["tour_poignet"]/2 +ease/2, 0])
+			F = C + Point([self.m["tour_poignet"]/2 +ease/2 + folds*fold_width, 0])
+		elif folds==2:
+			G = C - Point([self.m["tour_poignet"]/2 +ease/2, 0])
+			F = C + Point([self.m["tour_poignet"]/2 +ease/2 + folds*fold_width, 0])
+		elif folds==3:
+			G = C - Point([self.m["tour_poignet"]/2 +ease/2 + fold_width, 0])
+			F = C + Point([self.m["tour_poignet"]/2 +ease/2 + (folds-1)*fold_width, 0])
+
+		FB = self.middle(F,C)
+		FH = FB + Point([0,fente])
+
+		if folds >= 1:
+			F1 = self.middle(FB,C)
+			self.Sleeve_points_dic['F1'] = F1
+		if folds >= 2:
+			F2 = self.middle(FB,F)
+			self.Sleeve_points_dic['F2'] = F2
+		if folds >= 3:
+			F3 = self.middle(self.middle(G,C),C)
+			self.Sleeve_points_dic['F3'] = F3
+
+
+
+
 
 		self.Sleeve_points_dic['C'] = C
 		self.Sleeve_points_dic['G'] = G
 		self.Sleeve_points_dic['F'] = F
+		self.Sleeve_points_dic['FB'] = FB
+		self.Sleeve_points_dic['FH'] = FH
+
+
 		self.Sleeve_vertices = end_front_curve + arm_curve + end_back_curve + [F.pos(), G.pos(),left_point.pos()]
 
 		#check lengths
@@ -1014,7 +1061,7 @@ class Basic_Bodice(Pattern):
 			dback += np.sqrt((end_back_curve[i+1][0] - end_back_curve[i][0])**2 +\
 			 (end_back_curve[i+1][1] - end_back_curve[i][1])**2 )
 
-		print(dfront+darm+dback)
+		print('longueur totale', dfront+darm+dback, self.m['longueur_emmanchure_dos']+self.m['longueur_emmanchure_devant'])
 
 
 	def chiappetta_basic_sleeve_m(self):

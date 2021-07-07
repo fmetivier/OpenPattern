@@ -386,7 +386,7 @@ class Waistband(Pattern):
     """draws a waist band with different styles depending on init arguments
     """
 
-    def __init__(self, pname="W6C", ease=8, height=5):
+    def __init__(self, pname="W6C", ease=8, height=5, style='Donnanno'):
         """
         Initilizes parent class &  attributes
         launches the calculation of waistband
@@ -400,6 +400,7 @@ class Waistband(Pattern):
         Pattern.__init__(self, pname)
 
         self.ease = ease
+        self.style = style
 
         self.dic_list=[]
         self.vertices_list=[]
@@ -598,7 +599,7 @@ class Skirt_transform(Basic_Skirt):
 
 
         ######################
-        #built skirt vertices
+        # built skirt vertices
         ######################
         if self.curves:
             # redraw the waist curves
@@ -758,3 +759,92 @@ class Skirt_transform(Basic_Skirt):
         del self.grainline
         self.set_grainline(self.Back_dic['E2']+Point([10,-20]),20 , np.pi/2)
         self.set_fold_line(self.Back_dic['H'] + Point([0,-2]), self.Back_dic['C'] + Point([0,2]), 'right')
+
+
+class Culotte(Basic_Skirt):
+    """Transformations of the Basic pencil skirt into culottes
+
+    Donnanno
+
+    """
+
+    def __init__(self, pname="sophie", style='Donnanno', gender = 'W', ease = 8, overlay = False, model='basic'):
+
+        Basic_Skirt.__init__(self, pname, style, gender, ease, curves=False)
+
+        self.style = style
+        self.ease = ease
+        self.curves = False
+        self.model = model
+        self.overlay = overlay
+
+        # We DO NOT initialize the disc and list because they are initialized by the parent class
+        # but we keep a copy of it before transforming it
+        self.pattern_list.append(self.copy())
+
+        if self.style == 'Donnanno':
+            if self.model == 'basic':
+                self.donnanno_basic_culotte()
+
+
+    def donnanno_basic_culotte(self):
+
+        #add body rise
+        P = self.Front_dic['G'] + [0,-self.m["tour_bassin"]/10]
+        I = P + [-self.m["tour_bassin"]/10,0]
+        B1 = self.Front_dic['B'] + [-self.m["tour_bassin"]/10,0]
+        self.Front_dic['P'] = P
+        self.Front_dic['I'] = I
+        self.Front_dic['B1'] = B1
+
+        O = self.Back_dic['H'] + [0,-self.m["tour_bassin"]/10]
+        L = O + [self.m["tour_bassin"]/10,0]
+        C1 = self.Back_dic['C'] + [self.m["tour_bassin"]/10,0]
+        self.Back_dic['O'] = O
+        self.Back_dic['L'] = L
+        self.Back_dic['C1'] = C1
+
+        #add the control points for the body rise curve
+        control_P = P + [-4*np.cos(np.pi/4),4*np.sin(np.pi/4)]
+        control_O = O + [5*np.cos(np.pi/4),5*np.sin(np.pi/4)]
+
+        #modify the waist
+        self.Front_dic['W1'] += [2,0]
+        self.Front_dic['A1'] += [2,0]
+        self.Back_dic['W'] += [-2,0]
+        self.Back_dic['D1'] += [-2,4]
+
+        # recalculate the darts
+        dw = 0.5*(self.m['tour_bassin']-self.m['tour_taille'])
+        if dw > 12:
+            dwfb  = 3 # max front and back dart = 3
+        else:
+            dwfb = np.floor(dw/4)
+
+        self.Front_dic['T4'],self.Front_dic['T5'] = self.add_dart(self.Front_dic['S4'],self.Front_dic['A1'],self.Front_dic['W1'],dwfb)
+        self.Back_dic['T2'],self.Back_dic['T3'] = self.add_dart(self.Back_dic['S3'],self.Back_dic['D1'],self.Back_dic['W'],dwfb)
+
+
+        #redraw curves...not the waist curve for now
+        points_skirt_front = [self.Front_dic['W1'],self.Front_dic['E1'],self.Front_dic['E2']]
+        dbskirt_f, self.skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
+        points_skirt_back = [self.Back_dic['E2'],self.Back_dic['E1'],self.Back_dic['W']]
+        dbskirt_b, self.skirt_back_side = self.pistolet(points_skirt_back, 2, tot = True)
+
+        points_front_fourche = [I,control_P, self.Front_dic['G']]
+        db_ff, front_fourche = self.pistolet(points_front_fourche, 2, tot = True)
+        points_back_fourche = [L,control_O,self.Back_dic['H']]
+        db_bf, back_fourche = self.pistolet(points_back_fourche, 2, tot = True)
+
+        #vertices
+        self.Back_vertices = [[self.Back_dic['F'].pos(),self.Back_dic['C1'].pos(),self.Back_dic['L'].pos()] +\
+         back_fourche + [self.Back_dic['D1'].pos(), self.Back_dic['T3'].pos(), self.Back_dic['S3'].pos(), self.Back_dic['T2'].pos(), self.Back_dic['W'].pos()] +\
+         self.skirt_back_side[::-1] + [self.Back_dic['F'].pos(),self.Back_dic['C1'].pos()]]
+        self.Front_vertices = [[self.Front_dic['B1'].pos(), self.Front_dic['I'].pos()] +\
+         front_fourche + [self.Front_dic['A1'].pos(),self.Front_dic['T4'].pos(),self.Front_dic['S4'].pos(),self.Front_dic['T5'].pos(),self.Front_dic['W1'].pos()] +\
+         self.skirt_front_side + [self.Front_dic['E2'].pos(), self.Front_dic['F'].pos(),self.Front_dic['B1'].pos()]]
+
+        self.fold_line = []
+        # self.add_comment(self.middle(self.Front_dic['B'], self.Front_dic['F'])+Point([0,5]),'FRONT')
+        # self.add_comment(self.middle(self.Back_dic['F'], self.Back_dic['C'])+Point([0,5]),'BACK')
+        # self.set_grainline(self.Back_dic['S3'] + Point([0,-20]))

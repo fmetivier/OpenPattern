@@ -10,7 +10,7 @@ from OpenPattern.Bodices import *
 class Shirt(Basic_Bodice):
 
 
-	def __init__(self, pname="M40mC", gender='m', style='Chiappetta', age=99, ease=8, hip=True, Back_Front_space = 12, collar_ease = 1, sleeve_lowering = 2.5, side_ease = 4, shoulder_ease = 2):
+	def __init__(self, pname="M40mC", gender='m', style='Chiappetta', age=99, ease=8, hip=True, Back_Front_space = 12, collar_ease = 1, sleeve_lowering = 3, side_ease = 4, shoulder_ease = 2):
 
 		Basic_Bodice.__init__(self, pname, gender, style, age, ease, hip, Back_Front_space)
 

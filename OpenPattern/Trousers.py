@@ -62,6 +62,15 @@ class Basic_Trousers(Pattern):
 		self.Trousers_Front_Contour_list = []
 		self.Trousers_Back_Contour_list = []
 
+		#some issues with measurements
+		if "longueur_tot" in self.m:
+			pass
+		else:
+			if "hauteur_taille_terre" in self.m:
+				self.m["longueur_tot"]=self.m["hauteur_taille_terre"]
+			elif "longueur_taille_terre" in self.m:
+				self.m["longueur_tot"]=self.m["longueur_taille_terre"]
+
 
 		if self.style == 'Donnanno':
 			print("style Donnanno selected")
@@ -81,6 +90,8 @@ class Basic_Trousers(Pattern):
 		"""
 
 		#Front frame
+
+
 		A = Point([0, self.m["longueur_tot"]])
 		B = Point([self.m["tour_bassin"]/4, self.m["longueur_tot"]])
 		C = Point([0, 0])
@@ -134,7 +145,7 @@ class Basic_Trousers(Pattern):
 		D1 = N + [11, 0]
 
 		#knee
-		O = Point([X.x, M.y - self.m["hauteur_genou"]])
+		O = Point([X.x, M.y - self.m["hauteur_taille_genou"]])
 
 
 		# points en plus
@@ -222,7 +233,7 @@ class Basic_Trousers(Pattern):
 		N = Point([X.x, C.y])
 		X1 = Point([X.x, I.y])
 
-		O = Point([X.x, M.y - self.m["hauteur_genou"]])
+		O = Point([X.x, M.y - self.m["hauteur_taille_genou"]])
 		if self.gender == "m":
 			A1 = A - [4.5, 0]
 			A2 = A1 + [0, 2.5] # from 2 to 3.5
@@ -276,19 +287,19 @@ class Basic_Trousers(Pattern):
 			Back_Points_List=[A, B, C, D, E, F, G, H, E1, E2, I, L, X, M, N, O, A1, A2, B1, B3, B4, I1, L1, C1, D1, N1]
 
 			self.Trousers_Back_vertices = self.exterieur_arriere_bas + self.exterieur_arriere_haut + [B4.pos(), A2.pos()] + self.fourche_arriere + self.interieur_arriere + [N1.pos(), D1.pos()]
-			self.back_width=self.distance(B3, A)+self.distance(E, E1)
+			self.back_width = self.distance(B3, A)+self.distance(E, E1)
 		else:
 			dea1, self.exterieur_arriere1 = self.pistolet(np.array([D1, DD1, L1, F + [0.1,-2], F]), 3, tot = True)
 			dea2, self.exterieur_arriere2 = self.pistolet(np.array([F, H, B1]), 2, tot = True)
 			if self.darts == True:
-				Back_Points_Names=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'E2', 'E3', 'I', 'L', 'X', 'M', 'N', 'O', 'A1', 'A2', 'B1', 'B2', 'I1', 'L1', 'C1', 'D1', 'N1']
-				Back_Points_List=[A, B, C, D, E, F, G, H, E1, E2, E3, I, L, X, M, N, O, A1, A2, B1, B2, I1, L1, C1, D1, N1]
+				Back_Points_Names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'E2', 'E3', 'I', 'L', 'X', 'M', 'N', 'O', 'A1', 'A2', 'B1', 'B2', 'I1', 'L1', 'C1', 'D1', 'N1']
+				Back_Points_List = [A, B, C, D, E, F, G, H, E1, E2, E3, I, L, X, M, N, O, A1, A2, B1, B2, I1, L1, C1, D1, N1]
 			else:
-				Back_Points_Names=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'E2', 'E3', 'I', 'L', 'X', 'M', 'N', 'O', 'A1', 'A2', 'B1', 'I1', 'L1', 'C1', 'D1', 'N1']
-				Back_Points_List=[A, B, C, D, E, F, G, H, E1, E2, E3, I, L, X, M, N, O, A1, A2, B1, I1, L1, C1, D1, N1]
+				Back_Points_Names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'E2', 'E3', 'I', 'L', 'X', 'M', 'N', 'O', 'A1', 'A2', 'B1', 'I1', 'L1', 'C1', 'D1', 'N1']
+				Back_Points_List = [A, B, C, D, E, F, G, H, E1, E2, E3, I, L, X, M, N, O, A1, A2, B1, I1, L1, C1, D1, N1]
 
 			self.Trousers_Back_vertices = self.exterieur_arriere1 + self.exterieur_arriere2 + [B1.pos(), A2.pos()] + self.fourche_arriere + self.interieur_arriere + [N1.pos(), D1.pos()]
-			self.back_width=self.distance(B1, A)+self.distance(E, E1)
+			self.back_width = self.distance(B1, A)+self.distance(E, E1)
 
 		#
 		# finish by referencing the points and building the contour point list
@@ -312,7 +323,7 @@ class Basic_Trousers(Pattern):
 		Add front and back darts.
 		TODO darts properties should be given as lists with some default values
 		corresponding to typical values given in the book.
-		at pesent they are set by default to the typical values given by Donnanno
+		at present they are set by default to the typical values given by Donnanno
 		"""
 
 		if self.gender == "w":
@@ -453,9 +464,9 @@ class Basic_Trousers(Pattern):
 
 class Flared_pants(Basic_Trousers):
 	"""
-	Flared pants based on dartless basic trousers
+	Flared pants based on Donnanno dartless basic trousers
 
-	Args:
+	supplementary Args:
 		flare_length: added length of Trousers
 		flare_width: added width at the hem,
 		flare_start: place to start relative to Knee
@@ -616,3 +627,76 @@ class Pants_block(Basic_Trousers):
 
 				if paper != 'FullSize':
 					self.paper_cut(fig, ax, name='Block_pants', paper=paper)
+
+class Bermudas(Basic_Trousers):
+
+	"""
+	Bermudas based on Donnanno darted basic trousers
+
+	specific Args:
+	height_above_knee: added length of Trousers
+	"""
+
+	def __init__(self,pname = "gregoire", gender = 'm', height_above_knee = 4):
+
+		self.style='Donnanno'
+		self.darts=True
+		self.height_above_knee = 4
+		Basic_Trousers.__init__(self, pname, gender, self.style, self.darts)
+		Basic_Trousers.Donnanno_add_darts(self)
+
+		self.calculate_front_bermudas()
+		self.calculate_back_bermudas()
+
+	def calculate_front_bermudas(self):
+
+		# beware these are not  true copies. Changes to the dic changes the original which is fine to me !
+		pbf=self.Trousers_Front_points_dic
+
+		#place points and line above the knee
+		pbf['X2'] = pbf['O'] + [0,self.height_above_knee]
+		pbf['I2'] = Point([pbf['I1'].x,pbf['X2'].y])
+		pbf['L2'] = Point([pbf['L'].x,pbf['X2'].y])
+		pbf['I3'] = pbf['I2'] - [0,8]
+		pbf['L3'] = pbf['L2'] - [0,8]
+
+		# redraw side curve.
+		control_points = [pbf['B1'], pbf['H'], pbf['F']]
+		d, self.exterieur_avant = self.pistolet(control_points,2,tot=True)
+
+		#redefine the front
+		self.Front_vertices = [[ pbf['I3'].pos(), pbf['E1'].pos() ] +\
+		 self.fourche_avant + self.ceinture_avant + self.exterieur_avant + [pbf['L3'].pos(), pbf['I3'].pos()]]
+
+		for key in ['C1','C','N1','N','D1','D']:
+			pbf.pop(key,0)
+		self.Front_dic = pbf
+
+	def calculate_back_bermudas(self):
+		pbb=self.Trousers_Back_points_dic
+
+		#place points and line above the knee
+		pbb['X2'] = pbb['O'] + [0,self.height_above_knee]
+		pbb['I2'] = Point([pbb['E2'].x,pbb['X2'].y])
+		pbb['L2'] = Point([pbb['L'].x,pbb['X2'].y])
+		pbb['I3'] = pbb['I2'] - [0,8]
+		pbb['L3'] = pbb['L2'] - [0,8]
+
+
+
+		# redraw side curve.
+		control_points = [pbb['F'], pbb['H'], pbb['B1']]
+		d, self.exterieur_arriere = self.pistolet(control_points,2,tot=True)
+
+		if self.gender == 'w':
+			self.Back_vertices = [[ pbb['L3'].pos() ] + self.exterieur_arriere +\
+			 self.ceinture_arriere + self.fourche_arriere + [pbb['I3'].pos(), pbb['L3'].pos()]]
+		elif self.gender == "m":
+			# bugged because it's a simple copy of women back. To be redefined later
+			self.Back_vertices = [[ pbb['L3'].pos() ] + self.exterieur_arriere +\
+			 self.ceinture_arriere + self.fourche_arriere + [pbb['I3'].pos(), pbb['L3'].pos()]]
+
+		for key in ['C1','C','N1','N','D1','D']:
+			pbb.pop(key,0)
+
+		self.Back_dic = pbb

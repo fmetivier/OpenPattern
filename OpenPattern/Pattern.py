@@ -1021,9 +1021,13 @@ class Pattern:
         with PdfPages(fname) as pdf:
             for i in range(nx):
                 for j in range(ny):
-                    ax.set_xlim(xmin+i*x, min(xmin+(i+1)*x, xmax))
-                    ax.set_ylim(ymin+j*y, min(ymin+(j+1)*y, ymax))
-                    fname = 'p%i-%i' % (i, j)
+                    if (xmax - xmin - i*x) < x and (ymax- ymin - j*y) < y:
+                        ax.set_xlim(xmin+i*x, xmin+(i+1)*x)
+                        ax.set_ylim(ymin+j*y, ymin+(j+1)*y)
+                    else:
+                        ax.set_xlim(xmin+i*x, min(xmin+(i+1)*x, xmax))
+                        ax.set_ylim(ymin+j*y, min(ymin+(j+1)*y, ymax))
+                    pagename = 'p%i-%i' % (i, j)
 
                     x1, x2 = ax.get_xlim()
                     xpos = 0.5*(x1+x2)
@@ -1031,7 +1035,7 @@ class Pattern:
                     y1, y2 = ax.get_ylim()
                     ypos = 0.5*(y1+y2)
 
-                    ax.text(xpos, ypos, fname, fontsize=16, ha='center')
+                    ax.text(xpos, ypos, pagename, fontsize=16, ha='center')
                     pdf.savefig()
 
             ax.set_xlim(xmin, xmax)
@@ -1121,7 +1125,7 @@ class Pattern:
             plt.savefig(of)
 
             if paper != 'FullSize':
-                self.paper_cut(fig, self.ax, name = fname, paper = paper)
+                self.paper_cut(self.fig, self.ax, name = fname, paper = paper)
 
 
     def draw_subpatterns(self, overlay = False):

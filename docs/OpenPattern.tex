@@ -76,7 +76,8 @@ breakatwhitespace=false,
 
 \chapter{Introduction}
 
-\section{What is it}
+\section{What is it ?}
+
 OpenPattern  est une librairie python, orientée objet,  dont l'objectif est de permettre le tracé de patrons, en particulier de vêtements, à l'échelle 1:1 et leur sauvegarde au format pdf ou svg. Les patrons ainsi construits peuvent soit être directement imprimés pour utilisation soit être repris dans un logiciel de dessin comme Inkscape ou Illustrator.
 OpenPattern offre la possibilité de créer des patrons «from scratch», d'utiliser des librairies de patrons existants (patrons de bases notamment) et de les reprendre pour les adapter et les transformer.
 
@@ -90,9 +91,11 @@ En premier lieu j'ai utilisé les quatre tomes de la série \textit{Le modélism
 la création d'un patron est donc une suite d'instruction comme «tracer un segment AB de longueur égale au 1/4 du tour de bassin» ou encore «ajouter une pince de 1.5 cm de 9cm de profondeur entre les points F1 et H» etc...
 OpenPattern reprend de façon quasi litérale ces techniques et leur principe de construction en les adaptant quand cela se révèle nécessaire\footnote{Ces ouvrages présentent parfois des coquilles ou des imprécisions qui  sont probablement corrigées par leurs auteurs quand elles ou ils enseignent.}.
 
-Contrairement aux logiciels payant ou gratuits de patronnage le parti-pris ici est de créer  un patron au moyen d'un script, c'est à dire d'une série d'instructions, et non de le dessiner avec un interface utilisateurs graphiques. cela peut sembler rébarbatif au premier abord mais cela offre toute la souplesse d'un langage de programmation comme python.
+Contrairement aux logiciels payants ou gratuits de patronnage le parti-pris ici est de créer  un patron au moyen d'un script, c'est à dire d'une série d'instructions, et non de le dessiner avec un interface utilisateurs graphiques. Cela peut sembler rébarbatif au premier abord mais cela offre toute la souplesse et la précision d'un langage de programmation comme Python et l'accès à ses multiples librairies dont l'extraordinaire librairie graphique Matplotlib.
 
-\section{How is it organized}
+Il ne sera pas question ici du montage des vêtements. Chiappetta et Gilewska ont publié  des livres détaillant le montage des pièces importante \cite{Gilewska4} [+refs chiappetta]. Le livre de Gilewska est particulièrement bien fait, ceux de Chiappetta, très complets notamment sur le montage de la veste, sont plus difficiles à lire pour le coup la qualité d'impression des photographie étant assez «vintage».
+
+\section{How is it organized ?}
 
 OpenPattern est organisée autour de classes qui héritent les unes des autres. Cette structure présente l'avantage de coller aux techniques de coupe. En effet une chemise, une veste ou un gilet sont des adaptations d'un body, une robe dérive de l'assemblage d'une jupe et d'un body, enfin les jupes et les pantalons dérivent de formes génériques dites de bases (jupe de base, pantalon de base).
 
@@ -113,8 +116,6 @@ Pour dessiner un patron il faut
 Le dessin du patron peut aussi  directement se faire à partir des classes Pattern et Point comme nous allons le voir dans la suite de ce document.
 
 \chapter{Tutoriel}
-
-
 
 \section{Introduction: le patron de base}
 
@@ -274,6 +275,17 @@ et en cours (et que je ne mets pas) des classes pour les gilets et pour les chem
   \item Cuffs
   \item Placket
   \item Collars
+  \item Jupe
+  \begin{itemize}
+  \item Culotte
+  \item Skirt transform (Shifted side seam, A line, Flared A Line)
+  \end{itemize}
+  \item Trousers
+  \begin{itemize}
+  \item Bermudas
+  \item Flared pants
+  \item Pants block
+  \end{itemize}
 \end{itemize}
 
 \begin{lstlisting}[language=python]
@@ -418,9 +430,9 @@ Maintenant que vous savez tout faire le plus simple consiste à faire une vrai j
 
 Quelques commentaires s'imposent. De façon générale et même si de nombreuses variations existent les patrons de vêtements sont présentés avec une partie frontale et une partie dorsale. Notre jupe aura donc une patron pour le devant (front) et le dos (back). Ceci explique la présence de deux dicionnaires et de deux listes de points pour le polygone de chacun des élements du patron (lignes 55 à 72).
 
-Notez la façon dont on appel les mesures \texttt{mfs.m["hauteur\_taille\_genou"]} par exemple qui renvoie la hauteur taille-genou correspondant à la taille appelée lors de la création du patron \texttt{mfs}. La liste des mesures disponibles en fonction des tailles et des sources est discutée plus en détail au \S\ref{par:tailles}
+Notez la façon dont on appelle les mesures \texttt{mfs.m["hauteur\_taille\_genou"]} par exemple qui renvoie la hauteur taille-genou correspondant à la taille appelée lors de la création du patron \texttt{mfs}. La liste des mesures disponibles en fonction des tailles et des sources est discutée plus en détail au \S\ref{par:tailles}
 
-Un vêtement est dessiné avec une aisance (ease) qui doit être donnée en début de dessin. Ici on prend une aisance de 8cm pour l'ensemble du patron (17). La profondeur de pince dépend souvent aussi de la taille et de l'âge du modèle. Pour 8 ans chez Chiappetta \cite{Chiappetta1999} on a une pince de 7.25 cm (16). Les lignes de 19 à 35 permettent de tracer les points principaux du tracé de la jupe. Les lignes 39 et 41 permettent de créer deux points qui n'apparaîtront pas mais sont important. il s'agit de points de contrôle pour le tracé de la courbe du côté. En effet la courbe va de la ligne de taille à la ligne de hanche. Chiappetta ne  prend pas la peine de dire comment faire car avec un pistolet c'est évident (essayez pour voir et vous comprendrez). Par contre pour un spline et de façon générale en informatique il faut tout expliquer au programme qui ne fait que ce qu'on lui dit de faire (ce n'est pas un réseau de neurones !). Il faut donc définir le point milieu de la ligne de hanche (39) puis un point situé 1 cm au dessus qui permettra un tombé vertical de la courbe au point de hanches (41). Ces deux points ajoutés au point de taille H ou G suffisent à tracer une courbe pour le demi-devant et le demi-dos (43-46). La suite ne pose aucun problème maintenant: ajout des pinces, enregistrement des points et des positions qui définissent chaque polygone de demi-jupe, ajout des commentaires  et enfin dessin ! Ce patron peut-être imprimé en taille réelle et directement utilisé pour une jupe droite d'une fille de 8 ans. Manque juste la ceinture  que vous pourriez réaliser très facilement maintenant (on y viendra plus tard rassurez-vous) !
+Un vêtement est dessiné avec une aisance (ease) qui doit être donnée en début de dessin. Ici on prend une aisance de 8cm pour l'ensemble du patron (17). La profondeur de pince dépend souvent aussi de la taille et de l'âge du modèle. Pour 8 ans chez Chiappetta \cite{Chiappetta1999} on a une pince de 7.25 cm (16). Les lignes de 19 à 35 permettent de tracer les points principaux du tracé de la jupe. Les lignes 39 et 41 permettent de créer deux points qui n'apparaîtront pas mais sont important. il s'agit de points de contrôle pour le tracé de la courbe du côté. En effet la courbe va de la ligne de taille à la ligne de hanche. Chiappetta ne  prend pas la peine de dire comment faire car avec un vrai pistolet dans les mains c'est évident (essayez pour voir et vous comprendrez). Par contre pour un spline et de façon générale en informatique il faut tout expliquer au programme qui ne fait que ce qu'on lui dit de faire (ce n'est pas un réseau de neurones il n'apprend rien !). Il faut donc définir le point milieu de la ligne de hanche (39) puis un point situé 1 cm au dessus qui permettra un tombé vertical de la courbe au point de hanches (41). Ces deux points ajoutés au point de taille H ou G suffisent à tracer une courbe pour le demi-devant et le demi-dos (43-46). La suite ne pose aucun problème maintenant: ajout des pinces, enregistrement des points et des positions qui définissent chaque polygone de demi-jupe, ajout des commentaires  et enfin dessin ! Ce patron peut-être imprimé en taille réelle et directement utilisé pour une jupe droite d'une fille de 8 ans. Manque juste la ceinture  que vous pourriez réaliser très facilement maintenant !
 
 
 \chapter{Pour aller plus loin}

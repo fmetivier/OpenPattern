@@ -19,7 +19,7 @@ import numpy as np
 
 p = OP.Culotte(pname='sophie',style='Donnanno',ease=1)
 p.draw(save=True,paper='A4',fname='culotte')
-# ease=8
+
 
 ##################
 
@@ -84,8 +84,8 @@ p.draw(save=True,paper='A4',fname='culotte')
 # pans.Donnanno_add_darts()
 # pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
 #
-# b = OP.Bermudas(pname="sophie", gender='w' )
-# b.draw()
+b = OP.Bermudas(pname="sophie", gender='w' )
+b.draw()
 
 # Gregoire's pyjama
 # pans= OP.Basic_Trousers(pname="gregoire",gender="m",style="Donnanno")

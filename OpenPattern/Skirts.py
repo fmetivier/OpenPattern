@@ -789,7 +789,9 @@ class Culotte(Basic_Skirt):
 
     def donnanno_basic_culotte(self):
 
-        #add body rise
+        #################################################
+        # add body rise
+        #################################################
         P = self.Front_dic['G'] + [0,-self.m["tour_bassin"]/10]
         I = P + [-self.m["tour_bassin"]/10,0]
         B1 = self.Front_dic['B'] + [-self.m["tour_bassin"]/10,0]
@@ -804,17 +806,23 @@ class Culotte(Basic_Skirt):
         self.Back_dic['L'] = L
         self.Back_dic['C1'] = C1
 
-        #add the control points for the body rise curve
+        #################################################
+        # add the control points for the body rise curve
+        #################################################
         control_P = P + [-4*np.cos(np.pi/4),4*np.sin(np.pi/4)]
         control_O = O + [5*np.cos(np.pi/4),5*np.sin(np.pi/4)]
 
-        #modify the waist
+        #################################################
+        # modify the waist
+        #################################################
         self.Front_dic['W1'] += [2,0]
         self.Front_dic['A1'] += [2,0]
         self.Back_dic['W'] += [-2,0]
         self.Back_dic['D1'] += [-2,4]
 
+        #################################################
         # recalculate the darts
+        #################################################
         dw = 0.5*(self.m['tour_bassin']-self.m['tour_taille'])
         if dw > 12:
             dwfb  = 3 # max front and back dart = 3
@@ -825,7 +833,9 @@ class Culotte(Basic_Skirt):
         self.Back_dic['T2'],self.Back_dic['T3'] = self.add_dart(self.Back_dic['S3'],self.Back_dic['D1'],self.Back_dic['W'],dwfb)
 
 
+        #################################################
         #redraw curves...not the waist curve for now
+        #################################################
         points_skirt_front = [self.Front_dic['W1'],self.Front_dic['E1'],self.Front_dic['E2']]
         dbskirt_f, self.skirt_front_side = self.pistolet(points_skirt_front, 2, tot = True)
         points_skirt_back = [self.Back_dic['E2'],self.Back_dic['E1'],self.Back_dic['W']]
@@ -836,7 +846,9 @@ class Culotte(Basic_Skirt):
         points_back_fourche = [L,control_O,self.Back_dic['H']]
         db_bf, back_fourche = self.pistolet(points_back_fourche, 2, tot = True)
 
+        #################################################
         #vertices
+        #################################################
         self.Back_vertices = [[self.Back_dic['F'].pos(),self.Back_dic['C1'].pos(),self.Back_dic['L'].pos()] +\
          back_fourche + [self.Back_dic['D1'].pos(), self.Back_dic['T3'].pos(), self.Back_dic['S3'].pos(), self.Back_dic['T2'].pos(), self.Back_dic['W'].pos()] +\
          self.skirt_back_side[::-1] + [self.Back_dic['F'].pos(),self.Back_dic['C1'].pos()]]
@@ -845,6 +857,13 @@ class Culotte(Basic_Skirt):
          self.skirt_front_side + [self.Front_dic['E2'].pos(), self.Front_dic['F'].pos(),self.Front_dic['B1'].pos()]]
 
         self.fold_line = []
-        # self.add_comment(self.middle(self.Front_dic['B'], self.Front_dic['F'])+Point([0,5]),'FRONT')
-        # self.add_comment(self.middle(self.Back_dic['F'], self.Back_dic['C'])+Point([0,5]),'BACK')
-        # self.set_grainline(self.Back_dic['S3'] + Point([0,-20]))
+
+        #################################################
+        #check the waist length
+        #################################################
+        front_waist = self.distance(self.Front_dic['A1'], self.Front_dic['T4']) +\
+         self.distance(self.Front_dic['T5'], self.Front_dic['W1'])
+        back_waist = self.distance(self.Back_dic['W'], self.Back_dic['T2']) +\
+         self.distance(self.Back_dic['T3'], self.Back_dic['D1'])
+
+        print( '1/2 waist = ' + str( front_waist + back_waist ) )

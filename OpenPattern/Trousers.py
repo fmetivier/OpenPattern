@@ -117,11 +117,18 @@ class Basic_Trousers(Pattern):
 		N = Point([X.x, C.y])
 		X1 = Point([X.x, I.y])
 
+
+		# comments regarding M:
+		# point A1  and dart vertical positioning are not detailed
+		# in Donnanno's book so I had to guess them empirically for the fit !
+		# Hence the points Mbis...
+
+		M = Point([X.x, A.y])
+
 		#dart position
-		#question origin of the numbers ??
 		if self.gender=="m":
-			M = Point([X.x, A.y - 0.5])
-			M2 = M + [6, 0]
+			Mbis = Point([X.x, A.y - 0.5]) # don't ask me where I got this from !
+			M2 = Mbis + [6, 0]
 			L1 = X1 + [12.5, 0]
 			I1 = X1 - [12.5, 0]
 			N1 = N + [0, 1.5]
@@ -130,12 +137,12 @@ class Basic_Trousers(Pattern):
 			if self.darts == True:
 				A1 = A + [0, -1]
 				B1 = B + [-1,0]
-				M = Point([X.x, A.y - 0.9]) #adaptation pour la femme
-				M2 = M + [7,+0.2]
+				Mbis = Point([X.x, A.y - 0.9]) #adaptation pour la femme # same question
+				M2 = Mbis + [7,+0.2]
 			else:
 				A1 = A + [0.5, -0.5]
 				B1 = B + [-3,0]
-				M = Point([X.x, A.y - 0.7]) #adaptation pour la femme
+				Mbis = Point([X.x, A.y - 0.7]) #adaptation pour la femme # same question
 
 			L1 = X1 + [12, 0]
 			I1 = X1 - [12, 0]
@@ -158,19 +165,22 @@ class Basic_Trousers(Pattern):
 		dia, self.interieur_avant = self.pistolet(np.array([C1, ONC1, I1, E1]), 3, tot = True)
 
 		if self.gender=="m":
-			dha, self.ceinture_avant = self.pistolet(np.array([A1, M, M2, B]), 2, tot = True)
+			dha, self.ceinture_avant = self.pistolet(np.array([A1, Mbis, M2, B]), 2, tot = True)
+			print( 'Front waist = '+str(dha) )
 			Front_Points_Names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'I', 'L', 'X', 'M', 'N', 'O', 'M2', 'X1', 'L1', 'I1', 'N1', 'C1', 'D1', 'A1']
 			Front_Points_List = [A, B, C, D, E, F, G, H, E1, I, L, X, M, N, O, M2, X1, L1, I1, N1, C1, D1, A1]
 			dca, self.exterieur_avant = self.pistolet(np.array([B, H, L1, OND1, D1]), 4, tot = True)
 		else:
 			if self.darts == True:
-				dha, self.ceinture_avant = self.pistolet(np.array([A1, M, M2, B1]), 2, tot = True)
-				Front_Points_Names = ['A','B', 'B1', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'I', 'L', 'X', 'M', 'N', 'O', 'M2', 'X1', 'L1', 'I1', 'N1', 'C1', 'D1', 'A1']
-				Front_Points_List = [A, B, B1, C, D, E, F, G, H, E1, I, L, X, M, N, O, M2, X1, L1, I1, N1, C1, D1, A1]
+				dha, self.ceinture_avant = self.pistolet(np.array([A1, Mbis, M2, B1]), 2, tot = True)
+				print( 'Front waist = '+str(dha) )
+				Front_Points_Names = ['A','B', 'B1', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'I', 'L', 'X', 'M', 'Mbis', 'N', 'O', 'M2', 'X1', 'L1', 'I1', 'N1', 'C1', 'D1', 'A1']
+				Front_Points_List = [A, B, B1, C, D, E, F, G, H, E1, I, L, X, M, Mbis, N, O, M2, X1, L1, I1, N1, C1, D1, A1]
 			else:
-				dha, self.ceinture_avant = self.pistolet(np.array([A1, M, B1]), 2, tot = True)
-				Front_Points_Names = ['A','B', 'B1', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'I', 'L', 'X', 'M', 'N', 'O', 'X1', 'L1', 'I1', 'N1', 'C1', 'D1', 'A1']
-				Front_Points_List = [A, B, B1, C, D, E, F, G, H, E1, I, L, X, M, N, O, X1, L1, I1, N1, C1, D1, A1]
+				dha, self.ceinture_avant = self.pistolet(np.array([A1, Mbis, B1]), 2, tot = True)
+				print( 'Front waist = '+str(dha) )
+				Front_Points_Names = ['A','B', 'B1', 'C', 'D', 'E', 'F', 'G', 'H', 'E1', 'I', 'L', 'X', 'M', 'Mbis', 'N', 'O', 'X1', 'L1', 'I1', 'N1', 'C1', 'D1', 'A1']
+				Front_Points_List = [A, B, B1, C, D, E, F, G, H, E1, I, L, X, M, Mbis, N, O, X1, L1, I1, N1, C1, D1, A1]
 
 			dca, self.exterieur_avant = self.pistolet(np.array([B1,H, L1, OND1, D1]), 4, tot = True)
 
@@ -262,6 +272,7 @@ class Basic_Trousers(Pattern):
 		else:
 			if self.darts == True:
 				waist = self.distance(A2,B1)
+				print('Back waist = '+str(waist))
 				B2 = B1 + [0.5*waist*np.cos(a),0.5*waist*np.sin(a)]
 			I1 = X1 + (13, 0) # thigh originally 13 why ?
 			L1 = X1 - (13, 0)
@@ -327,11 +338,11 @@ class Basic_Trousers(Pattern):
 		"""
 
 		if self.gender == "w":
-			front_dart_list = [['M','r',1.5,-5],['M2','c',1.5,-5]]
+			front_dart_list = [['Mbis','r',1.5,-5],['M2','c',1.5,-5]]
 			back_dart_list=[['B2','c',2,-9]]
 
 		elif self.gender == "m":
-			front_dart_list = [['M','c',1.5,-5],['M2','c',1.5,-5]]
+			front_dart_list = [['Mbis','c',1.5,-5],['M2','c',1.5,-5]]
 			back_dart_list=[['B4','r',3,-9]]
 
 
@@ -648,6 +659,9 @@ class Bermudas(Basic_Trousers):
 		self.calculate_front_bermudas()
 		self.calculate_back_bermudas()
 
+		# translate the bermudas down so we do not use lots of paper
+		self.translate(dx=0,dy = -self.Front_dic['I3'].y )
+
 	def calculate_front_bermudas(self):
 
 		# beware these are not  true copies. Changes to the dic changes the original which is fine to me !
@@ -655,7 +669,7 @@ class Bermudas(Basic_Trousers):
 
 		#place points and line above the knee
 		pbf['X2'] = pbf['O'] + [0,self.height_above_knee]
-		pbf['I2'] = Point([pbf['I1'].x,pbf['X2'].y])
+		pbf['I2'] = Point([pbf['E1'].x,pbf['X2'].y])
 		pbf['L2'] = Point([pbf['L'].x,pbf['X2'].y])
 		pbf['I3'] = pbf['I2'] - [0,8]
 		pbf['L3'] = pbf['L2'] - [0,8]
@@ -671,6 +685,12 @@ class Bermudas(Basic_Trousers):
 		for key in ['C1','C','N1','N','D1','D']:
 			pbf.pop(key,0)
 		self.Front_dic = pbf
+
+		self.add_labelled_line(pbf['H'], pbf['G'], 'HIP LINE','t')
+		self.add_labelled_line(pbf['A'], pbf['B'], 'WAIST LINE','t')
+		self.add_comment(self.middle(pbf['E'],pbf['F'])+Point([0,-5]),'FRONT')
+
+
 
 	def calculate_back_bermudas(self):
 		pbb=self.Trousers_Back_points_dic
@@ -700,3 +720,7 @@ class Bermudas(Basic_Trousers):
 			pbb.pop(key,0)
 
 		self.Back_dic = pbb
+
+		self.add_labelled_line(pbb['H'], pbb['G'], 'HIP LINE','t')
+		self.add_labelled_line(pbb['A2'], pbb['B1'], 'WAIST LINE','t')
+		self.add_comment(self.middle(pbb['E'],pbb['F'])+Point([0,-5]),'BACK')

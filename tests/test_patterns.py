@@ -17,8 +17,8 @@ import numpy as np
 # p = OP.Basic_Skirt(pname='sophie',style='Donnanno')
 # p.draw()
 
-p = OP.Culotte(pname='sophie',style='Donnanno',ease=1)
-p.draw(save=True,paper='A4',fname='culotte')
+# p = OP.Culotte(pname='sophie',style='Donnanno',ease=1)
+# p.draw(save=True,paper='A4',fname='culotte')
 
 
 ##################
@@ -80,11 +80,11 @@ p.draw(save=True,paper='A4',fname='culotte')
 # p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
 # p.draw_placket()
 
-# pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno', darts=True)
-# pans.Donnanno_add_darts()
-# pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
+waist_fit_dic={'sides': 1.5, 'center_front': 0.5, 'front_left': 0, 'front_right': 0, 'center_back': 0, 'back':0}
+pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno', darts=False, wfd = waist_fit_dic)
+pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
 #
-b = OP.Bermudas(pname="sophie", gender='w' )
+b = OP.Bermudas(pname="sophie", gender='w' ,wfd = waist_fit_dic)
 b.draw()
 
 # Gregoire's pyjama

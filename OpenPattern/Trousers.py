@@ -41,9 +41,9 @@ class Basic_Trousers(Pattern):
 
 	"""
 	############################################################
-	def __init__(self, pname="M44D", gender='m', style='Donnanno',darts= True):
+	def __init__(self, pname="M44D", gender='m', style='Donnanno',darts= True, wfd = None):
 		"""
-		Class initialisator. Launches trouser calculation
+		Class initialisation. Launches trouser calculation
 
 		"""
 		Pattern.__init__(self, pname, gender)
@@ -53,8 +53,13 @@ class Basic_Trousers(Pattern):
 		else:
 			self.ease = 2
 
-		self.style=style
-		self.darts=darts
+		self.style = style
+		self.darts = darts
+		if wfd:
+			self.wfd = wfd #a dictionnary that contains the adjustements
+		else:
+			self.wfd={'sides': 0, 'center_front': 0, 'front_left':0, 'front_right': 0, 'center_back': 0, 'back': 0}
+
 
 		self.Trousers_Back_points_dic  =  {}
 		self.Trousers_Front_points_dic  =  {}
@@ -76,6 +81,8 @@ class Basic_Trousers(Pattern):
 			print("style Donnanno selected")
 			self.Donnanno_front_trousers()
 			self.Donnanno_back_trousers()
+			if self.darts == True:
+				self.Donnanno_add_darts()
 
 		else:
 			print("style %s unknown, using Donnanno instead" % (self.style))
@@ -132,16 +139,16 @@ class Basic_Trousers(Pattern):
 			L1 = X1 + [12.5, 0]
 			I1 = X1 - [12.5, 0]
 			N1 = N + [0, 1.5]
-			A1 = A + [1, 0]
+			A1 = A + [1 + self.wfd['center_front'], 0]
 		else:
 			if self.darts == True:
-				A1 = A + [0, -1]
-				B1 = B + [-1,0]
+				A1 = A + [0 + self.wfd['center_front'], -1]
+				B1 = B + [-1 - self.wfd['sides'], 0]
 				Mbis = Point([X.x, A.y - 0.9]) #adaptation pour la femme # same question
 				M2 = Mbis + [7,+0.2]
 			else:
-				A1 = A + [0.5, -0.5]
-				B1 = B + [-3,0]
+				A1 = A + [0.5 + self.wfd['center_front'], -0.5]
+				B1 = B + [-3 -self.wfd['sides'],0]
 				Mbis = Point([X.x, A.y - 0.7]) #adaptation pour la femme # same question
 
 			L1 = X1 + [12, 0]
@@ -198,8 +205,8 @@ class Basic_Trousers(Pattern):
 			p = Point(self.Trousers_Front_vertices[i],point_type='contour',pname_ori='fp%s' % (i))
 			self.Trousers_Front_Contour_list.append(p)
 
-		# self.front_width=self.distance(E1, F)
-		# print(self.front_width)
+		self.front_width=dha
+		print(self.front_width)
 
 	############################################################
 
@@ -250,12 +257,12 @@ class Basic_Trousers(Pattern):
 
 			B1 = B - [0, 0.5]
 		else:
-			A1 = A - [3.5, 0]
+			A1 = A - [3.5 - self.wfd['center_back'], 0]
 			A2 = A1 + [0, 2] # from 1 to 3.5
 			if self.darts == True:
-				B1 = B + [1, 0]
+				B1 = B + [1 + self.wfd['sides'], 0]
 			else:
-				B1 = B + [3, 0]
+				B1 = B + [3 + self.wfd['sides'], 0]
 
 
 
@@ -324,7 +331,9 @@ class Basic_Trousers(Pattern):
 			self.Trousers_Back_points_dic[Back_Points_Names[i]] = Back_Points_List[i]
 			self.Trousers_Back_points_dic[Back_Points_Names[i]].pname_ori = Back_Points_Names[i]
 
-
+		back_waist =self.distance(B1,A2)
+		print( 'back waist: ' + str(back_waist))
+		print("taille: " + str(self.m["tour_taille"]) + "; bassin: " + str(self.m["tour_bassin"]))
 		print(self.back_width)
 
 	############################################################
@@ -332,18 +341,27 @@ class Basic_Trousers(Pattern):
 	def Donnanno_add_darts(self):
 		"""
 		Add front and back darts.
-		TODO darts properties should be given as lists with some default values
-		corresponding to typical values given in the book.
+		TODO darts properties should calculated from waist-hip difference.
 		at present they are set by default to the typical values given by Donnanno
+		Normally the maximum absorption with 3x2 darts is going to be
+		4 x 2 (front)  + 2 x 3 (back) = 14cm.
+		then you have to save on the sides or the central darts
+		As usual Chiappetta offers a solution at least for men
+		if no dart then you take from the sides and middle darts
+		in a uniform manner hence (hip-waist)/4 and you redraw
+		if pleats (not darts for men) she leaves the back untouched
+		and adds 2x2 pleats of the necessary length
+		hence ((hip - waist) - 2 x back)/4 for each pleat
+
 		"""
 
 		if self.gender == "w":
-			front_dart_list = [['Mbis','r',1.5,-5],['M2','c',1.5,-5]]
-			back_dart_list=[['B2','c',2,-9]]
+			front_dart_list = [['Mbis', 'r', 1.5 + self.wfd['front_left'], -5], ['M2', 'c', 1.5 + self.wfd['front_right'], -5]]
+			back_dart_list=[['B2', 'c', 2 + self.wfd['back'], -9]]
 
 		elif self.gender == "m":
-			front_dart_list = [['Mbis','c',1.5,-5],['M2','c',1.5,-5]]
-			back_dart_list=[['B4','r',3,-9]]
+			front_dart_list = [['Mbis', 'c', 1.5 + self.wfd['front_left'],-5],['M2', 'c', 1.5 + self.wfd['front_right'], -5]]
+			back_dart_list=[['B4', 'r', 3 + self.wfd['back'], -9]]
 
 
 		fpd = self.Trousers_Front_points_dic
@@ -648,13 +666,12 @@ class Bermudas(Basic_Trousers):
 	height_above_knee: added length of Trousers
 	"""
 
-	def __init__(self,pname = "gregoire", gender = 'm', height_above_knee = 4):
+	def __init__(self,pname = "gregoire", gender = 'm', height_above_knee = 4, wfd = None):
 
 		self.style='Donnanno'
 		self.darts=True
 		self.height_above_knee = 4
-		Basic_Trousers.__init__(self, pname, gender, self.style, self.darts)
-		Basic_Trousers.Donnanno_add_darts(self)
+		Basic_Trousers.__init__(self, pname, gender, self.style, self.darts, wfd)
 
 		self.calculate_front_bermudas()
 		self.calculate_back_bermudas()

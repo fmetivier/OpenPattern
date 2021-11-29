@@ -17,9 +17,8 @@ setup(
     description='Pattern drafting libraries',
     long_description=readme,
     author='François Métivier',
-    author_email='metivier@ipgp.fr',
+    author_email='metivier.laofu@gmail.com',
     url='http://github.com/francoismetivier/OpenPattern',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
-

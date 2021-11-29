@@ -1149,6 +1149,10 @@ class Pattern:
 
     def set_grainline(self, A = Point([0,0]), length = 10, angle = np.pi/2):
         """ sets the droit-fil list porperty to be added to legends.
+
+            :param A: origin of the segment
+            :param length: length (cm) of the segment
+            :param angle: angle (in radians) of the segment
         """
         self.grainline  = [A,length,angle]
 
@@ -1156,6 +1160,7 @@ class Pattern:
         """ sets the fold_line list porperty to be added to legends.
             if fold line already exists appends the new one
             for exemples (A,B,'right') gives
+
 
                 A-->
                 |
@@ -1262,6 +1267,11 @@ class Pattern:
 
 
     def add_scales(self, ax, val = 5):
+        """ adds a blue scale at the bottom left
+
+        :param ax: axis on which to plot
+        :param val: length (cm) of the scale
+        """
 
         # print(type(ax))
         ymin = ax.get_ylim()[0]

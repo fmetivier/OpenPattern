@@ -39,7 +39,7 @@ class Cuffs(Pattern):
 	def calculate_cuffs(self, overlap = 2, width = 5, ease = 3):
 
 		if self.style == 'Gilewska':
-			if self.gender == 'm':
+			if self.gender in ('M','m'):
 				self.calculate_cuffs_gilewska_m(overlap, width, ease)
 
 	def calculate_cuffs_gilewska_m(self, overlap = 2, width = 5, ease = 3):

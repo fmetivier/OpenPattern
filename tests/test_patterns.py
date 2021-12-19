@@ -29,20 +29,20 @@ import numpy as np
 
 
 # Women
-p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
-p.add_bust_dart()
-p.add_waist_dart()
-p.draw({"Pattern":"Bodice with darts"},save=True)
+# p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
+# p.add_bust_dart()
+# p.add_waist_dart()
+# p.draw({"Pattern":"Bodice with darts"},save=True)
 # p.draw_sleeves()
 
 # Men
-# p = OP.Basic_Bodice(pname="M40mC", style='Chiappetta')
+p = OP.Basic_Bodice(pname="Me", style='Chiappetta')
 # p.chiappetta_armhole_sleeve_m()
 # p.draw()
 # p.draw_sleeves()
 
 
-# p = OP.Shirt(pname="Gregoire16", gender='m', age=16)
+# p = OP.Shirt(pname="Me", gender='m')
 # p.basic_shirt_bodice(style="G")
 # p.chiappetta_basic_sleeve_m()
 # p.draw_sleeves()
@@ -52,10 +52,10 @@ p.draw({"Pattern":"Bodice with darts"},save=True)
 #
 # p.draw_subpatterns(overlay=True)
 
-# cu = OP.Cuffs(pname="Gregoire16",gender='m',cuff_style='French',width=5,ease=3,overlap=2)
-# cu.draw_cuffs(save=True)
+cu = OP.Cuffs(pname="Me",gender='M',cuff_style='Simple',width=5,ease=3,overlap=2)
+cu.draw_cuffs(save=True)
 #
-# co = OP.Collars(pname='Gregoire16',gender='m',collar_style='TwoPieces',overlap=2)
+# co = OP.Collars(pname='Me',gender='m',collar_style='TwoPieces',overlap=2)
 # co.draw_collar(save=True)
 
 

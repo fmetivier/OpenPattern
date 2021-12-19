@@ -52,11 +52,11 @@ p = OP.Basic_Bodice(pname="Me", style='Chiappetta')
 #
 # p.draw_subpatterns(overlay=True)
 
-cu = OP.Cuffs(pname="Me",gender='M',cuff_style='Simple',width=5,ease=3,overlap=2)
-cu.draw_cuffs(save=True)
+# cu = OP.Cuffs(pname="Me",gender='M',cuff_style='Simple',width=5,ease=3,overlap=2)
+# cu.draw_cuffs(save=True)
 #
-# co = OP.Collars(pname='Me',gender='m',collar_style='TwoPieces',overlap=2)
-# co.draw_collar(save=True)
+co = OP.Collars(pname='Me',gender='m',collar_style='TwoPieces',overlap=2)
+co.draw_collar(save=True, paper='A4')
 
 
 

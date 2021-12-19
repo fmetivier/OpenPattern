@@ -179,7 +179,7 @@ class Collars(Pattern):
 			cdic = {'fcc': front_collar_curve, 'bcd' : back_curve_d, 'bcu': back_curve_u, 'fcd': front_curve_d, 'fcu': front_curve_u}
 			return cdic
 
-	def draw_collar(self,save = False):
+	def draw_collar(self,save = False, paper='FullSize'):
 
 		fig, ax = self.draw_pattern(self.Collar_dic,self.Collar_vertices,self.Collar_polylines)
 
@@ -198,5 +198,8 @@ class Collars(Pattern):
 			of = '../patterns/'+ 'collar_' + self.style + '_' + self.Collar_style + '_' + self.pname +'_FullSize.pdf'
 
 			plt.savefig(of)
+
+			if paper != 'FullSize':
+				self.paper_cut(fig, ax, name = 'Collar', paper = paper)
 
 		return fig, ax

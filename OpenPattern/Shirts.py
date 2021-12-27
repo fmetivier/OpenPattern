@@ -10,7 +10,7 @@ from OpenPattern.Bodices import *
 class Shirt(Basic_Bodice):
 
 
-	def __init__(self, pname="M40mC", gender='m', style='Chiappetta', age=99, ease=8, hip=True, Back_Front_space = 12, collar_ease = 1, sleeve_lowering = 3, side_ease = 4, shoulder_ease = 2):
+	def __init__(self, pname="M40mC", gender='m', style='Chiappetta', age=99, ease=8, hip=True, Back_Front_space = 12, collar_ease = 1, sleeve_lowering = 3, side_ease = 4, shoulder_ease = 1, button_overlap = 2):
 
 		Basic_Bodice.__init__(self, pname, gender, style, age, ease, hip, Back_Front_space)
 
@@ -18,7 +18,7 @@ class Shirt(Basic_Bodice):
 		self.sleeve_lowering = sleeve_lowering
 		self.side_ease = side_ease
 		self.shoulder_ease = shoulder_ease
-
+		self.button_overlap = button_overlap
 		#keep track of the original bodice
 		Ori = self.copy()
 		self.add_pattern(Ori)
@@ -26,8 +26,8 @@ class Shirt(Basic_Bodice):
 
 
 
-	def basic_shirt_bodice(self,style="C"):
-		if style == "C":
+	def basic_shirt_bodice(self,style="Chiappetta"):
+		if style == "Chiappetta":
 			#Transformation of the Bodice
 			#armhole
 			self.Front_dic['ShF1'] += Point([self.shoulder_ease,0.5])
@@ -69,10 +69,11 @@ class Shirt(Basic_Bodice):
 
 			# shirt's lower part
 			self.Front_dic['HiF'] = self.Front_dic['WF'] + Point([0,-self.m['montant']])
-			self.Front_dic['HiF1'] = self.Front_dic['WF1'] + Point([self.side_ease,-self.m['montant']+10])
+			self.Front_dic['HiF1'] = self.Front_dic['WF1'] + Point([self.side_ease,-self.m['montant']+5])
 			self.Back_dic['HiB'] = self.Back_dic['WB'] + Point([0,-self.m['montant']])
-			self.Back_dic['HiB1'] = self.Back_dic['WB1'] + Point([-self.side_ease,-self.m['montant']+10])
+			self.Back_dic['HiB1'] = self.Back_dic['WB1'] + Point([-self.side_ease,-self.m['montant']+5])
 
+			# Oh my good points with fixes values added... no good
 			ClHiF = self.Front_dic['HiF'] + Point([4,0])
 			ClHiF1 = self.Front_dic['HiF1'] + Point([-3,0])
 			ClHiB = self.Back_dic['HiB'] + Point([-4,0])
@@ -89,8 +90,7 @@ class Shirt(Basic_Bodice):
 
 			self.m['longueur_col_devant'], self.front_collar_curve = self.pistolet([self.Front_dic['CF'],\
 			self.Front_dic['ClCF'],self.Front_dic['CF2']], 2, tot=True)
-			# self.m['longueur_col_dos'], self.back_collar_curve = self.pistolet([HB,ClCB,CB2], 2, tot = True)
-
+			self.m['longueur_col_dos'], self.back_collar_curve = self.pistolet([self.Back_dic['HB'],self.Back_dic['ClCB'],self.Back_dic['CB2']], 2, tot = True)
 
 			self.Back_vertices = [[self.Back_dic['HiB'].pos(), self.Back_dic['HB'].pos()] +\
 			 self.back_collar_curve + [self.Back_dic['ShB1'].pos()] + self.back_sleeve_curve +\
@@ -101,14 +101,15 @@ class Shirt(Basic_Bodice):
 			  [self.Front_dic['HiF1'].pos()] + self.front_base_curve[::-1] + [self.Front_dic['HiF'].pos()]]
 
 			#add the button overlap
-			TB1 = self.Front_dic['CF'] + Point([-1.5,0])
-			TB2 = self.Front_dic['HiF'] + Point([-1.5,0])
+			TB1 = self.Front_dic['CF'] + Point([-self.button_overlap,0])
+			TB2 = self.Front_dic['HiF'] + Point([-self.button_overlap,0])
 
 			overlap = [self.Front_dic['HiF'].pos(), self.Front_dic['CF'].pos(), TB1.pos(),\
 			 TB2.pos(), self.Front_dic['HiF'].pos()]
 			self.Front_vertices.append(overlap)
 
 			#parure
+			# 2x2cm
 			P1 = TB1 + Point([-2,0])
 			P2 = TB2 + Point([-2,0])
 			parure = [TB2.pos(),TB1.pos(),P1.pos(),P2.pos(),TB2.pos()]
@@ -120,7 +121,7 @@ class Shirt(Basic_Bodice):
 			sparure = [P2.pos(),P1.pos(),PL1.pos(),PL2.pos(),P2.pos()]
 			self.Front_vertices.append(sparure)
 
-		elif style == "G":
+		elif style == "Gilewska":
 			#Transformation of the Bodice
 			#armhole
 			fsh_a = self.segment_angle(self.Front_dic['CF2'],self.Front_dic['ShF1'])
@@ -139,7 +140,6 @@ class Shirt(Basic_Bodice):
 				self.m["longueur_emmanchure_devant"], self.front_sleeve_curve =  self.pistolet([self.Front_dic['ShF1'],\
 				self.Front_dic['BF1'],self.Front_dic['SlF1']], 2, tot=True)
 
-			print("emmanchure devant",self.m["longueur_emmanchure_devant"])
 
 
 
@@ -158,7 +158,6 @@ class Shirt(Basic_Bodice):
 			else:
 				self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([self.Back_dic['ShB1'],\
 				self.Back_dic['BB1'],self.Back_dic['SlB1']], 2, tot=True)
-			print("emmanchure dos",self.m["longueur_emmanchure_dos"])
 
 
 
@@ -205,25 +204,34 @@ class Shirt(Basic_Bodice):
 			  [self.Front_dic['HiF1'].pos()] + self.front_base_curve[::-1] + [self.Front_dic['HiF'].pos()]]
 
 			#add the button overlap
-			TB1 = self.Front_dic['CF'] + Point([-1.5,0])
-			TB2 = self.Front_dic['HiF'] + Point([-1.5,0])
+			TB1 = self.Front_dic['CF'] + Point([-self.button_overlap,0])
+			TB2 = self.Front_dic['HiF'] + Point([-self.button_overlap,0])
 
 			overlap = [self.Front_dic['HiF'].pos(), self.Front_dic['CF'].pos(), TB1.pos(),\
 			 TB2.pos(), self.Front_dic['HiF'].pos()]
 			self.Front_vertices.append(overlap)
 
 			#parure
+			# 2x2 cm
 			P1 = TB1 + Point([-2,0])
 			P2 = TB2 + Point([-2,0])
 			parure = [TB2.pos(),TB1.pos(),P1.pos(),P2.pos(),TB2.pos()]
 			self.Front_vertices.append(parure)
 
-			#second parure
+			#second "parure"
 			PL1 = P1 + Point([-2,0])
 			PL2 = P2 + Point([-2,0])
 			sparure = [P2.pos(),P1.pos(),PL1.pos(),PL2.pos(),P2.pos()]
 			self.Front_vertices.append(sparure)
 
+		print("################")
+		print("longueurs col")
+		print("devant = %f" % (self.m['longueur_col_devant']))
+		print("dos = %f" % (self.m['longueur_col_dos']))
+		print("################")
+		print("emmanchures")
+		print("emmanchure devant",self.m["longueur_emmanchure_devant"])
+		print("emmanchure dos",self.m["longueur_emmanchure_dos"])
 
 		self.save_measurements_sql()
 

@@ -42,21 +42,22 @@ p = OP.Basic_Bodice(pname="Me", style='Chiappetta')
 # p.draw_sleeves()
 
 
-# p = OP.Shirt(pname="Me", gender='m')
-# p.basic_shirt_bodice(style="G")
+p = OP.Shirt(pname="Me", gender='m', style = "Chiappetta")
+p.draw_bodice()
+p.basic_shirt_bodice(style="Chiappetta")
 # p.chiappetta_basic_sleeve_m()
 # p.draw_sleeves()
-# p.chiappetta_armhole_sleeve_m(ease=3,folds=1,fold_width=1,fente=11, wrist=5)
-# p.draw_sleeves(save=True,paper='A4')
+p.chiappetta_armhole_sleeve_m(ease=3,folds=1,fold_width=1,fente=11, wrist=5)
+p.draw_sleeves()
 # p.draw(save=True,paper='A4')
 #
 # p.draw_subpatterns(overlay=True)
 
-# cu = OP.Cuffs(pname="Me",gender='M',cuff_style='Simple',width=5,ease=3,overlap=2)
-# cu.draw_cuffs(save=True)
-#
+cu = OP.Cuffs(pname="Me",gender='M',cuff_style='Simple',width=7,overlap=2)
+cu.draw_cuffs()
+
 co = OP.Collars(pname='Me',gender='m',collar_style='TwoPieces',overlap=2)
-co.draw_collar(save=True, paper='A4')
+co.draw_collar()
 
 
 

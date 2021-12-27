@@ -264,8 +264,12 @@ class Basic_Bodice(Pattern):
 			for Women using Donnanno technique
 			This Bodice comes with ease applied
 
+			TODO: I haven't had time to normalize the point labelling
+			so it can not be mixed with chiapetta or Gilewsa
+
 		Args:
 			ease: ease to be applied.
+
 		"""
 
 
@@ -834,6 +838,8 @@ class Basic_Bodice(Pattern):
 	def chiappetta_armhole_sleeve_m(self, plot=False, ease=3,folds=1,fold_width=1,fente=11, wrist=5):
 		""" Sleeve drawn from armhole curves
 			Often used for shirts
+			a bit complex because we need
+			some rotations and translations but normally it works
 		"""
 
 		bc = []
@@ -842,8 +848,9 @@ class Basic_Bodice(Pattern):
 		if plot:
 			f = plt.figure()
 
-
+		#####################################
 		# rotate and position front curve
+		#####################################
 
 		P0 = self.front_sleeve_curve[0]
 		P1 = self.front_sleeve_curve[1]
@@ -863,7 +870,9 @@ class Basic_Bodice(Pattern):
 
 		apex_point = Point(fc[0])
 
+		#####################################
 		# rotate and position back curve
+		#####################################
 		P0 = self.back_sleeve_curve[0]
 		P1 = self.back_sleeve_curve[1]
 
@@ -881,7 +890,9 @@ class Basic_Bodice(Pattern):
 		if plot:
 			plt.plot(apex_point.x,apex_point.y,'bo')
 
+		#####################################
 		# mirror the last 6cms of front curve
+		#####################################
 		d = 0
 		fc2 = []
 		N = len(fc)-1
@@ -892,7 +903,9 @@ class Basic_Bodice(Pattern):
 				last_point = Point(fc[N-i])
 
 
+		#####################################
 		# calculate the mirror angle
+		#####################################
 		d0 = self.distance(Point(fc2[0]),last_point)
 		left_point = last_point - Point([d0,0])
 		if plot:
@@ -901,7 +914,9 @@ class Basic_Bodice(Pattern):
 
 		a_mirror = np.arctan(d1/(2*np.sqrt(d0**2-d1**2 / 4)))
 
+		#####################################
 		# draw the symmetry line
+		#####################################
 		A = Point(fc2[len(fc2)-1])
 		B = A - Point([10*np.cos(a_mirror),10*np.sin(a_mirror)])
 		if plot:
@@ -922,7 +937,9 @@ class Basic_Bodice(Pattern):
 		if plot:
 			plt.plot(last_point.x, last_point.y, 'bo')
 
+		#####################################
 		# find center point and back_point
+		#####################################
 		center_point = Point([apex_point.x, last_point.y])
 		if plot:
 			plt.plot(center_point.x, center_point.y, 'bo')
@@ -932,8 +949,10 @@ class Basic_Bodice(Pattern):
 		hd = center_point.x - last_point.x
 		back_point = center_point + Point([hd,0])
 
+		#####################################
 		# rotate until one point of back curves approches back_point
 		# by less then 0.1 cm
+		#####################################
 		alist = np.arange(0.05,100,0.01)
 
 		i=0
@@ -963,8 +982,10 @@ class Basic_Bodice(Pattern):
 		# 	plt.plot(pos[0],pos[1],'ms')
 		# plt.axis('square')
 
+		#####################################
 		# Mirror the points after the real_back_point
 		# calculate the mirror angle
+		#####################################
 		d0 = self.distance(Point(bc[-1]),real_back_point)
 		right_point = real_back_point + Point([d0,0])
 		# plt.plot(right_point.x, right_point.y, 'bo')
@@ -977,7 +998,9 @@ class Basic_Bodice(Pattern):
 		B = A + Point([10*np.cos(-a_mirror),10*np.sin(-a_mirror)])
 		# plt.plot([A.x,B.x],[A.y,B.y],'b--')
 
+		#####################################
 		#extract last curve
+		#####################################
 		end_back_curve = []
 
 		for pos in bc[j:len(bc)-1]:
@@ -993,7 +1016,9 @@ class Basic_Bodice(Pattern):
 		# plt.plot(real_back_point.x, real_back_point.y,'bs')
 		# plt.plot(back_point.x, back_point.y, 'bo')
 
+		#####################################
 		#redraw armcurve
+		#####################################
 		control_points = [last_point, apex_point, real_back_point]
 		darm , arm_curve = self.pistolet(control_points, 2, tot=True)
 
@@ -1002,7 +1027,9 @@ class Basic_Bodice(Pattern):
 		# for p in arm_curve:
 		# 	plt.plot(p[0],p[1],'ks')
 
+		#####################################
 		#renew point dictionnary
+		#####################################
 		self.Sleeve_points_dic = {}
 
 		self.Sleeve_points_dic['A'] = apex_point
@@ -1038,10 +1065,6 @@ class Basic_Bodice(Pattern):
 			F3 = self.middle(self.middle(G,C),C)
 			self.Sleeve_points_dic['F3'] = F3
 
-
-
-
-
 		self.Sleeve_points_dic['C'] = C
 		self.Sleeve_points_dic['G'] = G
 		self.Sleeve_points_dic['F'] = F
@@ -1051,7 +1074,9 @@ class Basic_Bodice(Pattern):
 
 		self.Sleeve_vertices = end_front_curve + arm_curve + end_back_curve + [F.pos(), G.pos(),left_point.pos()]
 
+		#####################################
 		#check lengths
+		#####################################
 		dfront = 0
 		for i in np.arange(len(end_front_curve)-1):
 			dfront += np.sqrt((end_front_curve[i+1][0] - end_front_curve[i][0])**2 +\
@@ -1070,7 +1095,9 @@ class Basic_Bodice(Pattern):
 		   Straight sleeve base without cuff
 
 		"""
-
+		#####################################
+		# Basic construction points
+		#####################################
 		C = Point([0,0])
 		G = C - Point([self.m["tour_poignet"]/2 + 2, 0])
 		F = C + Point([self.m["tour_poignet"]/2 + 2, 0])
@@ -1083,7 +1110,9 @@ class Basic_Bodice(Pattern):
 
 		A1 = self.middle(A,B)
 
-		# control points
+		#####################################
+		# Control points
+		#####################################
 		E0 = self.intersec_manches(A, E, A1, 135)
 		CPE0 = E0 + Point([2*np.cos(3*np.pi/4), 2*np.sin(3*np.pi/4)])
 		D0 = self.intersec_manches(A, D, A1, 45)
@@ -1100,7 +1129,9 @@ class Basic_Bodice(Pattern):
 		D2 = self.middle(D1,D)
 		CPD2 = self.middle(D2,D) - Point([0.5*np.cos(np.pi/4), 0.5*np.sin(np.pi/4)])
 
+		#####################################
 		# calculate curves
+		#####################################
 		fpoints = [E,CPE2,CPE1,CPE0,A]
 		dfc, front_curve_points = self.pistolet(fpoints, 4, tot=True)
 		print('front sleeve', dfc)
@@ -1164,7 +1195,7 @@ class Basic_Bodice(Pattern):
 		BF1 = BF + [-self.m["carrure_devant"]/2, 0] #H1
 		#13
 		CF1 = HF + [-self.m["tour_encolure"]/6 -1, 0] #F2
-
+		CF2 = CF1
 		#################################################
 		# Add Hip
 		#################################################
@@ -1178,8 +1209,9 @@ class Basic_Bodice(Pattern):
 		#################################################
 		#14
 		CB1 = B2 + [0, self.m["tour_encolure"]/16]
-		CB2 = HB + [1, 0]
-		self.m['longueur_col_dos'], collar_back_points = self.pistolet(np.array([HB, CB2, CB1]), 2, tot=True)
+		CB2 = CB1
+		CB2b = HB + [1, 0]
+		self.m['longueur_col_dos'], collar_back_points = self.pistolet(np.array([HB, CB2b, CB1]), 2, tot=True)
 
 		#################################################
 		# Back Shoulder
@@ -1277,18 +1309,18 @@ class Basic_Bodice(Pattern):
 		########################################
 
 		if self.hip:
-			Back_Points_list  =  [HiB, HiB1, WB,  SlB,  BB,  HB, HB1, CB1,  ShB1,  BB1,  CPSlB,  SlB1,  WB1, DS, B2]
-			Back_Points_Names  =  ['HiB', 'HiB1', 'WB', 'SlB', 'BB', 'HB', 'HB1', 'CB1', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1', 'DS', 'B2']
+			Back_Points_list  =  [HiB, HiB1, WB,  SlB,  BB,  HB, HB1, CB1, CB2,  ShB1,  BB1,  CPSlB,  SlB1,  WB1, DS, B2]
+			Back_Points_Names  =  ['HiB', 'HiB1', 'WB', 'SlB', 'BB', 'HB', 'HB1', 'CB1', 'CB2', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1', 'DS', 'B2']
 
-			Front_Points_list  =  [HiF, HiF1, WF,  SlF,  BF, CF,  CPCF,  CF1,  ShF1,  BF1,  CPSlF,  SlF1,  WF1, HF, HF1]
-			Front_Points_Names  =  ['HiF', 'HiF1', 'WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
+			Front_Points_list  =  [HiF, HiF1, WF,  SlF,  BF, CF,  CPCF,  CF1,  CF2, ShF1,  BF1,  CPSlF,  SlF1,  WF1, HF, HF1]
+			Front_Points_Names  =  ['HiF', 'HiF1', 'WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'CF2', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
 
 		else:
-			Back_Points_list  =  [WB,  SlB,  BB,  HB, HB1, CB1,  ShB1,  BB1,  CPSlB,  SlB1,  WB1, DS, B2]
-			Back_Points_Names  =  ['WB', 'SlB', 'BB', 'HB', 'HB1', 'CB1', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1', 'DS', 'B2']
+			Back_Points_list  =  [WB,  SlB,  BB,  HB, HB1, CB1, CB2,  ShB1,  BB1,  CPSlB,  SlB1,  WB1, DS, B2]
+			Back_Points_Names  =  ['WB', 'SlB', 'BB', 'HB', 'HB1', 'CB1', 'CB2', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1', 'DS', 'B2']
 
-			Front_Points_list  =  [WF,  SlF,  BF, CF,  CPCF,  CF1,  ShF1,  BF1,  CPSlF,  SlF1,  WF1, HF, HF1]
-			Front_Points_Names  =  ['WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
+			Front_Points_list  =  [WF,  SlF,  BF, CF,  CPCF,  CF1, CF2,  ShF1,  BF1,  CPSlF,  SlF1,  WF1, HF, HF1]
+			Front_Points_Names  =  ['WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'CF2', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1', 'HF', 'HF1']
 
 		for i in range(len(Back_Points_Names)):
 			self.Back_dic[Back_Points_Names[i]] = Back_Points_list[i]
@@ -1551,7 +1583,7 @@ class Basic_Bodice(Pattern):
 		"""
 		bfd  = self.Bodice_points_dic
 
-		if self.style == 'Gilewska':
+		if self.style in ( 'Gilewska' , 'Chiapetta' ) :
 			# Apex of dart
 			OP = Point([bfd['WF'].x - self.m["ecart_poitrine"]/2, bfd['CF1'].y - self.m["hauteur_poitrine"]])
 
@@ -1610,7 +1642,10 @@ class Basic_Bodice(Pattern):
 			self.Front_vertices = [bfd['WF'].pos(),  bfd['CF'].pos() ] + self.curves_dic['Front_Collar'] +  [MShF.pos(), OP.pos(), K2.pos(), ShF2.pos()] + new_sleeve_front_points + [bfd['SlF1'].pos(), bfd['WF1'].pos()]
 
 			#recalculate the sleeve
-			self.Gilewska_basic_sleeve_w()
+			if self.style == 'Gilewsa':
+				self.Gilewska_basic_sleeve_w()
+			elif self.style == 'Chiapetta':
+				self.chiappetta_basic_sleeve_m() # should be w...
 
 		else:
 			pass

@@ -10,8 +10,9 @@ class Collars(Pattern):
 	"""
 	Class to calculate collar pattern
 
-	Collars must be called or instanciated after shirt or bodice instances so that
-	the back and front collar lengths are stored on a json measurement file.
+	Collars must be called or instanciated after shirt or bodice instances
+	because then the back and front collar lengths are stored on
+	a json measurement file or sql database.
 
 	styles available : Officer, OnePiece, TwoPieces
 
@@ -118,9 +119,11 @@ class Collars(Pattern):
 
 			Cld = Point([0,0.5])
 			C1 = Cld + [2,0]
-			Cmd = Cld + [self.m['longueur_col_dos']+0.5,-0.5]
+			# Cmd = Cld + [self.m['longueur_col_dos']+0.5,-0.5]
+			Cmd = Cld + [self.m['longueur_col_dos'],-0.5]
 			C2 = Cmd - [1,0]
-			Crd = Cmd + [self.m['longueur_col_devant']+0.5 + overlap, front_height]
+			# Crd = Cmd + [self.m['longueur_col_devant']+0.5 + overlap, front_height]
+			Crd = Cmd + [self.m['longueur_col_devant'] + overlap, front_height]
 
 			dcf = self.distance(Cmd, Crd)
 			a = self.segment_angle(Cmd, Crd)
@@ -162,10 +165,15 @@ class Collars(Pattern):
 			C8 = Cmu + 0.5*self.distance(Cmu,C6)*np.array([np.cos(a-2*np.pi/180),np.sin(a-2*np.pi/180)])
 
 			d, front_collar_curve = self.pistolet(np.array([Crd, C6, C7]), 2, tot=True)
-			d, back_curve_d = self.pistolet(np.array([Cld, C1, C2, Cmd]), 3, tot=True)
+			dbcd, back_curve_d = self.pistolet(np.array([Cld, C1, C2, Cmd]), 3, tot=True)
 			d, back_curve_u = self.pistolet(np.array([Cmu, C5, C4, Clu]), 3, tot=True)
-			d, front_curve_d = self.pistolet(np.array([Cmd, C3, Crd]), 2, tot=True)
+			dfcd, front_curve_d = self.pistolet(np.array([Cmd, C3, Crd]), 2, tot=True)
 			d, front_curve_u = self.pistolet(np.array([C7, C8, Cmu]), 2, tot=True)
+
+			print("######################")
+			print("collar size")
+			print("back curve", dbcd)
+			print("front curve", dfcd)
 
 			self.Collar_dic.append( {'Cld': Cld, 'Cmd': Cmd, 'Crd': Crd, 'Cmu': Cmu, 'Clu': Clu, 'Cru': Cru, 'C7': C7, 'C8': C8, 'C3': C3, 'C6': C6, 'C7d':C7d} )
 			self.Collar_vertices.append( back_curve_d + front_curve_d + front_collar_curve+ front_curve_u + back_curve_u )

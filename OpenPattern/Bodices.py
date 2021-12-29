@@ -17,7 +17,7 @@ class Basic_Bodice(Pattern):
 		style: style used to draw the pattern as string (Gilewska, Donnanno, Chiappetta for now)
 
 		# Attributes that control the dictionnaries used for size measurements
-		age: ade of the kid in Chiapetta's patterns
+		age: ade of the kid in Chiappetta's patterns
 		gender: gender
 		pname: measurements used corresponding to a json file
 
@@ -265,7 +265,7 @@ class Basic_Bodice(Pattern):
 			This Bodice comes with ease applied
 
 			TODO: I haven't had time to normalize the point labelling
-			so it can not be mixed with chiapetta or Gilewsa
+			so it can not be mixed with Chiappetta or Gilewsa
 
 		Args:
 			ease: ease to be applied.
@@ -542,7 +542,7 @@ class Basic_Bodice(Pattern):
 
 	def chiappetta_basic_bodice(self, age=14, d_FB = 5):
 		""" Calculation of bodice with no dart
-			for children using Chiapetta technique
+			for children using Chiappetta technique
 			differences arise with age and sex on the shoulder angle and the use
 			of carrure devant for the girls.
 
@@ -800,9 +800,11 @@ class Basic_Bodice(Pattern):
 		ClBF = BF1 + Point([0,-1])
 		# ClBF1 = Point([BF1.x,SlF1.y]) + Point([2*np.cos(np.pi/4),2*np.sin(np.pi/4)])
 
-		self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1,ClShB,BB1,ClBB,SlB1], 3, tot=True)
+		# self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1,ClShB,BB1,ClBB,SlB1], 3, tot=True)
+		self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.True_pistolet([ShB1,BB1,SlB1])
 		print("emmanchure dos",self.m["longueur_emmanchure_dos"])
-		self.m["longueur_emmanchure_devant"], self.front_sleeve_curve =  self.pistolet([ShF1,ClShF,BF1,ClBF,SlF1], 3, tot=True)
+		# self.m["longueur_emmanchure_devant"], self.front_sleeve_curve =  self.pistolet([ShF1,ClShF,BF1,ClBF,SlF1], 3, tot=True)
+		self.m["longueur_emmanchure_devant"], self.front_sleeve_curve =  self.True_pistolet([ShF1,BF1,SlF1])
 		print("emmanchure devant",self.m["longueur_emmanchure_devant"])
 
 		#armhole depth
@@ -1245,10 +1247,12 @@ class Basic_Bodice(Pattern):
 		# This test is necessary because in some cases the carrue dos is close to the
 		# bust width so the control point abcissa is larger then the sleeve point
 
-		if CPSlB.x < SlB1.x:
-			self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.pistolet([ShB1, BB1, CPSlB, SlB1], 2, tot=True)
-		else:
-			self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.pistolet([ShB1, BB1, SlB1], 2, tot=True)
+		# if CPSlB.x < SlB1.x:
+		# 	# self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.pistolet([ShB1, BB1, CPSlB, SlB1], 2, tot=True)
+		# 	self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.True_pistolet([ShB1, BB1, SlB1])
+		# else:
+		# 	self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.pistolet([ShB1, BB1, SlB1], 2, tot=True)
+		self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.True_pistolet([ShB1, BB1, SlB1])
 		print("Longueur emmanchure dos: %4.0f" % (self.m["longueur_emmanchure_dos"]))
 
 		#################################################
@@ -1290,8 +1294,8 @@ class Basic_Bodice(Pattern):
 		#~ CPSlF2 = BF1 + [0, -1] #point added to ensure correct tangents.
 		#~ CPSlF3 = self.middle(BF1, ShF1) #point added to ensure correct tangents.
 
-		self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.pistolet( [ShF1, CPShF1, BF1,  CPSlF, CPSlF1, SlF1], 2, tot=True)
-		#~ self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.pistolet([ShF1, BF1, SlF1], 2, tot=True)
+		# self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.pistolet( [ShF1, CPShF1, BF1,  CPSlF, CPSlF1, SlF1], 2, tot=True)
+		self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.True_pistolet([ShF1, BF1, SlF1])
 		print("Longueur emmanchure devant: %4.0f" % (self.m["longueur_emmanchure_devant"]))
 
 
@@ -1583,7 +1587,7 @@ class Basic_Bodice(Pattern):
 		"""
 		bfd  = self.Bodice_points_dic
 
-		if self.style in ( 'Gilewska' , 'Chiapetta' ) :
+		if self.style in ( 'Gilewska' , 'Chiappetta' ) :
 			# Apex of dart
 			OP = Point([bfd['WF'].x - self.m["ecart_poitrine"]/2, bfd['CF1'].y - self.m["hauteur_poitrine"]])
 
@@ -1644,7 +1648,7 @@ class Basic_Bodice(Pattern):
 			#recalculate the sleeve
 			if self.style == 'Gilewsa':
 				self.Gilewska_basic_sleeve_w()
-			elif self.style == 'Chiapetta':
+			elif self.style == 'Chiappetta':
 				self.chiappetta_basic_sleeve_m() # should be w...
 
 		else:

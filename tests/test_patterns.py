@@ -42,12 +42,12 @@ p = OP.Basic_Bodice(pname="Me", style='Chiappetta')
 # p.draw_sleeves()
 
 
-p = OP.Shirt(pname="Me", gender='m', style = "Chiappetta")
+p = OP.Shirt(pname="Me", gender='m', style = "Gilewska")
 p.draw_bodice()
-p.basic_shirt_bodice(style="Chiappetta")
+# p.basic_shirt_bodice(style="Gilewska")
 # p.chiappetta_basic_sleeve_m()
 # p.draw_sleeves()
-p.chiappetta_armhole_sleeve_m(ease=3,folds=1,fold_width=1,fente=11, wrist=5)
+# p.chiappetta_armhole_sleeve_m(ease=3,folds=1,fold_width=1,fente=11, wrist=5)
 p.draw_sleeves()
 # p.draw(save=True,paper='A4')
 #

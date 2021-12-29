@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
+from copy import deepcopy
+
 
 # the implementation of the clothoid is taken from
 #
@@ -35,16 +37,61 @@ def find_center(xdat,ydat):
 
     return xc,yc, sm, bm, xm, ym
 
+"""à adapter au différents types de courbures
+emmanchures, tour de col etc...
 
-xdat = [10, 8, 15]
-ydat = [25, 20, 10]
+pour les jupes, col et tête de manche les spleen semblent
+très bien fonctionner
+
+ce sont fondamentalement les emmanchures
+qui elles ne marchent pas bien.
+
+On pourrait aussi probablement améliorer le tour d'encolure
+
+il faut toujours commencer par la pente la plus douce
+et faire une Transformation de sorte à ce que la convexité soit
+bien orientée
+puis revenir au point initial
+"""
+
+xdat = np.array([10, 15, 8])
+ydat = np.array([25, 20, 10])
+
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.axis('square')
 ax.plot(xdat, ydat, 'bo', zorder=5)
-ax.set_xlim(0.5*min(xdat),1.5*max(xdat))
-ax.set_ylim(0.5*min(ydat),1.5*max(ydat))
+ax.set_xlim(-100,100)
+ax.set_ylim(-100,100)
+
+#preserve
+x_ori = deepcopy(xdat)
+y_ori = deepcopy(ydat)
+
+
+vsym = False
+#tester la position du second point et faire
+if xdat[1] > xdat[2]:
+    vsym = True
+    xdat = -xdat
+
+
+
+# rotation
+
+dx = np.diff(xdat)
+dy = np.diff(ydat)
+a_ori = np.arctan(dy/dx)
+
+M = np.array([[np.cos(a_ori[0]), -np.sin(a_ori[0])],[np.sin(a_ori[0]), np.cos(a_ori[0])]])
+rotated = np.matmul(M,np.vstack([xdat-xdat[0],ydat-ydat[0]]))
+xdat = rotated[0]
+ydat = rotated[1]
+
+
+ax.plot(xdat,ydat,'go')
+
 
 #####################################
 # Not the best and certainly not the most
@@ -112,7 +159,7 @@ for i in range(len(A)-1):
 K0 = (A[2]-A[1])/(d[1]-d[0])
 # but I use the length !
 L = max(d)
-s = np.linspace(0, L, 1000)
+s = np.linspace(0, L, 100)
 
 # minimisation procedure
 # first we minimise kappa0 as it almost does the job
@@ -160,13 +207,38 @@ for j in range(N1):
 kappa1 = 0.0001*(jsel-N1/2)
 print(kappa0,kappa1)
 
+
+
 # And we have it !
+
 
 sol = eval_clothoid(xdat[0],ydat[0], A[0]-np.pi, kappa0, kappa1, s)
 xs, ys, thetas = sol[:,0], sol[:,1], sol[:,2]
 
+# finally crop for L
+d = (xs-xdat[2])**2 + (ys-ydat[2])**2
+dmin = min(d)
+end_index = np.where(d==dmin)[0][0]
+print(end_index)
+
+xs = xs[:end_index]
+ys = ys[:end_index]
 ax.plot(xs, ys)
 
+# return to normal
+Minv  = np.linalg.inv(M)
+back1 = np.dot(Minv, np.array([xs,ys]))
+if vsym:
+    xs = back1[0] - x_ori[0]
+else:
+    xs = back1[0] + x_ori[0]
+ys = back1[1] + y_ori[0]
+
+
+if vsym:
+    xs = -xs
+
+ax.plot(xs, ys)
 
 #
 plt.show()

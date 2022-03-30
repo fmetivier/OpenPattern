@@ -126,10 +126,7 @@ class Basic_Bodice(Pattern):
 		ax = self.print_info(ax, dic)
 
 		# 3 print specific drawings
-		if self.style == 'Donnanno':
-			print("to be done")
-		else:
-			ax = self.add_legends(ax)
+		ax = self.add_legends(ax)
 
 		if save:
 			if fname:
@@ -273,31 +270,32 @@ class Basic_Bodice(Pattern):
 		"""
 
 
-		m=self.m
 
 		#################################################
 		# Frame
 		#################################################
-		A = Point([0, m["longueur_devant"]])
+		A = Point([0, self.m["longueur_devant"]])
 		B = Point([0, 0])
-		C = Point([(m["tour_poitrine"]+bust_ease)/2, 0])
-		D = Point([(m["tour_poitrine"]+bust_ease)/2, m["longueur_dos"]])
-		E = Point([(m["tour_poitrine"]+bust_ease)/4, 0])
-		F = Point([(m["tour_poitrine"]+bust_ease)/4, m["longueur_devant"]])
+		C = Point([(self.m["tour_poitrine"]+bust_ease)/2, 0])
+		D = Point([(self.m["tour_poitrine"]+bust_ease)/2, self.m["longueur_dos"]])
+		E = Point([(self.m["tour_poitrine"]+bust_ease)/4, 0])
+		F = Point([(self.m["tour_poitrine"]+bust_ease)/4, self.m["longueur_devant"]])
 
 
 		#################################################
 		# Bust line
 		#################################################
-		H = Point([(m["tour_poitrine"]+bust_ease)/2, m["longueur_dos"]/2])
-		I = Point([0, m["longueur_dos"]/2])
+		H = Point([(self.m["tour_poitrine"]+bust_ease)/2, self.m["longueur_dos"]/2])
+		I = Point([0, self.m["longueur_dos"]/2])
 		Q = Point([E.x, H.y])
 
 
-		G = Point([3*(m["tour_poitrine"]+bust_ease)/10, m["longueur_dos"]])
-		H1 = Point([3*(m["tour_poitrine"]+bust_ease)/10, m["longueur_dos"]/2])
+		# G = Point([3*(self.m["tour_poitrine"]+bust_ease)/10, self.m["longueur_dos"]])
+		# H1 = Point([3*(self.m["tour_poitrine"]+bust_ease)/10, self.m["longueur_dos"]/2])
+		G = D - [self.m["carrure_dos"]/2 + 1 , 0]
+		H1 = Point([G.x, H.y])
 
-		I1 = Point([2*(m["tour_poitrine"]+bust_ease)/10-1.5, m["longueur_dos"]/2])
+		I1 = H1 - [(self.m["tour_poitrine"]+bust_ease)/10 + 1.5, 0]
 		J1 = Point([I1.x, A.y])
 
 
@@ -328,13 +326,13 @@ class Basic_Bodice(Pattern):
 		# Shoulder
 		#################################################
 		# Back
-		if m["longueur_epaule"] == 0:
+		if self.m["longueur_epaule"] == 0:
 			P1 = O
 		else:
 			a = self.segment_angle(P, O)
 			dPO = self.distance(P, O)
 			print("[PO]", dPO)
-			dOP1 = m["longueur_epaule"]-dPO
+			dOP1 = self.m["longueur_epaule"]-dPO
 			P1 = Point([O.x+dOP1*np.cos(a+np.pi), O.y+dOP1*np.sin(a+np.pi)])
 		print("[PP1]", self.distance(P, P1))
 
@@ -346,10 +344,10 @@ class Basic_Bodice(Pattern):
 
 		Z = Point([J1.x, J1.y-5])
 		a = self.segment_angle(U, Z)
-		if m["longueur_epaule"] == 0:
+		if self.m["longueur_epaule"] == 0:
 			Z2 = Z
 		else:
-			Z2  =  Point([U.x+m["longueur_epaule"]*np.cos(a), U.y+m["longueur_epaule"]*np.sin(a)] )
+			Z2  =  Point([U.x + self.m["longueur_epaule"]*np.cos(a), U.y + self.m["longueur_epaule"]*np.sin(a)] )
 		print("[UZ2]", self.distance(U, Z2))
 
 		#################################################
@@ -359,8 +357,9 @@ class Basic_Bodice(Pattern):
 		bd = 1.5
 		controle = Point([H1.x - bd, H1.y + bd])
 
-		m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet([P1, L1, controle, Q], 2, tot=True)
-		print("Longueur emmanchure dos: %4.0f" % (m["longueur_emmanchure_dos"]))
+		# self.m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet([P1, L1, Q], 2, tot=True)
+		self.m["longueur_emmanchure_dos"], emmanchure_dos = self.True_pistolet([P1, L1, Q])
+		print("Longueur emmanchure dos: %4.0f" % ( self.m["longueur_emmanchure_dos"] ) )
 
 		#front
 		fd = 1.8
@@ -368,58 +367,69 @@ class Basic_Bodice(Pattern):
 
 
 
-		m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet([Z2, J, controle, Q], 2, tot=True)
-		print("Longueur emmanchure devant: %4.0f" % (m["longueur_emmanchure_devant"]))
+		# self.m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet([Z2, J, controle, Q], 2, tot=True)
+		self.m["longueur_emmanchure_devant"], emmanchure_devant = self.True_pistolet([Z2, J, Q])
+		print("Longueur emmanchure devant: %4.0f" % ( self.m["longueur_emmanchure_devant"] ) )
 
 		#################################################
 		# Dictionnaries and vertices
 		#################################################
-		self.Bodice_points_dic={}
 		Bodice_Points_Names=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'P1', 'Q', 'U', 'Z', 'H1', 'I1', 'J1', 'L1', 'U1', 'U2', 'Z2']
 		Bodice_Points_List=[A, B, C, D, E, F, G, H, I, J, L, M, N, O, P, P1, Q, U, Z, H1, I1, J1, L1, U1, U2, Z2]
 
 		for i in range(len(Bodice_Points_Names)):
-			self.Bodice_points_dic[Bodice_Points_Names[i]] = Bodice_Points_List[i]
+			self.Front_dic[Bodice_Points_Names[i]] = Bodice_Points_List[i]
 
 		self.Front_vertices = [B.pos(), U1.pos()] + col_devant + [Z.pos()] + emmanchure_devant + [Q.pos(), E.pos()]
 		self.Back_vertices = [C.pos(), D.pos()] + col_dos + [O.pos()] + emmanchure_dos + [Q.pos(), E.pos()]
 
-	def Donnanno_bodice_without_dart_m(self, bust_ease=8):
+		# comments
+		self.set_fold_line(L + Point([0,-2]), C + Point([0,2]), 'right')
+		self.add_labelled_line(M, L, 'BUST LINE','t')
+		self.add_labelled_line(B, C, 'WAIST LINE','t')
+		self.add_comment(self.middle(I,I1)+Point([0,5]),'FRONT')
+		self.add_comment(self.middle(H1,H)+Point([0,5]),'BACK')
+		self.set_grainline(self.middle(H,H1) + Point([0,-10]))
+
+	def Donnanno_bodice_without_dart_m(self, bust_ease=24):
 		""" Calculation of bodice with no dart
 			for Men using Donnanno technique
 			This Bodice comes with ease applied
 
+		NOTE READY THERE ARE PROBLEMS FOR BUST CALCULATIONS
+		AND DONNANNO MAKES ARMHOLES THAT ARE VERY FLAT
+
 		Args:
 			ease: ease to be applied.
 		"""
-		m=self.m
 
 
 		#################################################
 		# Frame
 		#################################################
-		A = Point([0, m["longueur_devant"]])
+		A = Point([0, self.m["longueur_devant"]])
 		B = Point([0, 0])
-		C = Point([(m["tour_poitrine"]+bust_ease)/2, 0])
-		D = Point([(m["tour_poitrine"]+bust_ease)/2, m["longueur_dos"]])
-		E = Point([(m["tour_poitrine"]+bust_ease)/4, 0])
-		F = Point([(m["tour_poitrine"]+bust_ease)/4, m["longueur_devant"]])
+		C = Point([(self.m["tour_poitrine"]+bust_ease)/2, 0])
+		D = Point([(self.m["tour_poitrine"]+bust_ease)/2, self.m["longueur_dos"]])
+		E = Point([(self.m["tour_poitrine"]+bust_ease)/4, 0])
+		F = Point([(self.m["tour_poitrine"]+bust_ease)/4, self.m["longueur_devant"]])
 
 
 		#################################################
 		# Bust line
 		#################################################
-		H = Point([(m["tour_poitrine"]+bust_ease)/2, m["longueur_dos"]/2])
-		I = Point([0, m["longueur_dos"]/2])
+		H = Point([(self.m["tour_poitrine"]+bust_ease)/2, self.m["longueur_dos"]/2])
+		I = Point([0, self.m["longueur_dos"]/2])
 		Q = Point([E.x, H.y])
 
 
-		G = D - [m["largeur_epaule"]/2 +1, 0] # ca merde dans les "grandes" largeurs... j'utilise donc la méthode pour les femmes
+		G = D - [self.m["largeur_epaule"]/2 + 1, 0] # ca merde dans les "grandes" largeurs... j'utilise donc la méthode pour les femmes
 		#~ G = D - [(m["tour_poitrine"]+bust_ease)/5 +1, 0]
-		H1 = H - [m["largeur_epaule"]/2 +1, 0]
+		H1 = H - [(self.m["largeur_epaule"]/2 + 1), 0]
 		#~ H1 = H - [(m["tour_poitrine"]+bust_ease)/5 +1, 0]
 
-		I1 = H1 - [(m["tour_poitrine"]+bust_ease)/10 + 2, 0]
+		# 1/5 of HI does not work -> try 1/10
+		I1 = H1 - [(self.m["tour_poitrine"]+bust_ease)/10 + 2, 0]
 		J1 = Point([I1.x, A.y])
 
 		#################################################
@@ -448,7 +458,7 @@ class Basic_Bodice(Pattern):
 		# Shoulder
 		#################################################
 		# Back
-		if m["longueur_epaule"]==0:
+		if self.m["longueur_epaule"]==0:
 			P1 = O
 			le=self.distance(P, P1)
 
@@ -456,7 +466,7 @@ class Basic_Bodice(Pattern):
 			a = self.segment_angle(P, O)
 			dPO = self.distance(P, O)
 			print("[PO]", dPO)
-			dOP1 = m["longueur_epaule"]-dPO + 1
+			dOP1 = self.m["longueur_epaule"]-dPO + 1
 			P1 = O + [dOP1*np.cos(a+np.pi), dOP1*np.sin(a+np.pi)]
 			print("[PP1]", self.distance(P, P1))
 
@@ -468,10 +478,10 @@ class Basic_Bodice(Pattern):
 
 		Z = J1  - [0, 5]
 		a = self.segment_angle(U, Z)
-		if m["longueur_epaule"]==0:
+		if self.m["longueur_epaule"]==0:
 			Z2  = U + [le*np.cos(a), le*np.sin(a)]
 		else:
-			Z2  = U + [(m["longueur_epaule"]+1)*np.cos(a), (m["longueur_epaule"]+1)*np.sin(a)]
+			Z2  = U + [(self.m["longueur_epaule"] + 1)*np.cos(a), (self.m["longueur_epaule"] + 1)*np.sin(a)]
 			print("[UZ2]", self.distance(U, Z2))
 
 		#################################################
@@ -482,9 +492,9 @@ class Basic_Bodice(Pattern):
 		bd = 1.5
 		controle = H1 + [ -bd,  bd ]
 
-		m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet([P1, L1, controle, Q], 2, tot=True)
-		#~ m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet([P1, L1, Q], 2, tot=True)
-		print("Longueur emmanchure dos: %4.0f" % (m["longueur_emmanchure_dos"]))
+		# self.m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet([P1, L1, controle, Q], 2, tot=True)
+		self.m["longueur_emmanchure_dos"], emmanchure_dos = self.True_pistolet([P1, L1, Q])
+		print("Longueur emmanchure dos: %4.0f" % (self.m["longueur_emmanchure_dos"]))
 
 		#front
 		fd = 1.8
@@ -492,16 +502,16 @@ class Basic_Bodice(Pattern):
 
 
 
-		m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet([Z2, J, controle, Q], 2, tot=True)
-		#~ m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet([Z2, J, Q], 2, tot=True)
-		print("Longueur emmanchure devant: %4.0f" % (m["longueur_emmanchure_devant"]))
+		# self.m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet([Z2, J, controle, Q], 2, tot=True)
+		self.m["longueur_emmanchure_devant"], emmanchure_devant = self.True_pistolet([Z2, J, Q])
+		print("Longueur emmanchure devant: %4.0f" % (self.m["longueur_emmanchure_devant"]))
 
 		#################################################
 		# Basic Shirt Base and Dart
 		#################################################
 
-		Y = B - [0, m["hauteur_bassin"]]
-		X = C - [0, m["hauteur_bassin"]]
+		Y = B - [0, self.m["hauteur_bassin"]]
+		X = C - [0, self.m["hauteur_bassin"]]
 		E1 = self.middle(X, Y)
 
 		dXC1 = 75 - self.distance(D, X)
@@ -529,16 +539,23 @@ class Basic_Bodice(Pattern):
 		#################################################
 		# Dictionnaries and vertices
 		#################################################
-		self.Bodice_points_dic={}
 		Bodice_Points_Names=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'P1', 'Q', 'U', 'Z', 'H1', 'I1', 'J1', 'L1', 'U1', 'U2', 'Z2', 'Y', 'E1', 'X', 'B1', 'E3', 'E2', 'C1']
 		Bodice_Points_List=[A, B, C, D, E, F, G, H, I, J, L, M, N, O, P, P1, Q, U, Z, H1, I1, J1, L1, U1, U2, Z2, Y, E1, X, B1, E3, E2, C1]
 
+		# no good we need to split
 		for i in range(len(Bodice_Points_Names)):
-			self.Bodice_points_dic[Bodice_Points_Names[i]] = Bodice_Points_List[i]
+			self.Front_dic[Bodice_Points_Names[i]] = Bodice_Points_List[i]
 
 		self.Front_vertices = [B.pos(), U1.pos()] + col_devant + [Z.pos()] + emmanchure_devant + [Q.pos(), W1.pos(), E1.pos()] + base_front + [B1.pos()]
 		self.Back_vertices = [C.pos(), D.pos()] + col_dos + [O.pos()] + emmanchure_dos + [Q.pos(), W.pos(), E1.pos()] + base_back + [C1.pos()]
 
+		# comments
+		self.set_fold_line(L + Point([0,-2]), C + Point([0,2]), 'right')
+		self.add_labelled_line(M, L, 'BUST LINE','t')
+		self.add_labelled_line(B, C, 'WAIST LINE','t')
+		self.add_comment(self.middle(I,I1)+Point([0,5]),'FRONT')
+		self.add_comment(self.middle(H1,H)+Point([0,5]),'BACK')
+		self.set_grainline(self.middle(H,H1) + Point([0,-10]))
 
 	def chiappetta_basic_bodice(self, age=14, d_FB = 5):
 		""" Calculation of bodice with no dart
@@ -590,7 +607,8 @@ class Basic_Bodice(Pattern):
 			collar_back_points = [HB, ClCB2, ClCB, CB2]
 			self.m['longueur_col_dos'], self.back_collar_curve = self.pistolet(collar_back_points, 2, tot = True)
 			#armhole
-			self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1, BB1, SlB1], 2, tot=True)
+			# self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1, BB1, SlB1], 2, tot=True)
+			self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.True_pistolet([ShB1, BB1, SlB1])
 
 			# Front bodice
 			WF = Point([0, 0])
@@ -627,8 +645,10 @@ class Basic_Bodice(Pattern):
 			ShF1 = CF2 + [self.m['longueur_epaule']*np.cos(-25*np.pi/180), \
 			self.m['longueur_epaule']*np.sin(-25*np.pi /180)]
 
-			sleeve_front_points = np.array([ShF1, BF1, SlF1])
-			self.m["longueur_emmanchure_devant"], self.front_sleeve_curve = self.pistolet(sleeve_front_points, 2, tot=True)
+			# sleeve_front_points = np.array([ShF1, BF1, SlF1])
+			# self.m["longueur_emmanchure_devant"], self.front_sleeve_curve = self.pistolet(sleeve_front_points, 2, tot=True)
+			sleeve_front_points = [ShF1, BF1, SlF1]
+			self.m["longueur_emmanchure_devant"], self.front_sleeve_curve = self.True_pistolet(sleeve_front_points)
 
 
 			front_points_keys =['WF', 'WF1', 'SlF', 'SlF1', 'BF', 'BF1', 'CF', 'CF2', 'HF', 'ShF1', 'ClCF']
@@ -645,6 +665,15 @@ class Basic_Bodice(Pattern):
 
 			self.Back_vertices = [WB.pos(), HB.pos()] + self.back_collar_curve + [ShB1.pos()] + self.back_sleeve_curve + [SlB1.pos(), WB1.pos()]
 			self.Front_vertices = [WF.pos(), CF1.pos()] + self.front_collar_curve + [ShF1.pos()] +  self.front_sleeve_curve + [SlF1.pos(), WF1.pos()]
+
+		# comments
+		self.set_fold_line(BB + Point([0,-2]), WB + Point([0,2]), 'right')
+		self.set_fold_line(BF + Point([0,-2]), WF + Point([0,2]), 'left')
+		self.add_labelled_line(BF, BB, 'BUST LINE','t')
+		self.add_labelled_line(WF, WB, 'WAIST LINE','t')
+		self.add_comment(self.middle(SlF,SlF1)+Point([0,5]),'FRONT')
+		self.add_comment(self.middle(SlB,SlB1)+Point([0,5]),'BACK')
+		self.set_grainline(self.middle(SlF,SlF1) + Point([0,-10]))
 
 	def chiappetta_basic_bodice__ori_m(self, BF_space=2):
 		"""Calculation of the basic bodice for men
@@ -800,8 +829,8 @@ class Basic_Bodice(Pattern):
 		ClBF = BF1 + Point([0,-1])
 		# ClBF1 = Point([BF1.x,SlF1.y]) + Point([2*np.cos(np.pi/4),2*np.sin(np.pi/4)])
 
-		# self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1,ClShB,BB1,ClBB,SlB1], 3, tot=True)
-		self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.True_pistolet([ShB1,BB1,SlB1])
+		# self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1,ClShB,BB1,ClBB,SlB1], 3, tot=True) #b-splines
+		self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.True_pistolet([ShB1,BB1,SlB1]) #clothoids
 		print("emmanchure dos",self.m["longueur_emmanchure_dos"])
 		# self.m["longueur_emmanchure_devant"], self.front_sleeve_curve =  self.pistolet([ShF1,ClShF,BF1,ClBF,SlF1], 3, tot=True)
 		self.m["longueur_emmanchure_devant"], self.front_sleeve_curve =  self.True_pistolet([ShF1,BF1,SlF1])
@@ -1351,12 +1380,12 @@ class Basic_Bodice(Pattern):
 
 		# comments
 		self.set_fold_line(BB + Point([0,-2]), WB + Point([0,2]), 'left')
-		self.set_fold_line(BF + Point([0,-2]), WF + Point([0,2]), 'right')
 		self.add_labelled_line(BF, BB, 'BUST LINE','t')
 		self.add_labelled_line(WF, WB, 'WAIST LINE','t')
 		self.add_comment(self.middle(SlF,SlF1)+Point([0,5]),'FRONT')
 		self.add_comment(self.middle(SlB,SlB1)+Point([0,5]),'BACK')
 		self.set_grainline(self.middle(SlF,SlF1) + Point([0,-10]))
+
 
 
 	def Gilewska_basic_sleeve_m(self):
@@ -1543,13 +1572,17 @@ class Basic_Bodice(Pattern):
 
 		#~ points_emmanchure_dos = np.array([ShB1, BB1, CPSlB, SlB1])
 		#~ dsb, sleeve_back_points = self.pistolet(points_emmanchure_dos, 3, tot=True)
-		points_emmanchure_dos = [ShB1, BB1, CPSlB, SlB1]
-		dsb, sleeve_back_points = self.pistolet(points_emmanchure_dos, 2, tot=True)
+		# points_emmanchure_dos = [ShB1, BB1, CPSlB, SlB1]
+		# dsb, sleeve_back_points = self.pistolet(points_emmanchure_dos, 2, tot=True)
+		points_emmanchure_dos = [ShB1, BB1, SlB1]
+		dsb, sleeve_back_points = self.True_pistolet(points_emmanchure_dos)
 		print("Longueur emmanchure dos: %4.0f" % (dsb))
 		self.m["longueur_emmanchure_dos"] = dsb
 
-		points_emmanchure_devant = [ShF1, BF1, CPSlF, SlF1]
-		dsf, sleeve_front_points = self.pistolet(points_emmanchure_devant, 2, tot=True)
+		# points_emmanchure_devant = [ShF1, BF1, CPSlF, SlF1]
+		# dsf, sleeve_front_points = self.pistolet(points_emmanchure_devant, 2, tot=True)
+		points_emmanchure_devant = [ShF1, BF1, SlF1]
+		dsf, sleeve_front_points = self.True_pistolet(points_emmanchure_devant)
 		print("Longueur emmanchure devant: %4.0f" % (dsf))
 		self.m["longueur_emmanchure_devant"] = dsf
 
@@ -1561,12 +1594,12 @@ class Basic_Bodice(Pattern):
 		Back_Points_Names  =  ['WB', 'SlB', 'BB', 'CB', 'CPCB', 'CB1', 'ShB1', 'BB1', 'CPSlB', 'SlB1', 'WB1']
 
 		for i in range(len(Back_Points_Names)):
-			self.Bodice_points_dic[Back_Points_Names[i]] = Back_Points_list[i]
+			self.Back_dic[Back_Points_Names[i]] = Back_Points_list[i]
 
 		Front_Points_list  =  [WF,  SlF,  BF, CF,  CPCF,  CF1,  ShF1,  BF1,  CPSlF,  SlF1,  WF1]
 		Front_Points_Names  =  ['WF', 'SlF', 'BF', 'CF', 'CPCF', 'CF1', 'ShF1', 'BF1', 'CPSlF', 'SlF1', 'WF1']
 		for i in range(len(Front_Points_Names)):
-			self.Bodice_points_dic[Front_Points_Names[i]] = Front_Points_list[i]
+			self.Front_dic[Front_Points_Names[i]] = Front_Points_list[i]
 
 
 		#########################################
@@ -1579,6 +1612,14 @@ class Basic_Bodice(Pattern):
 		self.Front_vertices  =  [WF.pos(),  CF.pos() ] + collar_front_points +  sleeve_front_points + [SlF1.pos(), WF1.pos()]
 
 		self.curves_dic = {'Back_Collar': collar_back_points, 'Back_Sleeve': sleeve_back_points, 'Front_Collar': collar_front_points, 'Front_Sleeve': sleeve_front_points}
+
+		# comments
+		self.set_fold_line(BB + Point([0,-2]), WB + Point([0,2]), 'left')
+		self.add_labelled_line(BF, BB, 'BUST LINE','t')
+		self.add_labelled_line(WF, WB, 'WAIST LINE','t')
+		self.add_comment(self.middle(SlF,SlF1)+Point([0,5]),'FRONT')
+		self.add_comment(self.middle(SlB,SlB1)+Point([0,5]),'BACK')
+		self.set_grainline(self.middle(SlF,SlF1) + Point([0,-10]))
 
 
 

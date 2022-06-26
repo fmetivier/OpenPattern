@@ -9,7 +9,17 @@ __copyright__ = "Copyright 2020"
 __license__ = "GPL"
 __version__ = "0.2"
 
-__all__ = ['OpenPattern','Pattern','Bodices','Trousers','Collars','Cuffs','Skirts','Shirts','Points']
+__all__ = [
+    "OpenPattern",
+    "Pattern",
+    "Bodices",
+    "Trousers",
+    "Collars",
+    "Cuffs",
+    "Skirts",
+    "Shirts",
+    "Points",
+]
 
 from .Points import *
 from .Pattern import *

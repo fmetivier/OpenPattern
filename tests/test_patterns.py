@@ -2,38 +2,36 @@
 # -*- coding: utf-8 -*-
 
 import sys
-sys.path.append('./..')
 
+sys.path.append("../")
 import matplotlib.pyplot as plt
-#~ from OpenPattern.Points import Point
+
+# ~ from OpenPattern.Points import Point
 
 import OpenPattern as OP
 import numpy as np
 
 
-
-
 # Skirts
-# p = OP.Basic_Skirt(pname='sophie',style='Donnanno')
-# p.draw()
+p = OP.Basic_Skirt(pname="W6C", style="Chiappetta")
+p.draw()
 
-# p = OP.Culotte(pname='sophie',style='Donnanno',ease=1)
-# p.draw(save=True,paper='A4',fname='culotte')
+# p = OP.Culotte(pname="sophie", style="Donnanno", ease=1)
+# p.draw(save=True, paper="A4", fname="culotte")
 
 
 ##################
 
-# w = OP.Waistband(pname='sophie',ease=2)
-# w.draw(save=True,paper='A4',fname='culotte_waist')
-
+# w = OP.Waistband(pname="sophie", ease=2)
+# w.draw(save=True, paper="A4", fname="culotte_waist")
 
 
 # Women
-# p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
+# p = OP.Basic_Bodice(pname="W36G", gender="w", style="Gilewska")
 # p.draw_bodice()
-
-p = OP.Basic_Bodice(pname = "W40D", gender = 'w', style = 'Donnanno')
-p.draw_bodice()
+#
+# p = OP.Basic_Bodice(pname="W40D", gender="w", style="Donnanno")
+# p.draw_bodice()
 
 # p.add_bust_dart()
 # p.add_waist_dart()
@@ -41,12 +39,12 @@ p.draw_bodice()
 # p.draw_sleeves()
 
 # Men
-# p = OP.Basic_Bodice(pname="Me", gender='m', style='Chiappetta')
+# p = OP.Basic_Bodice(pname="Me", gender="m", style="Chiappetta")
 # p.draw_bodice()
-# p = OP.Basic_Bodice(pname="M40G", gender='m', style='Gilewska')
+# p = OP.Basic_Bodice(pname="M40G", gender="m", style="Gilewska")
 # p.draw_bodice()
-p = OP.Basic_Bodice(pname="M44D", gender='m', style='Donnanno', ease=10)
-p.draw_bodice()
+# p = OP.Basic_Bodice(pname="M44D", gender="m", style="Donnanno", ease=10)
+# p.draw_bodice()
 # p.chiappetta_armhole_sleeve_m()
 # p.draw()
 # p.draw_sleeves()
@@ -68,7 +66,6 @@ p.draw_bodice()
 # co = OP.Collars(pname='Me',gender='m',collar_style='TwoPieces',overlap=2)
 # co.draw_collar()
 #
-
 
 
 # p = OP.Hospital_Gown()
@@ -106,6 +103,6 @@ p.draw_bodice()
 #
 # bp = OP.Pants_block(pname="M46D",gender="m", overlay=False, save=True, paper='A4')
 
-#pans = OP.Flared_pants( pname="sophie", gender='w')
+# pans = OP.Flared_pants( pname="sophie", gender='w')
 
 plt.show()

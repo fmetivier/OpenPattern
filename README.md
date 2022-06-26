@@ -1,12 +1,43 @@
 # OpenPattern
 
-OpenPattern is a library that enables to draft 1:1 scale bespoke sewing patterns and save them as pdf files for printing. The patterns are drafted following instructions from three main stylists: Jacqueline Chiappetta, Theresa Gilewska and Antonnio Donnano.  Sizes are stored in a sqlite3 database. By default they include a series of standard (French and Italian) sizes for Women, Men, Girls and Boys.
+----
+* [Introduction](##introduction)
+* [Example](##Example)
+* [Documentation](##Documentation)
+* [Installation and Requirements](##Installation-and-Requirements)
 
+-----------
+## Introduction
+OpenPattern is a python library consisting of a set of classes designed to draft 1:1 scale bespoke sewing patterns and save them as pdf (or matplotlib compatible) files for printing of further processing.
+
+Printing can be performed at fullscale on a tracer but OpenPattern can also cut the pattern in as many pieces as needed in order to print them on an A4 printer at home.
+
+OpenPattern can be used to draft patterns from scratch but also includes a set of predefined patterns from bases such as bodices to more elaborate patterns such as shirts.
+The patterns are drafted following instructions from three main stylists: <a href="https://lespressesdumidi.com/content/18-jacqueline-chiappetta">Jacqueline Chiappetta</a>, <a href="https://www.editions-eyrolles.com/Auteur/86662/teresa-gilewska">Theresa Gilewska</a> and <a href="https://www.euromodeschool.it/index.html">Antonnio Donnano </a>.  Sizes are stored in a sqlite3 database. By default they include a series of standard (French and Italian) sizes for Women, Men, Girls and Boys given by these authors.
+
+## Installation and Requirements
+OpenPattern requires the following libraries to work properly.
+* matplotlib
+* numpy
+* scipy
+* json
+* sqlite3
+
+If you want to access the measurements database from the terminal or some GUI you'll have to install the sqlite3 engine
+
+To install the library
+* clone the directory somewhere on your computer
+* open a terminal in the root directory
+* run ```python3 setup.py install```.
+sudo rights may be needed depending on your computer configuration.
 
 ## Exemple
+The most simple way to use OpenPattern is to take advantage one of its predefined patterns. In the example script we plot the bodice  of a women size 36 (French) with bust and waist darts.
+
 ```python
 import matplotlib.pyplot as plt
 import OpenPattern as OP
+
 
 # Create instance of base class
 p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
@@ -21,17 +52,10 @@ p.draw({"Pattern":"Bodice with darts"},save=True)
 # Look at the result
 plt.show()
 ```
-And the result looks like
-![Result](./patterns/Gilewska_Basic_Bodice_W36G_FullSize.svg)
+The result looks like
+![Result](./docs/samplePatterns/Gilewska_Basic_Bodice_W36G_FullSize.svg)
 
 ## Documentation
-for more informations on the use of the library see the (French) Documentation OpenPattern.pdf in the docs section.
+for more informations on the use of the library see the <a target="_blank" href="./docs/OpenPattern_D.md">French</a> Documentation.
 
-
-## Requires
-* matplotlib
-* numpy
-* scipy
-* json
-* sqlite3  
-If you want to access the database from the terminal or some GUI you'll have to install the sqlite3 engine
+typical samples of scripts and patterns can be found in the sampleScripts and samplePatterns section in the docs.

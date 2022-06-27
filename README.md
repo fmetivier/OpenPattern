@@ -2,9 +2,9 @@
 
 ----
 * [Introduction](##introduction)
+* [Installation and Requirements](##Installation-and-Requirements)
 * [Example](##Example)
 * [Documentation](##Documentation)
-* [Installation and Requirements](##Installation-and-Requirements)
 
 -----------
 ## Introduction
@@ -16,6 +16,8 @@ OpenPattern can be used to draft patterns from scratch but also includes a set o
 The patterns are drafted following instructions from three main stylists: <a href="https://lespressesdumidi.com/content/18-jacqueline-chiappetta">Jacqueline Chiappetta</a>, <a href="https://www.editions-eyrolles.com/Auteur/86662/teresa-gilewska">Theresa Gilewska</a> and <a href="https://www.euromodeschool.it/index.html">Antonnio Donnano </a>.  Sizes are stored in a sqlite3 database. By default they include a series of standard (French and Italian) sizes for Women, Men, Girls and Boys given by these authors.
 
 ## Installation and Requirements
+
+### Requirements
 OpenPattern requires the following libraries to work properly.
 * matplotlib
 * numpy
@@ -25,13 +27,21 @@ OpenPattern requires the following libraries to work properly.
 
 If you want to access the measurements database from the terminal or some GUI you'll have to install the sqlite3 engine
 
-To install the library
+### Installation
+
+To install the library you must first
 * clone the directory somewhere on your computer
 * open a terminal in the root directory
 * run ```python3 setup.py install```.
 sudo rights may be needed depending on your computer configuration.
 
+OpenPattern comes with an sqlite3 ```measurements.db``` database. This base contains a set of standard French and Italian sizes.
+
+By default OpenPattern assumes that this file resides in the *same directory* as your scripts. This is the simplest way to start rapidly. Yet you can place it anywhere and tell OpenPattern where to search for it (see the doc for more informations).
+
+
 ## Exemple
+
 The most simple way to use OpenPattern is to take advantage one of its predefined patterns. In the example script we plot the bodice  of a women size 36 (French) with bust and waist darts.
 
 ```python

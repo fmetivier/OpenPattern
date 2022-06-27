@@ -37,9 +37,9 @@ OpenPattern est une librairie python, orientée objet, dont l'objectif
 est de permettre le tracé de patrons, en particulier de vêtements, à l'échelle 1:1 et leur sauvegarde au format pdf, svg ou tout format compatible avec la libraire matplotlib. Les patrons ainsi
 construits peuvent soit être directement imprimés pour utilisation soit être repris dans un logiciel de dessin comme Inkscape.
 
-OpenPattern offre la possibilité de créer des patrons «from scratch», d'utiliser des librairies de patrons existants (patrons de bases notamment) et de les reprendre pour les adapter et les transformer.
+OpenPattern offre la possibilité de créer des patrons «from scratch», d'utiliser des librairies de patrons existants (patrons de bases notamment) et de les reprendre pour les adapter et les transformer (et de les intégrer à la librairie !).
 
-Les patrons peuvent être construits sur-mesures à partir d'un ensemble de mesures effectuées sur le corps d'une personne particulière (j'ai créé OpenPattern pour dessiner des vêtements pour ma famille), ou construits à partir de mesures de prêt à porter classique.
+Les patrons peuvent être construits «sur-mesure» à partir d'un ensemble de mesures effectuées sur le corps d'une personne particulière (j'ai créé OpenPattern pour dessiner des vêtements pour ma famille), ou construits à partir de mesures de prêt à porter classique.
 
 Les sources que j'ai utilisées pour tracer les patrons proviennent
 d'ouvrage de patronage classiques. Ces ouvrages, destinés au
@@ -130,6 +130,10 @@ patrons il est alors possible soit d'utiliser directement la base (pour
 une jupe droite ou un pantalon basique par exemple) soit de les
 «altérer» ou «transformer».
 
+:warning: Dans tous les scripts du tutoriel je considère que la base de données ```measurements.db``` est dans le même répertoire que le script principal.
+
+### Le body
+
 Le script suivant montre le principe d'utilisation de la librairie
 OpenPattern en prenant l'exemple d'un Body. Nous allons tracer et
 enregistrer un patron de Body de femme sans pinces en 36 (taille
@@ -140,10 +144,14 @@ import matplotlib.pyplot as plt
 import OpenPattern as OP
 
 # Creation de l'instance
-p = OP.Basic_Bodice(pname = "W36G", gender = 'w', style = 'Gilewska')
+p = OP.Basic_Bodice(
+  pname = "W36G",
+  gender = 'w',
+  style = 'Gilewska'
+  )
 
 # appel de la fonction de dessin
-p.draw_bodice({"Pattern":"Bodice without dart"}, save=True)
+p.draw()
 
 plt.show()
 ```
@@ -151,7 +159,7 @@ plt.show()
 C'est simple non ? On obtient alors la figure 1  enregistrée par defaut à l'échelle 1:1 dans
 un fichier pdf.
 <figure>
-<img src="./samplePatterns/Gilewska_Basic_Bodice_W36G_FullSize.svg">
+<img src="./samplePatterns/Gilewska_myPattern_W36G_FullSize.svg">
 <figurecaption> Figure 1: Basic bodice with darts.
 </figure>
 
@@ -167,13 +175,13 @@ chacune des bases et leurs options.
 
   |Style |Femmes|  Hommes|   Enfants|
   |---|---|---|---|
-  |  Chiappetta   | x | |     2-16|
+  |  Chiappetta   |  | x |     2-16|
   |Donnanno        |x|        x||     
-  |Gilewska|        x|        x||     
+  |Gilewska|        x|        x ||     
 
-
-Les manches font partie de
-la classe body car elles sont calculées à partir des profondeurs d'emmanchure mesurées sur les body.
+Notons que pour ce qui concerne les hommes, les body de Gilewska et Donnanno sont en fait des chemises simples sans les manches.
+Les manches justement font partie de
+la classe body car elles sont calculées à partir des profondeurs d'emmanchures mesurées sur les body.
 
 
 ### La jupe
@@ -183,13 +191,24 @@ ou encore fuseau ou pencil en anglais)
 
 ```python
 import OpenPattern as OP
-p = OP.Basic_Skirt(pname="W6C", style='Chiappetta', gender = 'G', ease=8, curves=False)
+p = OP.Basic_Skirt(
+  pname="W6C",
+  style='Chiappetta',
+  gender = 'G',
+  ease=8,
+  curves=False
+  )
+
 p.draw()
 ```
 
+<figure>
+<img src="./samplePatterns/Chiappetta_myPattern_W6C_FullSize.svg">
+<figurecaption> Figure 2: jupe fuseau (ou jupe de base) d'une fille de 6 ans. Modèle de J. Chiappetta.
+</figure>
 
 
-Les arguments à l'instanciation de la classe sont
+Les arguments à l'instanciation de la classe sont les suivants
 
   |Argument |  type|           Définition |                       valeur par défaut|
   |---|---|---|---|
@@ -198,45 +217,19 @@ Les arguments à l'instanciation de la classe sont
   |gender| str| genre| G|
   |ease| int ou float|   aisance à appliquer au patron |8|
   |curves |boolean| doit on oui ou non dessiner une taille courbe| False|
+  kwargs| dic | arguments supplémentaires comme dbPATH| vide|
 
-Chez Donnanno la jupe crayon est symétrique alors que chez Gilewska
+Notons que chez Donnanno la jupe crayon est symétrique alors que chez Gilewska
 elle est légèrement asymétrique avec un demi-devant plus large de 1cm
 que le demi-dos. Donnanno Traite cette asymétrie comme une transformation
-et on la retrouvera dans la jupe «shifted-side-seams». Chez Chiappetta
+et on la retrouvera dans la jupe «shifted-side-seams» par exemple. Chez Chiappetta
 la jupe crayon fille est symétrique quel que soit l'âge.
+
+
+
 
 ### Le pantalon
 À faire
-
-### Le body
-
-
-```python
-Basic_Bodice(pname="M44G", gender='m', style='Gilewska', age=12,\
-  ease=8, hip=True):
-
-draw_bodice(self, dic = {"Pattern":"Dartless bodice"}, save = False,\
-  fname = None, paper='FullSize'):
-```
-
-Les figures [2.3](#fig:bodice_DW36){reference-type="ref"
-reference="fig:bodice_DW36"},
-[2.4](#fig:bodice_MG36){reference-type="ref"
-reference="fig:bodice_MG36"} et [2.5](#fig:CB14){reference-type="ref"
-reference="fig:CB14"} montrent quelques exemples de body obtenus pour
-différents styles.
-
-![Buste de base de femme, taille 36, sans pinces, d'après
-Donnanno.](../patterns/Donnanno_Bodice_withour_dart_36.pdf){#fig:bodice_DW36
-width="0.7\\linewidth"}
-
-![Buste de base d'homme, taille 36, sans pinces, d'après
-Gilewska](../patterns/Gilewska_Bodice_withour_dart_M36.pdf){#fig:bodice_MG36
-width="0.7\\linewidth"}
-
-![Buste de base de garçon, 14 ans, sans pince, d'après
-Chiappetta.](../patterns/Chiappetta_bodice_G14.pdf){#fig:CB14
-width="0.7\\linewidth"}
 
 ### Les Transformations
 
@@ -815,30 +808,24 @@ maintenant (on y viendra plus tard rassurez-vous) !
 
 ## Pour aller plus loin
 
-### Les tailles {#par:tailles}
+### Les tailles
 
-Le tableau [4.1](#tab:meas_sum){reference-type="ref"
-reference="tab:meas_sum"} recense l'état des mesures que contient la
-base sql d'OpenPattern, sans compter les quelques mesures personnelles
-que j'ai prises sur mes proches.
+Le tableau suivant recense l'état des mesures que contient la
+base sql d'OpenPattern.
 
-::: {#tab:meas_sum}
-  Source       Genre      Taille min.   Taille max.   Mesures  Code
-  ------------ --------- ------------- ------------- --------- -------
-  Gilewska     Femmes         34            48          25     W34G
-  Gilewska     Hommes         36            54          24     M36G
-  Donnanno     Femmes         40            50          21     W40D
-  Donnanno     Hommes         44            54          19     M44D
-  Wargnier     Hommes         38            48          25     M38W
-  Chiappetta   Filles        2 ans        16 ans        23     W3C
-  Chiappetta   Garçons       6 ans        16 ans        20     G6C
-  Chiappetta   Homme          36            50          22     M38mC
 
-  : Tailles disponibles dans la base measurements. Le code donné en
-  exemple correspond au code d'appel de la taille minimum.
-:::
+  |Source   |    Genre|      Taille min.|   Taille max.|   Mesures|  example de Code|
+  |---|---|---|---|---|---|
+  |Gilewska|     Femmes  |       34|            48 |         25|     W34G|
+  |Gilewska |    Hommes |        36 |           54 |         24|     M36G|
+  |Donnanno|     Femmes|         40 |           50 |         21     |W40D|
+  |Donnanno|     Hommes   |      44|            54 |         19     |M44D|
+  |Wargnier |    Hommes   |      38|            48 |         25     |M38W|
+  |Chiappetta|   Filles  |      2 ans|        16 ans |       23     |W3C|
+  |Chiappetta |  Garçons|       6 ans |       16 ans|        20     |G6C|
+  |Chiappetta|   Homme|          36    |        50|          22     |M38mC|
 
-[\[tab:meas\_sum\]]{#tab:meas_sum label="tab:meas_sum"}
+*Tailles disponibles dans la base measurements. Le code donné en  exemple correspond au code d'appel de la taille minimum.*
 
 Notons que la distinction garçon, homme n'est pas anodine. En effet si
 les effets de la puberté sur les filles sont connus et aboutissent
@@ -854,10 +841,10 @@ changement influence de façon nette le traçage du patron masculin et ce
 qu'on y projette dans tous les sens du terme même si de façon étonnante
 ceci n'est jamais discuté.
 
-J'ai recensé 52 mesures différentes chez mes sources. La répartition de
-ces différentes mesures en fonction des sources
-(tableau [4.2](#tab:meas_det){reference-type="ref"
-reference="tab:meas_det"}) donne la mesure (:=)) des ennuis à venir.
+Un conséquence de cela est qu'on aura probablement plutôt intérêt à utiliser des modèles féminins pour dessiner le patron d'un homme dont le bassin est plus large que sont tour de poitrine. L'effet sera probablement meilleur qu'avec un patron masculin classique.
+
+En entrant ces mesures et en commençant à les utiliser j'ai recensé pas moin de 52 mesures différentes chez mes sources. La répartition de
+ces différentes mesures en fonction des sources donne la mesure :joy: des ennuis à venir.
 Chacun utilise un jeu de mesures communes mais brode en ajoutant ou pas
 des mesures différentes. Cela posera problème par exemple pour le tracé
 des épaules de l'homme qui présente des incohérence suivant les auteurs
@@ -865,9 +852,9 @@ ou autrices. De façon générale l'homme est moins bien traité que la
 femme dans ces ouvrages (à l'exception des garçons de Chiappetta),
 probablement à cause du marché restreint qu'il représente et du moindre
 intérêt de son vestiraire (chemise, veste, pantalon pour faire simple).
-De fait ça part dans tous les sens chez les hommes\... le plus gros
-écart sépare ceux qui mesurent la largeur des épaules et ceux qui
-mesurent la longueur des épaules. Quelques un mesurent les deux mais
+Et de fait cela part dans tous les sens chez les hommes\... le plus gros
+écart sépare les stylistes qui mesurent la largeur des épaules et ceux ou celles qui
+mesurent la longueur des épaules. Quelques un.e.s mesurent les deux mais
 c'est plus rare. On notera que les mesures type varient d'un livre à
 l'autre. Pas toujours de mesure du tour de bras, du tour de mollet, du
 tour de cuisse. Chiappetta différencie les tailles de chemises et les
@@ -881,77 +868,71 @@ Officiellement il faut rajouter 4 aux tailles italiennes pour retrouver,
 approximativement, la taille française. Un 36 de Gilewska correspond
 donc à un 40 de Donnanno. Sauf que dans les fait quand on compare les
 valeurs on est plutôt sur une différence de 2 (un 38 Gilewska
-correspondant à un 40 Donnanno).
+correspondrait plutôt de mon point de vue  à un 40 Donnanno).
 
-::: {#tab:meas_det}
-  ------------------------------ ---- ---- ---------- ---- ---- ---- ---- ----
-  Mesures                                   Wargnier                      
-                                  F    H       F       H    H    F    G    H
-  Mesure                          FG   MG      WD      MD   MW   WC   GC   MC
-  carrure devant                               X                          
-  carrure\_devant                 X    X                    X    X         X
-  carrure\_dos                    X    X       X            X    X    X    X
-  cheville\_terre                                                X    X    X
-  crane                                                          X    X    X
-  ecart\_poitrine                 X            X                          
-  encolure\_dos                                X                          
-  enfourchure                                               X             
-  entrejambe                           X                    X             
-  entrejambe\_terre                                                   X    X
-  fourche                         X                                       
-  genou\_sol                                                               X
-  genou\_terre                                                        X   
-  hauteur\_bassin                 X    X       X       X    X    X        
-  hauteur\_carrure                X                                       
-  hauteur\_corps                                            X              X
-  hauteur\_coude                  X    X               X         X    X   
-  hauteur\_emmanchure             X                                       
-  hauteur\_petites\_hanches       X                                       
-  hauteur\_poitrine               X                                       
-  hauteur\_taille\_genou          X            X       X    X    X        
-  hauteur\_taille\_terre                       X            X             
-  hauteur\_tete                                             X             
-  largeur\_encolure               X                                       
-  largeur\_epaule                      X               X                  
-  largeur\_secteur                                     X                  
-  longueur\_7cerv\_enc                                                     X
-  longueur\_col\_devant           X                                        X
-  longueur\_col\_dos              X                                        X
-  longueur\_devant                X    X       X       X    X    X        
-  longueur\_devant\_7c                                      X             
-  longueur\_dos                   X    X       X       X    X    X    X    X
-  longueur\_emmanchure\_devant    X                    X                   X
-  longueur\_emmanchure\_dos       X                    X                   X
-  longueur\_epaule                X    X       X       X    X    X    X    X
-  longueur\_manche                X    X       X       X    X    X    X    X
-  longueur\_taille\_terre         X    X               X         X        
-  montant                         X    X       X       X    X    X    X    X
-  profondeur\_emmanchure          X                    X                  
-  profondeur\_encolure\_devant    X                                       
-  profondeur\_encolure\_dos       X                                       
-  profondeur\_poitrine                         X                          
-  stature                                      X       X                  
-  tour\_bassin                    X    X       X       X    X    X    X    X
-  tour\_bras                      X    X       X                 X    X    X
-  tour\_cheville                  X                              X    X    X
-  tour\_cou                                    X                          
-  tour\_cuisse                    X    X                    X              X
-  tour\_encolure                  X    X               X    X    X    X    X
-  tour\_genou                     X                              X    X    X
-  tour\_jarret                                              X             
-  tour\_mollet                                              X    X    X    X
-  tour\_petites\_hanches          X                                       
-  tour\_poignet                   X    X       X            X    X    X    X
-  tour\_poitrine                  X    X       X       X    X    X    X    X
-  tour\_poitrine\_haute                        X                          
-  tour\_taille                    X    X       X       X    X    X    X    X
-  tour\_tete                                                X             
-  ------------------------------ ---- ---- ---------- ---- ---- ---- ---- ----
+|Mesure| FG | HG | FD | HD | HW | FiC | GaC | HC|
+|---|---|---|---|---|---|---|---|---|
+|carrure devant|||X||||||
+|carrure_devant|X|X|||X|X||X|
+|carrure_dos|X|X|X||X|X|X|X|
+|cheville_terre||||||X|X|X|
+|crane||||||X|X|X|
+|ecart_poitrine|X||X||||||
+|encolure_dos|||X||||||
+|enfourchure|||||X||||
+|entrejambe||X|||X||||
+|entrejambe_terre|||||||X|X|
+|fourche|X||||||||
+|genou_sol||||||||X|
+|genou_terre|||||||X||
+|hauteur_bassin|X|X|X|X|X|X|||
+|hauteur_carrure|X||||||||
+|hauteur_corps|||||X|||X|
+|hauteur_coude|X|X||X||X|X||
+|hauteur_emmanchure|X||||||||
+|hauteur_petites_hanches|X||||||||
+|hauteur_poitrine|X||||||||
+|hauteur_taille_genou|X||X|X|X|X|||
+|hauteur_taille_terre|||X||X||||
+|hauteur_tete|||||X||||
+|largeur_encolure|X||||||||
+|largeur_epaule||X||X|||||
+|largeur_secteur||||X|||||
+|longueur_7cerv_enc||||||||X|
+|longueur_col_devant|X|||||||X|
+|longueur_col_dos|X|||||||X|
+|longueur_devant|X|X|X|X|X|X|||
+|longueur_devant_7c|||||X||||
+|longueur_dos|X|X|X|X|X|X|X|X|
+|longueur_emmanchure_devant|X|||X||||X|
+|longueur_emmanchure_dos|X|||X||||X|
+|longueur_epaule|X|X|X|X|X|X|X|X|
+|longueur_manche|X|X|X|X|X|X|X|X|
+|longueur_taille_terre|X|X||X||X|||
+|montant|X|X|X|X|X|X|X|X|
+|profondeur_emmanchure|X|||X|||||
+|profondeur_encolure_devant|X||||||||
+|profondeur_encolure_dos|X||||||||
+|profondeur_poitrine|||X||||||
+|stature|||X|X|||||
+|tour_bassin|X|X|X|X|X|X|X|X|
+|tour_bras|X|X|X|||X|X|X|
+|tour_cheville|X|||||X|X|X|
+|tour_cou|||X||||||
+|tour_cuisse|X|X|||X|||X|
+|tour_encolure|X|X||X|X|X|X|X|
+|tour_genou|X|||||X|X|X|
+|tour_jarret|||||X||||
+|tour_mollet|||||X|X|X|X|
+|tour_petites_hanches|X||||||||
+|tour_poignet|X|X|X||X|X|X|X|
+|tour_poitrine|X|X|X|X|X|X|X|X|
+|tour_poitrine_haute|||X||||||
+|tour_taille|X|X|X|X|X|X|X|X|
+|tour_tete|||||X||||
 
-  : Répartition des mesures par source
-:::
+*Répartition des mesures par source*
 
-[\[tab:meas\_det\]]{#tab:meas_det label="tab:meas_det"}
 
 ### Déplier un patron
 
@@ -1027,7 +1008,7 @@ plt.show()
 ![Mon beau trapèze
 déplié](./samplePatterns/simple_scripts_5__FullSize.svg)
 
-## Commentaires
+## Commentaires (pour moi surtout !)
 
 
 ### Ligne d'épaule

@@ -1,59 +1,98 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys
-sys.path.append('./..')
+
+sys.path.append("./..")
 
 from OpenPattern.Pattern import *
 from OpenPattern.Points import *
 
+
 class Placket(Pattern):
-	"""
-	Sleeve placket and underlap (if wanted)
+    """
+    Sleeve placket and underlap (if wanted)
 
-	"""
-	def __init__(self, pname = "sophie", gender = 'w', placket_style = 'SimpleOneSide', slit_length = 11):
+    """
 
-		Pattern.__init__(self,pname, gender)
+    def __init__(
+        self,
+        pname="sophie",
+        gender="w",
+        placket_style="SimpleOneSide",
+        slit_length=11,
+        **kwargs
+    ):
 
-		self.pl = placket_style
-		self.sll = slit_length
+        Pattern.__init__(self, pname, gender, **kwargs)
 
-		self.Placket_dic = []
-		self.Placket_vertices = []
-		self.Placket_segments = {}
+        self.pl = placket_style
+        self.sll = slit_length
 
-		self.calculate_plackets()
+        self.Placket_dic = []
+        self.Placket_vertices = []
+        self.Placket_segments = {}
 
-	def calculate_plackets(self):
+        self.calculate_plackets()
 
-		if self.pl == 'SimpleOneSide':
+    def calculate_plackets(self):
 
-			Pbl = Point([0,0])
-			Pbm = Pbl + [2,0]
-			Pbr = Pbm + [2,0]
-			Pur = Pbr + [0, self.sll]
-			Pum = Pbm + [0, self.sll]
-			Pul = Pbl + [0, self.sll]
-			Ptip = Pul + [1,2]
+        if self.pl == "SimpleOneSide":
 
-			self.Placket_dic.append({'Pbl':Pbl, 'Pbm': Pbm, 'Pbr': Pbr, 'Pur': Pur, 'Pum':Pum, 'Pul': Pul, 'Ptip': Ptip})
-			self.Placket_vertices.append([Pbl.pos(), Pbr.pos(), Pur.pos(), Pum.pos(), Ptip.pos(), Pul.pos(), Pbl.pos()])
+            Pbl = Point([0, 0])
+            Pbm = Pbl + [2, 0]
+            Pbr = Pbm + [2, 0]
+            Pur = Pbr + [0, self.sll]
+            Pum = Pbm + [0, self.sll]
+            Pul = Pbl + [0, self.sll]
+            Ptip = Pul + [1, 2]
 
-			self.Placket_segments = {'Fold': [Pbm, Pum]}
+            self.Placket_dic.append(
+                {
+                    "Pbl": Pbl,
+                    "Pbm": Pbm,
+                    "Pbr": Pbr,
+                    "Pur": Pur,
+                    "Pum": Pum,
+                    "Pul": Pul,
+                    "Ptip": Ptip,
+                }
+            )
+            self.Placket_vertices.append(
+                [
+                    Pbl.pos(),
+                    Pbr.pos(),
+                    Pur.pos(),
+                    Pum.pos(),
+                    Ptip.pos(),
+                    Pul.pos(),
+                    Pbl.pos(),
+                ]
+            )
 
-	def draw_placket(self,save = False):
+            self.Placket_segments = {"Fold": [Pbm, Pum]}
 
-		fig, ax = self.draw_pattern(self.Placket_dic,self.Placket_vertices)
+    def draw_placket(self, save=False):
 
-		for key, val in self.Placket_segments.items():
-			lbl_pos = self.middle(val[0],val[1])
-			kwdic = {'color': 'blue', 'linestyle':'dashed', 'alpha':0.5}
-			self.segment(val[0], val[1], ax, kwdic)
-			angle = self.segment_angle(val[0],val[1])*180/np.pi
-			ax.text(lbl_pos.x, lbl_pos.y, key, rotation = angle)
+        fig, ax = self.draw_pattern(self.Placket_dic, self.Placket_vertices)
 
-		if save:
+        for key, val in self.Placket_segments.items():
+            lbl_pos = self.middle(val[0], val[1])
+            kwdic = {"color": "blue", "linestyle": "dashed", "alpha": 0.5}
+            self.segment(val[0], val[1], ax, kwdic)
+            angle = self.segment_angle(val[0], val[1]) * 180 / np.pi
+            ax.text(lbl_pos.x, lbl_pos.y, key, rotation=angle)
 
-			of = '../patterns/'+ 'placket_' + self.style + '_' + self.Cuff_style + '_' + self.pname +'_FullSize.pdf'
+        if save:
 
-			plt.savefig(of)
+            of = (
+                "../patterns/"
+                + "placket_"
+                + self.style
+                + "_"
+                + self.Cuff_style
+                + "_"
+                + self.pname
+                + "_FullSize.pdf"
+            )
+
+            plt.savefig(of)

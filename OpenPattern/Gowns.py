@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys
-sys.path.append('./..')
+
+sys.path.append("./..")
 
 from OpenPattern.Pattern import *
 from OpenPattern.Points import *
@@ -9,170 +10,218 @@ from OpenPattern.Bodices import *
 
 
 class Hospital_Gown(Pattern):
-	def __init__(self, style='Adapted from Sabrina Lafon'):
+    def __init__(self, style="Adapted from Sabrina Lafon", **kwargs):
 
-		Pattern.__init__(self)
-		pass
+        Pattern.__init__(self, **kwargs)
+        pass
 
-		self.style = style
-		self.gender='M/W'
-		self.pname='~L'
+        self.style = style
+        self.gender = "M/W"
+        self.pname = "~L"
 
-		self.Gown_points_dic = []
-		self.Gown_vertices = []
-		self.Sleeve_points_dic = []
-		self.Sleeve_vertices = []
+        self.Gown_points_dic = []
+        self.Gown_vertices = []
+        self.Sleeve_points_dic = []
+        self.Sleeve_vertices = []
 
-		self.cal_gown()
-		self.cal_sleeves()
+        self.cal_gown()
+        self.cal_sleeves()
 
+    def cal_gown(self):
 
-	def cal_gown(self):
+        dx = 3  # 2x1.5 seam
 
-		dx = 3 #2x1.5 seam
+        HipF = Point([0, 0])
 
-		HipF = Point([0,0])
+        HipB = HipF + [65 + dx, 0]
+        HipFoldB = HipB + [-2, 0]
 
-		HipB = HipF + [65+dx,0]
-		HipFoldB = HipB + [-2,0]
+        CB = HipB + [0, 108]
+        HipFoldC = CB + [-2, 0]
 
+        CB2 = CB + [-13, 0]
+        ShB = CB2 + [-19.5, -3]
 
-		CB = HipB+ [0,108]
-		HipFoldC = CB + [-2,0]
+        SlB = ShB + [0, -30]
+        HipSlB = Point([SlB.x, 0])
 
-		CB2 = CB + [-13,0]
-		ShB = CB2 + [-19.5,-3]
+        ShF = ShB + [-dx, 0]
+        SlF = SlB + [-dx, 0]
+        HipSlF = Point([SlF.x, 0])
 
-		SlB = ShB + [0,-30]
-		HipSlB = Point([SlB.x,0])
+        CF2 = ShF + [-20, +3]
+        CF = CF2 + [-13, -8]
+        Control = CF + [2, 0]
+        BeltF = CF + [0, -37]
+        BeltB = BeltF + [4, 0]
 
-		ShF = ShB + [-dx,0]
-		SlF = SlB + [-dx,0]
-		HipSlF = Point([SlF.x,0])
+        points_col = [CF2, Control, CF]
+        dbcol, col = self.pistolet(points_col, 2, tot=True)
 
+        self.Gown_points_dic.append(
+            {
+                "HipF": HipF,
+                "HipB": HipB,
+                "CB": CB,
+                "CB2": CB2,
+                "ShB": ShB,
+                "SlB": SlB,
+                "ShF": ShF,
+                "SlF": SlF,
+                "CF": CF,
+                "CF2": CF2,
+                "BF": BeltF,
+                "BB": BeltB,
+                "HFB": HipFoldB,
+                "HFC": HipFoldC,
+                "HipSlF": HipSlF,
+                "HipSlB": HipSlB,
+            }
+        )
 
-		CF2 = ShF + [-20,+3]
-		CF = CF2 + [-13,-8]
-		Control = CF + [2,0]
-		BeltF = CF + [0,-37]
-		BeltB = BeltF + [4,0]
+        self.Gown_vertices.append(
+            [HipSlB.pos(), HipB.pos(), CB.pos(), CB2.pos(), ShB.pos()]
+        )
+        self.Gown_vertices.append(
+            [HipF.pos(), HipSlF.pos(), SlF.pos(), ShF.pos(), CF2.pos()]
+            + col
+            + [HipF.pos()]
+        )
 
-		points_col = [CF2, Control, CF ]
-		dbcol, col = self.pistolet(points_col, 2, tot = True)
+    def cal_sleeves(self):
 
-		self.Gown_points_dic.append({'HipF':HipF, 'HipB': HipB, 'CB': CB, 'CB2':CB2, 'ShB':ShB, 'SlB':SlB, 'ShF':ShF, 'SlF':SlF, 'CF':CF, 'CF2':CF2, 'BF':BeltF, 'BB':BeltB, 'HFB':HipFoldB, 'HFC':HipFoldC, 'HipSlF':HipSlF, 'HipSlB':HipSlB })
+        a = np.arctan(3 / 20)
 
-		self.Gown_vertices.append([HipSlB.pos(),HipB.pos(),CB.pos(),CB2.pos(), ShB.pos()])
-		self.Gown_vertices.append([HipF.pos(), HipSlF.pos(), SlF.pos(), ShF.pos(), CF2.pos()] + col + [HipF.pos()])
+        SC = Point([0, 0])
+        SF = SC + [30 * np.cos(a), 30 * np.sin(a)]
+        SB = SC + [-30 * np.cos(a), 30 * np.sin(a)]
 
+        WC = SC + [0, 60]
+        WF = WC + [20, 0]
+        WB = WC + [-20, 0]
 
-	def cal_sleeves(self):
+        self.Sleeve_points_dic.append(
+            {"SF": SF, "SC": SC, "SB": SB, "WC": WC, "WF": WF, "WB": WB}
+        )
+        self.Sleeve_vertices.append(
+            [SC.pos(), SF.pos(), WF.pos(), WB.pos(), SB.pos(), SC.pos()]
+        )
 
+    def draw_sleeves(
+        self, dic={"Pattern": "Hospital Gown"}, save=False, fname=None, paper="FullSize"
+    ):
 
-		a = np.arctan(3/20)
+        fig, ax = self.draw_pattern(self.Sleeve_points_dic, self.Sleeve_vertices)
 
-		SC = Point([0,0])
-		SF = SC + [30*np.cos(a), 30*np.sin(a)]
-		SB = SC + [-30*np.cos(a), 30*np.sin(a)]
+        spd = self.Sleeve_points_dic[0]
+        self.segment(
+            spd["WC"],
+            spd["SC"],
+            ax,
+            {"color": "blue", "linestyle": "dashed", "alpha": 0.5},
+        )
+        self.segment(
+            spd["SF"],
+            spd["SB"],
+            ax,
+            {"color": "blue", "linestyle": "dashed", "alpha": 0.5},
+        )
 
-		WC= SC + [0,60]
-		WF = WC + [20,0]
-		WB = WC + [-20,0]
+        ax.text(spd["WC"].x, spd["WC"].y + 1, "CUFF", ha="center")
+        ax.text(spd["SC"].x, spd["SC"].y - 2, "SHOULDER", ha="center")
+        if save:
+            if fname:
+                pass
+            else:
+                fname = "Hospital_Gown_Sleeve"
 
-		self.Sleeve_points_dic.append({'SF':SF,'SC':SC, 'SB':SB, 'WC':WC, 'WF':WF, 'WB':WB})
-		self.Sleeve_vertices.append([SC.pos(),SF.pos(),WF.pos(),WB.pos(),SB.pos(),SC.pos()])
+            of = (
+                "../patterns/"
+                + self.style
+                + "_"
+                + fname
+                + "_"
+                + self.pname
+                + "_FullSize.pdf"
+            )
 
+            plt.savefig(of)
 
+            if paper != "FullSize":
+                self.paper_cut(fig, ax, name=fname, paper=paper)
 
-	def draw_sleeves(self, dic = {"Pattern":"Hospital Gown"}, save = False, fname = None, paper='FullSize'):
+        return fig, ax
 
-		fig, ax = self.draw_pattern(self.Sleeve_points_dic, self.Sleeve_vertices)
+    def draw_gown(
+        self, dic={"Pattern": "Hospital Gown"}, save=False, fname=None, paper="FullSize"
+    ):
 
-		spd = self.Sleeve_points_dic[0]
-		self.segment(spd['WC'],spd['SC'],ax,{'color':'blue','linestyle':'dashed','alpha':0.5})
-		self.segment(spd['SF'],spd['SB'],ax,{'color':'blue','linestyle':'dashed','alpha':0.5})
+        # 1 draw
+        fig, ax = self.draw_pattern(self.Gown_points_dic, self.Gown_vertices)
 
-		ax.text(spd['WC'].x, spd['WC'].y+1, 'CUFF', ha='center')
-		ax.text(spd['SC'].x, spd['SC'].y-2, 'SHOULDER', ha='center')
-		if save:
-			if fname:
-				pass
-			else:
-				fname = 'Hospital_Gown_Sleeve'
+        # 2 print heading
+        ax = self.print_info(ax, dic)
 
-			of = '../patterns/'+ self.style + '_' + fname + '_' + self.pname +'_FullSize.pdf'
+        ax = self.add_legends(ax)
 
-			plt.savefig(of)
+        if save:
+            if fname:
+                pass
+            else:
+                fname = "Hospital_Gown"
 
-			if paper != 'FullSize':
-				self.paper_cut(fig, ax, name = fname, paper = paper)
+            of = (
+                "../patterns/"
+                + self.style
+                + "_"
+                + fname
+                + "_"
+                + self.pname
+                + "_FullSize.pdf"
+            )
 
+            plt.savefig(of)
 
-		return fig, ax
+            if paper != "FullSize":
+                self.paper_cut(fig, ax, name=fname, paper=paper)
 
+        return fig, ax
 
-	def draw_gown(self, dic = {"Pattern":"Hospital Gown"}, save = False, fname = None, paper='FullSize'):
+    def add_legends(self, ax):
+        """Adds common legends to the Bodice pattern
 
-		# 1 draw
-		fig, ax = self.draw_pattern(self.Gown_points_dic, self.Gown_vertices)
+        Args:
+                ax on which to plot
 
-		# 2 print heading
-		ax = self.print_info(ax, dic)
+        Returns:
+                ax
+        """
 
+        bpd = self.Gown_points_dic[0]
+        fs = 14
 
-		ax = self.add_legends(ax)
+        pos = self.middle(bpd["HipF"], bpd["CF"])
+        ax.text(pos.x - 0.5, pos.y, "FOLD LINE", fontsize=fs, rotation=90)
 
-		if save:
-			if fname:
-				pass
-			else:
-				fname = 'Hospital_Gown'
+        ldic = {"color": "blue", "alpha": 0.4, "linestyle": "dashed"}
 
-			of = '../patterns/'+ self.style + '_' + fname + '_' + self.pname +'_FullSize.pdf'
+        self.segment(bpd["ShF"], bpd["SlF"], ax, ldic)
+        pos = self.middle(bpd["ShF"], bpd["SlF"])
+        ax.text(pos.x, pos.y + 0.5, "Armhole", rotation=90, fontsize=fs, ha="center")
 
-			plt.savefig(of)
+        self.segment(bpd["ShB"], bpd["SlB"], ax, ldic)
+        pos = self.middle(bpd["ShB"], bpd["SlB"])
+        ax.text(pos.x, pos.y + 0.5, "Armhole", rotation=90, fontsize=fs, ha="center")
 
-			if paper != 'FullSize':
-				self.paper_cut(fig, ax, name = fname, paper = paper)
+        self.segment(bpd["BB"], bpd["BF"], ax, ldic)
+        pos = self.middle(bpd["BB"], bpd["BF"])
+        ax.text(pos.x, pos.y + 1.5, "belt", fontsize=fs, ha="center")
 
-		return fig, ax
+        self.segment(bpd["HFB"], bpd["HFC"], ax, ldic)
+        pos = self.middle(bpd["HFB"], bpd["HFC"])
+        ax.text(pos.x - 0.5, pos.y, "Gown Limit", fontsize=fs, rotation=90)
 
-	def add_legends(self, ax):
-		"""Adds common legends to the Bodice pattern
+        ax.text(15, 30, "FRONT", fontsize=fs, ha="center")
+        ax.text(45, 30, "BACK", fontsize=fs, ha="center")
 
-		Args:
-			ax on which to plot
-
-		Returns:
-			ax
-		"""
-
-		bpd = self.Gown_points_dic[0]
-		fs=14
-
-		pos = self.middle(bpd['HipF'], bpd['CF'])
-		ax.text(pos.x- 0.5, pos.y, 'FOLD LINE', fontsize=fs, rotation = 90)
-
-
-		ldic={'color':'blue', 'alpha':0.4, 'linestyle':'dashed'}
-
-		self.segment(bpd['ShF'], bpd['SlF'], ax, ldic)
-		pos = self.middle(bpd['ShF'], bpd['SlF'])
-		ax.text(pos.x, pos.y+0.5, 'Armhole', rotation=90, fontsize=fs, ha='center')
-
-		self.segment(bpd['ShB'], bpd['SlB'], ax, ldic)
-		pos = self.middle(bpd['ShB'], bpd['SlB'])
-		ax.text(pos.x, pos.y+0.5, 'Armhole', rotation=90, fontsize=fs, ha='center')
-
-		self.segment(bpd['BB'], bpd['BF'], ax, ldic)
-		pos = self.middle(bpd['BB'], bpd['BF'])
-		ax.text(pos.x, pos.y+1.5, 'belt', fontsize=fs, ha='center')
-
-		self.segment(bpd['HFB'], bpd['HFC'], ax, ldic)
-		pos = self.middle(bpd['HFB'], bpd['HFC'])
-		ax.text(pos.x- 0.5, pos.y, 'Gown Limit', fontsize=fs, rotation = 90)
-
-		ax.text(15,30,'FRONT',fontsize=fs, ha='center')
-		ax.text(45,30, 'BACK',fontsize=fs, ha='center')
-
-		return ax
+        return ax

@@ -13,8 +13,8 @@ import numpy as np
 
 
 # Skirts
-p = OP.Basic_Skirt(pname="W6C", style="Chiappetta")
-p.draw()
+# p = OP.Basic_Skirt(pname="W6C", style="Chiappetta", dbPATH="../measurements/")
+# p.draw(save=True, figPATH="../docs/samplePatterns/", frmt="svg")
 
 # p = OP.Culotte(pname="sophie", style="Donnanno", ease=1)
 # p.draw(save=True, paper="A4", fname="culotte")
@@ -27,8 +27,10 @@ p.draw()
 
 
 # Women
-# p = OP.Basic_Bodice(pname="W36G", gender="w", style="Gilewska")
-# p.draw_bodice()
+p = OP.Basic_Bodice(
+    pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
+)
+p.draw(save=True, figPATH="../docs/samplePatterns/", frmt="svg")
 #
 # p = OP.Basic_Bodice(pname="W40D", gender="w", style="Donnanno")
 # p.draw_bodice()

@@ -39,9 +39,7 @@ class Pattern:
 
     ############################################################
 
-    def __init__(
-        self, pname="W38G", gender="w", pattern_name="P0", dbPATH="../measurements/"
-    ):
+    def __init__(self, pname="W38G", gender="w", pattern_name="P0", **kwargs):
         """
         Initializes class instance
 
@@ -52,8 +50,12 @@ class Pattern:
         """
 
         self.pattern_name = pattern_name
-        self.dbPATH = dbPATH
-        print(self.dbPATH)
+
+        self.dbPATH = "./"  # default
+        for k in kwargs.keys():
+            if k == "dbPATH":
+                self.dbPATH = kwargs["dbPATH"]
+                print(self.dbPATH)
 
         if pname:
             self.m = self.get_measurements_sql(pname)

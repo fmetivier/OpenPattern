@@ -27,10 +27,10 @@ import numpy as np
 
 
 # Women
-p = OP.Basic_Bodice(
-    pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
-)
-p.draw(save=True, figPATH="../docs/samplePatterns/", frmt="svg")
+# p = OP.Basic_Bodice(
+#     pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
+# )
+# p.draw(save=True, figPATH="../docs/samplePatterns/", frmt="svg")
 #
 # p = OP.Basic_Bodice(pname="W40D", gender="w", style="Donnanno")
 # p.draw_bodice()
@@ -97,9 +97,13 @@ p.draw(save=True, figPATH="../docs/samplePatterns/", frmt="svg")
 # b.draw()
 
 # Gregoire's pyjama
-# pans= OP.Basic_Trousers(pname="gregoire",gender="m",style="Donnanno")
-# pans.Donnanno_add_darts()
-# pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
+
+pans = OP.Basic_Trousers(
+    pname="gregoire", gender="m", style="Donnanno", dbPATH="../measurements/"
+)
+pans.Donnanno_add_darts()
+pans.draw_basic_trousers(dic = {"Pattern":"Basic trousers with dart"})
+# pans.draw()
 
 # bp = OP.Pants_block(pname="sophie",gender="w", overlay=False)
 #

@@ -20,12 +20,12 @@ class Basic_Trousers(Pattern):
 
     Attributes:
             # dics used here for pattern construction points and labels:
-            Trousers_Back_points_dic
-            Trousers_Front_points_dic
+            Back_dic
+            Front_dic
 
             # lists of vertices to draw pattern curves:
-            Trousers_Back_vertices
-            Trousers_Front_vertices
+            Back_vertices
+            Front_vertices
 
             # list of points to be used for alterations
             Trousers_Front_Contour_list
@@ -45,7 +45,13 @@ class Basic_Trousers(Pattern):
 
     ############################################################
     def __init__(
-        self, pname="M44D", gender="m", style="Donnanno", darts=True, wfd=None, **kwargs
+        self,
+        pname="M44D",
+        gender="m",
+        style="Donnanno",
+        darts=False,
+        wfd=None,
+        **kwargs
     ):
         """
         Class initialisation. Launches trouser calculation
@@ -72,8 +78,8 @@ class Basic_Trousers(Pattern):
                 "back": 0,
             }
 
-        self.Trousers_Back_points_dic = {}
-        self.Trousers_Front_points_dic = {}
+        self.Back_dic = {}
+        self.Front_dic = {}
 
         self.Trousers_Front_Contour_list = []
         self.Trousers_Back_Contour_list = []
@@ -205,6 +211,7 @@ class Basic_Trousers(Pattern):
                 "L",
                 "X",
                 "M",
+                "Mbis",
                 "N",
                 "O",
                 "M2",
@@ -230,6 +237,7 @@ class Basic_Trousers(Pattern):
                 L,
                 X,
                 M,
+                Mbis,
                 N,
                 O,
                 M2,
@@ -371,21 +379,21 @@ class Basic_Trousers(Pattern):
         #
 
         for i in range(len(Front_Points_Names)):
-            self.Trousers_Front_points_dic[Front_Points_Names[i]] = Front_Points_List[i]
-            self.Trousers_Front_points_dic[
+            self.Front_dic[Front_Points_Names[i]] = Front_Points_List[i]
+            self.Front_dic[
                 Front_Points_Names[i]
             ].pname_ori = Front_Points_Names[i]
 
-        self.Trousers_Front_vertices = (
+        self.Front_vertices = (
             self.interieur_avant
             + self.fourche_avant
             + self.ceinture_avant
             + self.exterieur_avant
             + [N1.pos(), C1.pos()]
         )
-        for i in range(len(self.Trousers_Front_vertices)):
+        for i in range(len(self.Front_vertices)):
             p = Point(
-                self.Trousers_Front_vertices[i],
+                self.Front_vertices[i],
                 point_type="contour",
                 pname_ori="fp%s" % (i),
             )
@@ -547,7 +555,7 @@ class Basic_Trousers(Pattern):
                 N1,
             ]
 
-            self.Trousers_Back_vertices = (
+            self.Back_vertices = (
                 self.exterieur_arriere_bas
                 + self.exterieur_arriere_haut
                 + [B4.pos(), A2.pos()]
@@ -676,7 +684,7 @@ class Basic_Trousers(Pattern):
                     N1,
                 ]
 
-            self.Trousers_Back_vertices = (
+            self.Back_vertices = (
                 self.exterieur_arriere1
                 + self.exterieur_arriere2
                 + [B1.pos(), A2.pos()]
@@ -690,19 +698,19 @@ class Basic_Trousers(Pattern):
         # finish by referencing the points and building the contour point list
         #
 
-        for i in range(len(self.Trousers_Back_vertices)):
+        for i in range(len(self.Back_vertices)):
             p = Point(
-                self.Trousers_Back_vertices[i],
+                self.Back_vertices[i],
                 point_type="contour",
                 pname_ori="bp%s" % (i),
             )
             self.Trousers_Back_Contour_list.append(p)
 
         for i in range(len(Back_Points_Names)):
-            self.Trousers_Back_points_dic[Back_Points_Names[i]] = Back_Points_List[i]
-            self.Trousers_Back_points_dic[
-                Back_Points_Names[i]
-            ].pname_ori = Back_Points_Names[i]
+            self.Back_dic[Back_Points_Names[i]] = Back_Points_List[i]
+            self.Back_dic[Back_Points_Names[i]].pname_ori = Back_Points_Names[
+                i
+            ]
 
         back_waist = self.distance(B1, A2)
         print("back waist: " + str(back_waist))
@@ -747,7 +755,7 @@ class Basic_Trousers(Pattern):
             ]
             back_dart_list = [["B4", "r", 3 + self.wfd["back"], -9]]
 
-        fpd = self.Trousers_Front_points_dic
+        fpd = self.Front_dic
         poslist = []
         for dart in front_dart_list:
             if dart[1] == "r":
@@ -774,7 +782,7 @@ class Basic_Trousers(Pattern):
         elif self.gender == "m":
             self.ceinture_avant = [fpd["A1"].pos()] + poslist + [fpd["B"].pos()]
 
-        self.Trousers_Front_vertices = (
+        self.Front_vertices = (
             self.interieur_avant
             + self.fourche_avant
             + self.ceinture_avant
@@ -782,7 +790,7 @@ class Basic_Trousers(Pattern):
             + [fpd["N1"].pos(), fpd["C1"].pos()]
         )
 
-        fbd = self.Trousers_Back_points_dic
+        fbd = self.Back_dic
         poslist = []
         for dart in back_dart_list:
             if dart[1] == "c":
@@ -817,7 +825,7 @@ class Basic_Trousers(Pattern):
 
         if self.gender == "w":
             self.ceinture_arriere = [fbd["B1"].pos()] + poslist + [fbd["A2"].pos()]
-            self.Trousers_Back_vertices = (
+            self.Back_vertices = (
                 self.exterieur_arriere1
                 + self.exterieur_arriere2
                 + self.ceinture_arriere
@@ -827,7 +835,7 @@ class Basic_Trousers(Pattern):
             )
         elif self.gender == "m":
             self.ceinture_arriere = [fbd["B3"].pos()] + poslist + [fbd["A2"].pos()]
-            self.Trousers_Back_vertices = (
+            self.Back_vertices = (
                 self.exterieur_arriere_bas
                 + self.exterieur_arriere_haut
                 + self.ceinture_arriere
@@ -837,18 +845,18 @@ class Basic_Trousers(Pattern):
             )
 
         self.Trousers_Front_Contour_list = []  # reinitialize the contour point list
-        for i in range(len(self.Trousers_Front_vertices)):
+        for i in range(len(self.Front_vertices)):
             p = Point(
-                self.Trousers_Front_vertices[i],
+                self.Front_vertices[i],
                 point_type="contour",
                 pname_ori="fp%s" % (i),
             )
             self.Trousers_Front_Contour_list.append(p)
 
         self.Trousers_Back_Contour_list = []  # reinitialize the contour point list
-        for i in range(len(self.Trousers_Back_vertices)):
+        for i in range(len(self.Back_vertices)):
             p = Point(
-                self.Trousers_Back_vertices[i],
+                self.Back_vertices[i],
                 point_type="contour",
                 pname_ori="bp%s" % (i),
             )
@@ -876,12 +884,12 @@ class Basic_Trousers(Pattern):
                 ax: instance of axis used for drawing
         """
         fig, ax = self.draw_pattern(
-            [self.Trousers_Front_points_dic, self.Trousers_Back_points_dic],
-            [self.Trousers_Front_vertices, self.Trousers_Back_vertices],
+            [self.Front_dic, self.Back_dic],
+            [self.Front_vertices, self.Back_vertices],
         )
 
         if self.style == "Donnanno":
-            fpd = self.Trousers_Front_points_dic
+            fpd = self.Front_dic
 
             ldic = {"color": "black", "linestyle": "dashed"}
             self.segment(fpd["G"], fpd["H"], ax, ldic)
@@ -892,7 +900,7 @@ class Basic_Trousers(Pattern):
             self.segment(fpd["C1"], fpd["D"], ax, ldic)
             self.segment(fpd["I1"], fpd["L"], ax, ldic)
 
-            bpd = self.Trousers_Back_points_dic
+            bpd = self.Back_dic
             self.segment(bpd["G"], bpd["H"], ax, ldic)
             self.segment(bpd["E1"], bpd["F"], ax, ldic)
             self.segment(bpd["M"], bpd["N"], ax, ldic)
@@ -957,8 +965,8 @@ class Flared_pants(Basic_Trousers):
         Basic_Trousers.__init__(self, pname, gender, style, darts, **kwargs)
 
         # beware these are not  true copies. Changes to the dic changes the original which is fine to me !
-        pbf = self.Trousers_Front_points_dic
-        pbb = self.Trousers_Back_points_dic
+        pbf = self.Front_dic
+        pbb = self.Back_dic
 
         tfcl = self.Trousers_Front_Contour_list
         tbcl = self.Trousers_Back_Contour_list
@@ -1005,8 +1013,8 @@ class Flared_pants(Basic_Trousers):
 
         newBackVertices += back_hem_curve
 
-        self.Trousers_Front_vertices = newFrontVertices
-        self.Trousers_Back_vertices = newBackVertices
+        self.Front_vertices = newFrontVertices
+        self.Back_vertices = newBackVertices
 
         ax = self.draw_basic_trousers()
         # for p in newContourBack:
@@ -1055,8 +1063,8 @@ class Pants_block(Basic_Trousers):
 
         self.Donnanno_back_trousers(delta=6)
 
-        pbf = self.Trousers_Front_points_dic
-        pbb = self.Trousers_Back_points_dic
+        pbf = self.Front_dic
+        pbb = self.Back_dic
 
         AF = pbf["A"] + [0, 6]
         AB = pbb["A"] + [0, 6]
@@ -1099,8 +1107,8 @@ class Pants_block(Basic_Trousers):
                 [pants_points_dic, pbf, pbb],
                 [
                     pants_bloc_vertices,
-                    self.Trousers_Front_vertices,
-                    self.Trousers_Back_vertices,
+                    self.Front_vertices,
+                    self.Back_vertices,
                 ],
             )
         else:
@@ -1146,12 +1154,16 @@ class Bermudas(Basic_Trousers):
     height_above_knee: added length of Trousers
     """
 
-    def __init__(self, pname="gregoire", gender="m", height_above_knee=4, wfd=None, **kwargs):
+    def __init__(
+        self, pname="gregoire", gender="m", height_above_knee=4, wfd=None, **kwargs
+    ):
 
         self.style = "Donnanno"
         self.darts = True
         self.height_above_knee = 4
-        Basic_Trousers.__init__(self, pname, gender, self.style, self.darts, wfd, **kwargs)
+        Basic_Trousers.__init__(
+            self, pname, gender, self.style, self.darts, wfd, **kwargs
+        )
 
         self.calculate_front_bermudas()
         self.calculate_back_bermudas()
@@ -1162,7 +1174,7 @@ class Bermudas(Basic_Trousers):
     def calculate_front_bermudas(self):
 
         # beware these are not  true copies. Changes to the dic changes the original which is fine to me !
-        pbf = self.Trousers_Front_points_dic
+        pbf = self.Front_dic
 
         # place points and line above the knee
         pbf["X2"] = pbf["O"] + [0, self.height_above_knee]
@@ -1193,7 +1205,7 @@ class Bermudas(Basic_Trousers):
         self.add_comment(self.middle(pbf["E"], pbf["F"]) + Point([0, -5]), "FRONT")
 
     def calculate_back_bermudas(self):
-        pbb = self.Trousers_Back_points_dic
+        pbb = self.Back_dic
 
         # place points and line above the knee
         pbb["X2"] = pbb["O"] + [0, self.height_above_knee]

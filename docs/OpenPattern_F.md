@@ -1,6 +1,3 @@
----
-bibliography: OpenPattern.bib
----
 
 # OpenPattern
 **F. Métivier**
@@ -46,13 +43,11 @@ d'ouvrage de patronage classiques. Ces ouvrages, destinés au
 couturiers amateurs ou aux étudiants d'écoles de modes, décrivent les techniques de réalisation de ce que l'on nomme la coupe à plat
 c'est-à-dire la manière de projeter et tracer sur un plan (le papier puis le tissus) une forme géométrique 3D (le vêtement fini après couture).
 
-J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux. En premier lieu j'ai utilisé les quatre tomes de la série *Le modélisme de mode* de Teresa Gilewska pour la femme et pour l'homme[@Gilewska1; @Gilewska2; @Gilewska4; @Gilewska5]. J'ai aussi eu
-recours à deux tomes des ouvrages d'Antonnio Donnanno pour femme et
-homme également [@Donnanno2005; @Donnanno2016]. Pour les enfants et
-l'homme j'ai utilisé les tomes correspondants de Jacqueline Chiappetta
-[@Chiappetta1998; @Chiappetta2000][^1]. Enfin pour l'homme j'ai aussi eu
-recours au livre de Claire Wargnier sur le vestiaire masculin
-[@wargnier2012]. Ces ouvrages sont tous rédigés de façon similaire. Ils
+J'ai utilisé les ouvrages de quatre auteurs ou autrices principaux. En premier lieu j'ai utilisé les quatre tomes de la série *Le modélisme de mode* de [Teresa Gilewska](#Gilewska1) pour la femme et pour l'homme. J'ai aussi eu
+recours aux deux premiers tomes des ouvrages de la collection *Fashion paterning techniques* d'[Antonnio Donnanno](#Donnanno2005) pour femme et
+homme également . Pour les enfants et
+l'homme j'ai utilisé les tomes 3 et 4 de *La coupe à plat*  de [Jacqueline Chiappetta](#Chiappetta1998)[^1]. Enfin pour l'homme j'ai aussi eu
+recours de façon accessoire au livre de [Claire Wargnier](#Wargnier2012) sur *le vêtement masculin*. Ces ouvrages sont tous rédigés de façon similaire. Ils
 exposent, en procédant pas à pas, les techniques empiriques de tracé
 d'un body, d'un pantalon, d'une chemise etc.
 
@@ -531,14 +526,11 @@ la courbe
 Notons qu'il faut au moins trois points pour tracer une courbe et
 l'ordre de la courbe est au maximum egal au nombre de points moins 1.
 Ici l'ordre sera de 3-1 = 2 au maximum. Ces courbes ne sont pas de
-simples polynomes mais des b-splines qui permettent de remplacer de
-façon très satisfaisante les clotoïdes ou courbes d'Euler ou encore
-«French curves» des pistolets traditionnels. De façon générale les
-splines d'ordre 2 suffisent pour tracer les pinces de côté des jupes ou
-les courbes de tailles, les splines d'ordre 3 sont nécessaires pour les
-têtes de manches qui présentent des points d'inflexions et certaines
-courbes de pantalon. Les splines d'ordre supérieur sont à peu de choses
-près inutiles en coupe à plat.
+simples polynomes mais peuvent prendre deux formes.
+
+1.  Des clothoïdes ou courbes d'Euler ou encore «French curves» des pistolets traditionnels. Elles ne sont utilisables aujourd'hui dans OpenPattern que pour ajuster trois points et servent donc pour les emmanchures et les cols. La fonction pour utiliser le pistolet traditionnel est ```True_pistolet```.
+2.  Des b-splines qui permettent de remplacer de
+façon souvent très satisfaisante les clotoïdes.  De façon générale les splines d'ordre 2 suffisent pour tracer les pinces de côté des jupes ou les courbes de tailles, les splines d'ordre 3 sont nécessaires pour les têtes de manches qui présentent des points d'inflexions et certaines courbes de pantalon. Les splines d'ordre supérieur sont à peu de choses près inutiles en coupe à plat. La méthode pour utiliser des b-spline est ```pistolet```.
 
 ### Utiliser des sous-patrons
 
@@ -663,13 +655,12 @@ Les mesures sont enregistrées dans une base sqlite3 à laquelle accède la
 classe `pattern`. Lors de la création de l'objet patron on peut appeler
 une des mesures enregistrées dans la base. Par défaut la classe est
 instanciée en chargeant les mensurations féminine de 38 données par
-Gilewska [@Gilewska1]. Ces mensurations sont chargées dans un
+[Gilewska](#Gilewska1). Ces mensurations sont chargées dans un
 dictionnaire nommé `m`.
 
 Maintenant que vous savez tout faire le plus simple consiste à faire une
 vrai jupe. Nous allons donc tracer le patron d'une demi-jupe avant d'une
-fille de 8 ans selon la méthode de Jacqueline Chiappetta
-[@Chiappetta1999].
+fille de 8 ans selon la méthode de [Jacqueline Chiappetta](#Chiappetta1999).
 
 ```python
 #!/usr/bin/env python3
@@ -805,6 +796,10 @@ commentaires et enfin dessin ! Ce patron peut-être imprimé en taille
 réelle et directement utilisé pour une jupe droite d'une fille de 8 ans.
 Manque juste la ceinture que vous pourriez réaliser très facilement
 maintenant (on y viendra plus tard rassurez-vous) !
+
+
+## Charger des mesures dans la base
+
 
 ## Pour aller plus loin
 
@@ -1008,6 +1003,17 @@ plt.show()
 ![Mon beau trapèze
 déplié](./samplePatterns/simple_scripts_5__FullSize.svg)
 
+
+## Participer
+
+### Ajouter des patrons
+La façon la plus simple de participer est d'intégrer des patrons dans la librairie. Il suffit de vous inspirer de la façon dont sont créés des patrons existant pour savoir comment écrire le code. Il est important de référencer l'origine du patron (s'agit-il d'un patron publié ou est-ce votre création).
+Il faut ensuite vérifier que votre patron est compatible avec le mesures existantes.
+
+### Ajouter des fonctionnalités
+Plus compliqué.  Il reste des dizaines de choses à faire comme par exemple, pour celles et ceux qui le souhaite, intégrer les marges de couure. Je ne le fais pas par choix mais il se trouve que cela simplifie pas mal l'écriture car les marges ne sont pas une simple homothétie du patron fini.
+
+
 ## Commentaires (pour moi surtout !)
 
 
@@ -1164,3 +1170,35 @@ la bande de taille chez Donnanno est donnée à 5cm
     intrinsèquement liée au buste. Elle vient «après» le dessin du buste
 
 # References
+
+
+<a name="Chiappetta1998,"></a>
+Chiappetta, J., *Prêt à porter et sur mesure pour le bébé et l'enfant*, La coupe à plat,  3,
+Presses du midi, 1998.
+
+
+<a name="Chiappetta2000,"></a>
+Chiappetta, J., *Prêt à porter et sur mesure pour l'homme*, La coupe {\`a} plat, 4, Presses du midi, 2000.
+
+<a name="Donnanno2005,"></a>
+Donnanno, A. and Drudi, E.K., *How to make skirts, trousers and shirts for women and men*, Fashion Patternmaking Techniques, 1, Promopress, 2005.
+
+<a name="Donnanno2016,"></a>
+Donnanno, A. and Drudi, E.K., *How to make shirts, undergarments, dresses and suits, waistcoats and jackets for women and men*, Fashion Patternmaking Techniques, 3, Promopress, 2016.
+
+
+<a name="Gilewska1,"></a>
+Gilewska, T., *Coupe à plat les bases*, Le modélisme de mode, 1, Eyrolles,2008
+
+<a name="Gilewska2,"></a>
+Gilewska, T., *Coupe à plat les transformations*, Le modélisme de mode, 2, Eyrolles,2008
+
+<a name="Gilewska4,"></a>
+Gilewska, T., *Montage et finition des vêtements*, Le modélisme de mode,4, Eyrolles,2011
+
+<a name="Gilewska5,"></a>
+Gilewska, T., *Coupe à plat et montage homme*, Le modélisme de mode,5, Eyrolles,2013
+
+<a name="Wargnier2012"></a>
+Wargnier, C. and Gonnet, I.*Le vêtement masculin: les bases du vêtement de ville et de sport*, Become a Pattern Drafter Series,
+Esmod Editions, 2012.

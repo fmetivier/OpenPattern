@@ -12,9 +12,18 @@ import OpenPattern as OP
 import numpy as np
 
 
-# Skirts
-# p = OP.Basic_Skirt(pname="W6C", style="Chiappetta", dbPATH="../measurements/")
-# p.draw(save=True, figPATH="../docs/samplePatterns/", frmt="svg")
+# p = OP.Pattern(dbPATH="../measurements/")
+# p.load_measurements("../measurements/measurement_sheet_Esther.csv")
+
+# # Skirts
+# p = OP.Basic_Skirt(
+#     pname="W6C",
+#     style="Chiappetta",
+#     dbPATH="../measurements/",
+#     figPATH="../docs/samplePatterns/",
+#     frmt="svg",
+# )
+# p.draw()
 
 # p = OP.Culotte(pname="sophie", style="Donnanno", ease=1)
 # p.draw(save=True, paper="A4", fname="culotte")
@@ -28,11 +37,18 @@ import numpy as np
 
 # Women
 # p = OP.Basic_Bodice(
-#     pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
+#     pname="Esther", gender="w", style="Gilewska", dbPATH="../measurements/"
 # )
-# p.draw(save=True, figPATH="../docs/samplePatterns/", frmt="svg")
+# p.draw_bodice()
 #
-# p = OP.Basic_Bodice(pname="W40D", gender="w", style="Donnanno")
+# p = OP.Basic_Bodice(
+#     pname="Esther", gender="w", style="Donnanno", dbPATH="../measurements/"
+# )
+# p.draw_bodice()
+
+# p = OP.Basic_Bodice(
+#     pname="Esther", gender="w", style="Chiappetta", age=99, dbPATH="../measurements/"
+# )
 # p.draw_bodice()
 
 # p.add_bust_dart()
@@ -96,14 +112,25 @@ import numpy as np
 # b = OP.Bermudas(pname="sophie", gender='w' ,wfd = waist_fit_dic)
 # b.draw()
 
-# Gregoire's pyjama
 
+# Grégoire's pans
 pans = OP.Basic_Trousers(
-    pname="gregoire", gender="m", style="Donnanno", dbPATH="../measurements/"
+    pname="M44D",
+    gender="m",
+    style="Donnanno",
+    darts=True,
+    dbPATH="../measurements/",
+    figPATH="../docs/samplePatterns/",
+    frmt="svg",
 )
-pans.Donnanno_add_darts()
-pans.draw_basic_trousers(dic = {"Pattern":"Basic trousers with dart"})
-# pans.draw()
+# pans.Donnanno_add_darts()
+
+pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=True)
+
+# Grégoire's bermudas BUGGED
+# b = OP.Bermudas(pname="gregoire", gender="m", dbPATH="../measurements/")
+# b.draw()
+
 
 # bp = OP.Pants_block(pname="sophie",gender="w", overlay=False)
 #

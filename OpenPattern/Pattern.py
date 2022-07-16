@@ -52,10 +52,19 @@ class Pattern:
         self.pattern_name = pattern_name
 
         self.dbPATH = "./"  # default
+        self.figPATH = "./"
+        self.frmt = "pdf"
+
         for k in kwargs.keys():
             if k == "dbPATH":
                 self.dbPATH = kwargs["dbPATH"]
                 print(self.dbPATH)
+            if k == "figPATH":
+                self.figPATH = kwargs["figPATH"]
+                print(self.figPATH)
+            if k == "frmt":
+                self.frmt = kwargs["frmt"]
+                print(self.frmt)
 
         if pname:
             self.m = self.get_measurements_sql(pname)
@@ -241,7 +250,7 @@ class Pattern:
     def save_measurements_sql(self, ofname=None):
         """Save new measurements
 
-        Save new measurements under ofname key in the mesurement database
+        Save new measurements under ofname key in the measurement database
         If no output format is given stores the data under the attribute self.pname
         ! beware of the final path.
 
@@ -262,6 +271,66 @@ class Pattern:
 
         for key, val in self.m.items():
             c.execute("insert into measurements values (?,?,?)", (ofname, key, val))
+
+        conn.commit()
+        conn.close()
+
+    def load_measurements(self, fname="measurement_sheet.csv"):
+        """Load measurements from a measurements sheet into the database
+
+                - The measurement sheet has a specific format. a sample file
+        is given in the measurements folder.
+                - Once loaded the measurements become the pattern instance measurements
+
+        :param fname: name of the measurement sheet to be loaded
+
+        """
+        conn = sqlite3.connect(self.dbPATH + "measurements.db")
+        c = conn.cursor()
+
+        # Do the works
+        f = open(fname)
+        ################################
+        # four lines for the who table
+        ################################
+        line = f.readline()
+        data = line.split(",")
+        wkey = data[1]
+
+        line = f.readline()
+        data = line.split(",")
+        gender = data[1]
+        print(gender)
+
+        line = f.readline()
+        data = line.split(",")
+        mdate = data[1]
+        print(mdate)
+
+        line = f.readline()
+        data = line.split(",")
+        comment = data[1]
+        print(comment)
+
+        sql = "insert into who values (?,?,?,?);"
+        # print(sql % (wkey, comment, mdate, gender))
+        c.execute(sql, (wkey, comment, mdate, gender))
+
+        #########################
+        # then measuremnts
+        #########################
+        f.readline()
+        lines = f.readlines()
+        for line in lines:
+            data = line.split(",")
+            if data[0]:
+                try:
+                    sql = "insert into measurements values (?,?,?);"
+                    # print(sql % (wkey, data[1], data[0]))
+                    c.execute(sql, (wkey, data[1], data[0]))
+
+                except:
+                    print("pb de type")
 
         conn.commit()
         conn.close()
@@ -1396,8 +1465,6 @@ class Pattern:
         paper="FullSize",
         scale_val=5,
         overlay=False,
-        figPATH="./",
-        frmt="pdf",
     ):
         """Draw pattern with legends and save it if asked for
 
@@ -1415,7 +1482,6 @@ class Pattern:
         :returns:    fig, ax
         """
 
-        self.figPATH = figPATH
         dl, vl = self.generate_lists()
 
         if hasattr(self, "fig") and hasattr(self, "ax"):
@@ -1450,10 +1516,10 @@ class Pattern:
                     + "_"
                     + self.pname
                     + "_FullSize."
-                    + frmt
+                    + self.frmt
                 )
             else:
-                of = figPATH + "/" + fname + "_" + "_FullSize." + frmt
+                of = self.figPATH + "/" + fname + "_" + "_FullSize." + self.frmt
             plt.savefig(of)
 
             if paper != "FullSize":

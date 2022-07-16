@@ -340,7 +340,8 @@ class Basic_Bodice(Pattern):
 
         O = Point([G.x, G.y - 1.5])
 
-        shoulder_width = D.x - G.x - 1
+        # shoulder_width = D.x - G.x - 1
+        shoulder_width = self.m["longueur_epaule"] + self.m["tour_cou"] / 4
         N = Point([D.x - (shoulder_width / 2 - 2), D.y])
         P = Point([N.x, N.y + 2.5])
 
@@ -348,6 +349,7 @@ class Basic_Bodice(Pattern):
         controle_2 = Point([N.x + 1, N.y + 1])
         points_col_dos = [D, controle_1, controle_2, P]
         dbcol, col_dos = self.pistolet(points_col_dos, 3, tot=True)
+        # dbcol, col_dos = self.True_pistolet(points_col_dos)
 
         #################################################
         # Shoulder
@@ -364,12 +366,15 @@ class Basic_Bodice(Pattern):
         print("[PP1]", self.distance(P, P1))
 
         # Front
-        U = Point([shoulder_width / 2 - 2, A.y])
+        # U = Point([shoulder_width / 2 - 2, A.y])
+        # U = Point([shoulder_width / 6, A.y])
+        U = Point([self.m["tour_cou"] / 6, A.y])
         U1 = Point([0, A.y - U.x])
         U2 = Point(
             [A.x + U.x * np.cos(-np.pi / 4), A.y + U.x * np.sin(-np.pi / 4)]
         )  ### CHECK !
         dfcol, col_devant = self.pistolet([U1, U2, U], 2, tot=True)
+        # dfcol, col_devant = self.True_pistolet([U1, U2, U])
 
         Z = Point([J1.x, J1.y - 5])
         a = self.segment_angle(U, Z)
@@ -391,20 +396,24 @@ class Basic_Bodice(Pattern):
         bd = 1.5
         controle = Point([H1.x - bd, H1.y + bd])
 
-        # self.m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet([P1, L1, Q], 2, tot=True)
-        self.m["longueur_emmanchure_dos"], emmanchure_dos = self.True_pistolet(
-            [P1, L1, Q]
+        self.m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet(
+            [P1, L1, controle, Q], 2, tot=True
         )
+        # self.m["longueur_emmanchure_dos"], emmanchure_dos = self.True_pistolet(
+        #     [P1, L1, Q]
+        # )
         print("Longueur emmanchure dos: %4.0f" % (self.m["longueur_emmanchure_dos"]))
 
         # front
         fd = 1.8
         controle = Point([I1.x + fd, I1.y + fd])
 
-        # self.m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet([Z2, J, controle, Q], 2, tot=True)
-        self.m["longueur_emmanchure_devant"], emmanchure_devant = self.True_pistolet(
-            [Z2, J, Q]
+        self.m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet(
+            [Z2, J, controle, Q], 2, tot=True
         )
+        # self.m["longueur_emmanchure_devant"], emmanchure_devant = self.True_pistolet(
+        #     [Z2, J, Q]
+        # )
         print(
             "Longueur emmanchure devant: %4.0f" % (self.m["longueur_emmanchure_devant"])
         )
@@ -500,7 +509,7 @@ class Basic_Bodice(Pattern):
                 for Men using Donnanno technique
                 This Bodice comes with ease applied
 
-        NOTE READY THERE ARE PROBLEMS FOR BUST CALCULATIONS
+        NOT READY THERE ARE PROBLEMS FOR BUST CALCULATIONS
         AND DONNANNO MAKES ARMHOLES THAT ARE VERY FLAT
 
         Args:

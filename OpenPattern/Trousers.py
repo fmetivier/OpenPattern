@@ -380,9 +380,7 @@ class Basic_Trousers(Pattern):
 
         for i in range(len(Front_Points_Names)):
             self.Front_dic[Front_Points_Names[i]] = Front_Points_List[i]
-            self.Front_dic[
-                Front_Points_Names[i]
-            ].pname_ori = Front_Points_Names[i]
+            self.Front_dic[Front_Points_Names[i]].pname_ori = Front_Points_Names[i]
 
         self.Front_vertices = (
             self.interieur_avant
@@ -708,9 +706,7 @@ class Basic_Trousers(Pattern):
 
         for i in range(len(Back_Points_Names)):
             self.Back_dic[Back_Points_Names[i]] = Back_Points_List[i]
-            self.Back_dic[Back_Points_Names[i]].pname_ori = Back_Points_Names[
-                i
-            ]
+            self.Back_dic[Back_Points_Names[i]].pname_ori = Back_Points_Names[i]
 
         back_waist = self.distance(B1, A2)
         print("back waist: " + str(back_waist))
@@ -919,13 +915,15 @@ class Basic_Trousers(Pattern):
                 fname = "Basic_Trousers"
 
             of = (
-                "../patterns/"
+                self.figPATH
+                + "/"
                 + self.style
                 + "_"
                 + fname
                 + "_"
                 + self.pname
-                + "_FullSize.pdf"
+                + "_FullSize."
+                + self.frmt
             )
 
             plt.savefig(of)
@@ -1162,63 +1160,101 @@ class Bermudas(Basic_Trousers):
         self.darts = True
         self.height_above_knee = 4
         Basic_Trousers.__init__(
-            self, pname, gender, self.style, self.darts, wfd, **kwargs
+            self,
+            pname=pname,
+            gender=gender,
+            style=self.style,
+            darts=self.darts,
+            wfd=wfd,
+            **kwargs
         )
 
         self.calculate_front_bermudas()
         self.calculate_back_bermudas()
 
         # translate the bermudas down so we do not use lots of paper
-        self.translate(dx=0, dy=-self.Front_dic["I3"].y)
+        if self.gender == "w":
+            self.translate(dx=0, dy=-self.Front_dic["I3"].y)
+        elif self.gender == "m":
+            self.translate(dx=0, dy=-self.Front_dic["L1b"].y)
 
     def calculate_front_bermudas(self):
 
-        # beware these are not  true copies. Changes to the dic changes the original which is fine to me !
+        ############################################
+        # beware !!!
+        # these are not  true copies.
+        # Changes to the dic changes the original
+        # which is fine to me !
+        ############################################
         pbf = self.Front_dic
 
-        # place points and line above the knee
-        pbf["X2"] = pbf["O"] + [0, self.height_above_knee]
-        pbf["I2"] = Point([pbf["E1"].x, pbf["X2"].y])
-        pbf["L2"] = Point([pbf["L"].x, pbf["X2"].y])
-        pbf["I3"] = pbf["I2"] - [0, 8]
-        pbf["L3"] = pbf["L2"] - [0, 8]
+        if self.gender == "w":
+            # place points and line above the knee
+            pbf["X2"] = pbf["O"] + [0, self.height_above_knee]
+            pbf["I2"] = Point([pbf["E1"].x, pbf["X2"].y])
+            pbf["L2"] = Point([pbf["L"].x, pbf["X2"].y])
+            pbf["I3"] = pbf["I2"] - [0, 8]
+            pbf["L3"] = pbf["L2"] - [0, 8]
 
-        # redraw side curve.
-        control_points = [pbf["B1"], pbf["H"], pbf["F"]]
-        d, self.exterieur_avant = self.pistolet(control_points, 2, tot=True)
+            # redraw side curve.
+            control_points = [pbf["B1"], pbf["H"], pbf["F"]]
+            d, self.exterieur_avant = self.pistolet(control_points, 2, tot=True)
 
-        # redefine the front
-        self.Front_vertices = [
-            [pbf["I3"].pos(), pbf["E1"].pos()]
-            + self.fourche_avant
-            + self.ceinture_avant
-            + self.exterieur_avant
-            + [pbf["L3"].pos(), pbf["I3"].pos()]
-        ]
+            # redefine the front
+            self.Front_vertices = [
+                [pbf["I3"].pos(), pbf["E1"].pos()]
+                + self.fourche_avant
+                + self.ceinture_avant
+                + self.exterieur_avant
+                + [pbf["L3"].pos(), pbf["I3"].pos()]
+            ]
 
-        for key in ["C1", "C", "N1", "N", "D1", "D"]:
-            pbf.pop(key, 0)
-        self.Front_dic = pbf
+            for key in ["C1", "C", "N1", "N", "D1", "D"]:
+                pbf.pop(key, 0)
+            self.Front_dic = pbf
+
+        elif self.gender == "m":
+            del pbf["C"]
+            del pbf["C1"]
+            del pbf["N"]
+            del pbf["N1"]
+            del pbf["D1"]
+            del pbf["D"]
+            del pbf["O"]
+            pbf["I1b"] = pbf["I1"] + [-0.5, -2]
+            pbf["L1b"] = pbf["L1"] + [0.5, -2]
+
+            dca, self.exterieur_avant = self.pistolet(
+                [pbf["B"], pbf["H"], pbf["F"], pbf["L1"]], 3, tot=True
+            )
+
+            self.Front_vertices = [
+                [pbf["I1b"].pos(), pbf["I1"].pos(), pbf["E1"].pos()]
+                + self.fourche_avant
+                + self.ceinture_avant
+                + self.exterieur_avant
+                + [pbf["L1"].pos(), pbf["L1b"].pos(), pbf["I1b"].pos()]
+            ]
 
         self.add_labelled_line(pbf["H"], pbf["G"], "HIP LINE", "t")
         self.add_labelled_line(pbf["A"], pbf["B"], "WAIST LINE", "t")
-        self.add_comment(self.middle(pbf["E"], pbf["F"]) + Point([0, -5]), "FRONT")
+        self.add_comment(pbf["X"] + Point([0, -5]), "FRONT")
 
     def calculate_back_bermudas(self):
         pbb = self.Back_dic
 
-        # place points and line above the knee
-        pbb["X2"] = pbb["O"] + [0, self.height_above_knee]
-        pbb["I2"] = Point([pbb["E2"].x, pbb["X2"].y])
-        pbb["L2"] = Point([pbb["L"].x, pbb["X2"].y])
-        pbb["I3"] = pbb["I2"] - [0, 8]
-        pbb["L3"] = pbb["L2"] - [0, 8]
-
-        # redraw side curve.
-        control_points = [pbb["F"], pbb["H"], pbb["B1"]]
-        d, self.exterieur_arriere = self.pistolet(control_points, 2, tot=True)
-
         if self.gender == "w":
+            # place points and line above the knee
+            pbb["X2"] = pbb["O"] + [0, self.height_above_knee]
+            pbb["I2"] = Point([pbb["E2"].x, pbb["X2"].y])
+            pbb["L2"] = Point([pbb["L"].x, pbb["X2"].y])
+            pbb["I3"] = pbb["I2"] - [0, 8]
+            pbb["L3"] = pbb["L2"] - [0, 8]
+
+            # redraw side curve.
+            control_points = [pbb["F"], pbb["H"], pbb["B1"]]
+            d, self.exterieur_arriere = self.pistolet(control_points, 2, tot=True)
+
             self.Back_vertices = [
                 [pbb["L3"].pos()]
                 + self.exterieur_arriere
@@ -1226,21 +1262,45 @@ class Bermudas(Basic_Trousers):
                 + self.fourche_arriere
                 + [pbb["I3"].pos(), pbb["L3"].pos()]
             ]
+
+            for key in ["C1", "C", "N1", "N", "D1", "D"]:
+                pbb.pop(key, 0)
+
+            self.Back_dic = pbb
+
         elif self.gender == "m":
-            # bugged because it's a simple copy of women back. To be redefined later
+            del pbb["D"]
+            del pbb["D1"]
+            del pbb["N"]
+            del pbb["N1"]
+            del pbb["C"]
+            del pbb["C1"]
+            del pbb["O"]
+            pbb["I1b"] = pbb["I1"] + [0.5, -2]
+            pbb["L1b"] = pbb["L1"] + [-0.5, -2]
+
+            control_points = [
+                pbb["L1"],
+                pbb["L1"] + [0, 2],
+                pbb["F"],
+                pbb["H"] - [1, 0],
+                pbb["B3"],
+            ]
+            d, self.exterieur_arriere = self.pistolet(control_points, 3, tot=True)
+
             self.Back_vertices = [
-                [pbb["L3"].pos()]
-                + self.exterieur_arriere
+                self.exterieur_arriere
                 + self.ceinture_arriere
                 + self.fourche_arriere
-                + [pbb["I3"].pos(), pbb["L3"].pos()]
+                + [
+                    pbb["E2"].pos(),
+                    pbb["I1"].pos(),
+                    pbb["I1b"].pos(),
+                    pbb["L1b"].pos(),
+                    pbb["L1"].pos(),
+                ]
             ]
-
-        for key in ["C1", "C", "N1", "N", "D1", "D"]:
-            pbb.pop(key, 0)
-
-        self.Back_dic = pbb
 
         self.add_labelled_line(pbb["H"], pbb["G"], "HIP LINE", "t")
         self.add_labelled_line(pbb["A2"], pbb["B1"], "WAIST LINE", "t")
-        self.add_comment(self.middle(pbb["E"], pbb["F"]) + Point([0, -5]), "BACK")
+        self.add_comment(pbb["X"] + Point([0, -5]), "BACK")

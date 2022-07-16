@@ -7,7 +7,7 @@
 * [Documentation](##Documentation)
 
 -----------
-## Introduction
+## Introduction <a class="anchor" id="introduction"></a>
 OpenPattern is a python library consisting of a set of classes designed to draft 1:1 scale bespoke sewing patterns and save them as pdf (or matplotlib compatible) files for printing of further processing.
 
 Printing can be performed at fullscale on a tracer but OpenPattern can also cut the pattern in as many pieces as needed in order to print them on an A4 printer at home.
@@ -15,7 +15,7 @@ Printing can be performed at fullscale on a tracer but OpenPattern can also cut 
 OpenPattern can be used to draft patterns from scratch but also includes a set of predefined patterns from bases such as bodices to more elaborate patterns such as shirts.
 The patterns are drafted following instructions from three main stylists: <a href="https://lespressesdumidi.com/content/18-jacqueline-chiappetta">Jacqueline Chiappetta</a>, <a href="https://www.editions-eyrolles.com/Auteur/86662/teresa-gilewska">Theresa Gilewska</a> and <a href="https://www.euromodeschool.it/index.html">Antonnio Donnano </a>.  Sizes are stored in a sqlite3 database. By default they include a series of standard (French and Italian) sizes for Women, Men, Girls and Boys given by these authors.
 
-## Installation and Requirements
+## Installation and Requirements <a class="anchor" id="installation-and-requirements"></a>
 
 ### Requirements
 OpenPattern requires the following libraries to work properly.
@@ -40,7 +40,7 @@ OpenPattern comes with an sqlite3 ```measurements.db``` database. This base cont
 By default OpenPattern assumes that this file resides in the *same directory* as your scripts. This is the simplest way to start rapidly. Yet you can place it anywhere and tell OpenPattern where to search for it (see the doc for more informations).
 
 
-## Exemple
+## Example <a class="anchor" id="Example"></a>
 
 The most simple way to use OpenPattern is to take advantage one of its predefined patterns. In the example script we plot the bodice  of a women size 36 (French) with bust and waist darts.
 
@@ -65,7 +65,7 @@ plt.show()
 The result looks like
 ![Result](./docs/samplePatterns/Gilewska_Basic_Bodice_W36G_FullSize.svg)
 
-## Documentation
+## Documentation <a class="anchor" id="documentation"></a>
 for more informations on the use of the library see the <a target="_blank" href="./docs/OpenPattern_D.md">French</a> Documentation.
 
 typical samples of scripts and patterns can be found in the sampleScripts and samplePatterns section in the docs.

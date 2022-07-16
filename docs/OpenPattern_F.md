@@ -20,14 +20,16 @@
 * [OpenPattern from scratch](##pour-aller-plus-loin:Openpattern-from-scratch)
   * [Dessines moi un carré](###dessines-moi-un-carre)
   * [Dessines moi une pince](###dessines-moi-une-pince)
-  * [Les annotations: légendes, marques et commentaires](###les-annotations:-légendes,-marques-et-commentaires)
+  * [Les annotations: légendes, marques et commentaires](###annotations)
   * [Les courbes et le pistolet](###les-courbes-et-le-pistolet)
   * [Utiliser des sous-patrons](###utiliser-des-sous-patrons)
   * [Utiliser des mensurations](###utiliser-des-mensurations)
 * [Pour aller plus loin](##pour-aller-plus-loin)
-## Introduction
 
-### Ques aquo ?
+
+## Introduction <a class="anchor" id="introduction"></a>
+
+### Ques aquo ? <a class="anchor" id="ques-aquo"></a>
 ----------
 
 OpenPattern est une librairie python, orientée objet, dont l'objectif
@@ -69,10 +71,11 @@ Ce qui peut sembler rébarbatif au premier abord
  offre en fait toute la souplesse d'un langage de programmation comme
 python. Je serai très heureux si à son usage  vous en êtes convaincu.e.s.
 
-### Organisation
+### Organisation <a class="anchor" id="organisation"></a>
 
+Un patron est une série de courbes et de lignes qui dessine le contour des pièces qu'il faut découper et coudre pour créer un vêtement. à ces courbe s'ajoutent des points de contrôles. Dans OpenPattern les lignes et courbes sont enregistrées dans les listes, les points de contrôle dans des dictionnaires.
 
-OpenPattern est organisée autour de classes qui héritent les unes des
+OpenPattern est organisée autour de classes qui permettent la création de ces points et courbes et qui héritent les unes des
 autres. Cette structure présente l'avantage de coller aux techniques de
 coupe. En effet une chemise, une veste ou un gilet sont des adaptations
 d'un body, une robe dérive de l'assemblage d'une jupe et d'un body,
@@ -81,23 +84,26 @@ bases (jupe de base, pantalon de base).
 
 OpenPattern présente pour l'instant deux niveaux d'héritage.
 
--   La classe parente Pattern : C'est la classe générale qui définit ce
+-   La classe parente ```Pattern``` : C'est la classe générale qui définit ce
     qu'est un patron et les méthodes permettant de le dessiner et de le
     manipuler.
 
--   Les classes de bases dérivées de Pattern: Basic\_Bodice,
-    Basic\_Trousers, Cuffs, Collars.
+-   Les classes de bases dérivées de Pattern: ```Basic_Bodice,
+    Basic_Trousers, Cuffs, Collars```.
 
 -   Les classes dérivées des classes de base: shirt, pyjamas qui
-    héritent de Basic\_Bodice ou de Basic\_Trousers.
+    héritent de ```Basic_Bodice``` ou de ```Basic_Trousers```.
 
--   Enfin les patrons font appels à une classe Point qui permet de
+Les patrons font appels à une classe ```Point``` qui  permet de
     définir un point de patronage avec sa position et ses propriétés.
     Cette classe redéfinit les opérations d'addition et offre diverses
     manipulations comme la rotation. L'intérêt ici est d'avoir un objet
     flexible qui permette de partir d'un patron de base et de l'altérer.
 
-### Principe de fonctionnement
+Enfin un patron se construit à partir de mesures corporelles. Celles-ci sont stockées dans une base de données sqlite3 contenue dans le fichier ```measurement.db```. Cette base contient toute une série de mesures standards en provenance des différents livres cités plus haut et peut aussi contenir les mesures spécifique que vous prendrez sur vos proches.
+
+
+### Principe de fonctionnement <a class="anchor" id="principe-de-fonctionnement"></a>
 
 Pour dessiner un patron il faut
 
@@ -108,12 +114,12 @@ Pour dessiner un patron il faut
 3.  dessiner et, au besoin, sauvegarder le patron.
 
 Le dessin du patron peut aussi directement se faire à partir des classes
-Pattern et Point comme nous le verrons plus loin dans la suite de ce document. Pour débuter cependant je vous recommande d'utiliser les patrons existants de la librairie. J'ajouterai des patrons au fur et à mesure de mon temps libre.
+```Pattern``` et ```Point``` comme nous le verrons plus loin dans la suite de ce document. Pour débuter cependant je vous recommande d'utiliser les patrons existants de la librairie. J'ajouterai des patrons au fur et à mesure de mon temps libre.
 
-## Tutoriel
+## Tutoriel <a class="anchor" id="tutoriel"></a>
 
 
-### Le patron de base
+### Le patron de base <a class="anchor" id="le-patron-de-base"></a>
 
 Ce tutoriel montre comment utiliser les classes permettant de tracer des
 patrons complets à partir de mesures moyennes (un 38 français par
@@ -127,7 +133,7 @@ une jupe droite ou un pantalon basique par exemple) soit de les
 
 :warning: Dans tous les scripts du tutoriel je considère que la base de données ```measurements.db``` est dans le même répertoire que le script principal.
 
-### Le body
+### Le body <a class="anchor" id="le-body"></a>
 
 Le script suivant montre le principe d'utilisation de la librairie
 OpenPattern en prenant l'exemple d'un Body. Nous allons tracer et
@@ -179,7 +185,7 @@ Les manches justement font partie de
 la classe body car elles sont calculées à partir des profondeurs d'emmanchures mesurées sur les body.
 
 
-### La jupe
+### La jupe <a class="anchor" id="la-jupe"></a>
 
 Le script suivant montre comment créer une jupe de base (ou jupe crayon
 ou encore fuseau ou pencil en anglais)
@@ -223,10 +229,36 @@ la jupe crayon fille est symétrique quel que soit l'âge.
 
 
 
-### Le pantalon
-À faire
+### Le pantalon <a class="anchor" id="le-pantalon"></a>
 
-### Les Transformations
+Pour créer un pantalon avec pinces on utilise la classe ```Basic_Trousers```
+
+
+```python
+import OpenPattern as OP
+pans = OP.Basic_Trousers(
+    pname="M44D",
+    gender="m",
+    style="Donnanno",
+    darts=True,
+    dbPATH="../measurements/",
+    figPATH="../docs/samplePatterns/",
+    frmt="svg",
+)
+# pans.Donnanno_add_darts()
+
+pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=True)
+
+```
+
+<figure>
+<img src="./samplePatterns/Donnanno_myPattern_M44D_FullSize.svg">
+<figurecaption> Figure 3: Pantalon à pinces selon le modèle d'A. Donnanno.
+</figure>
+
+À l'heure actuelle seul le style Donnanno est implémenté pour les pantalons.  Si vous choisissez un autre style un message s'affichera indiquant l'indisponibilité du style demandé et OpenPattern tentera de tracer un pantalon selon le style Donnano.
+
+### Les Transformations <a class="anchor" id="les-transformations"></a>
 
 Aux trois classes de bases s'ajoutent des classes accessoires pour les
 manchettes et les cols et en cours (et que je ne mets pas) des classes
@@ -262,10 +294,10 @@ Collars(pname="sophie", gender='w', style='Gilewska', collar_style = 'Officer',\
   overlap=0, collar_height=3)
 ```
 
-## OpenPattern from scratch
+## OpenPattern from scratch <a class="anchor" id="openpattern-from-scratch"></a>
 
 
-### Dessines moi un carré
+### Dessines moi un carré <a class="anchor" id="dessines-moi-un-carre"></a>
 
 Le script suivant montre comment dessiner un carré (de tissus :=)). les
 opérations consistent en
@@ -342,7 +374,7 @@ souhaité. On verra plus tard, à mesure que la forme du patron et donc de
 son contour se complexifie que cet ordre est important et conditionne la
 façon dont on incluera une pince ou tracera une courbe.
 
-### Dessines moi une pince
+### Dessines moi une pince <a class="anchor" id="dessines-moi-une-pince"></a>
 
 Imaginons que nous allons transformer notre carré un peu pour en faire
 un demi-trapèze et lui ajouter une pince (Attention ça va faire jupe !).
@@ -406,7 +438,7 @@ points de pince lors de la définition du trajet du tracé. La figure
 [3.6](#fig:trapeze){reference-type="ref" reference="fig:trapeze"} montre
 le résultat. Comment ça elle ne vous plait pas ma jupe ?
 
-### Les annotations: légendes, marques et commentaires
+### Les annotations: légendes, marques et commentaires <a class="anchor" id="les-annotations"></a>
 
 Un patron vient souvent accompagné de commentaires et de signes
 particulier comme l'indication du droit fil, les pliures et les crans de
@@ -433,7 +465,7 @@ annotations](./samplePatterns/simple_scripts_2__FullSize.svg)
 On notera au passage qu'à l'heure actuelle un cran de montage se place
 comme un commentaire constitué de V en série.
 
-### Les courbes et le pistolet
+### Les courbes et le pistolet <a class="anchor" id="les-courbes-et-le-pistolet"></a>
 
 Bien arrondissons les angles. Une jupe ce n'est pas juste un tour de
 taille mais aussi un tour de hanches et un arrondi sur le côté qui
@@ -529,10 +561,11 @@ Ici l'ordre sera de 3-1 = 2 au maximum. Ces courbes ne sont pas de
 simples polynomes mais peuvent prendre deux formes.
 
 1.  Des clothoïdes ou courbes d'Euler ou encore «French curves» des pistolets traditionnels. Elles ne sont utilisables aujourd'hui dans OpenPattern que pour ajuster trois points et servent donc pour les emmanchures et les cols. La fonction pour utiliser le pistolet traditionnel est ```True_pistolet```.
+
 2.  Des b-splines qui permettent de remplacer de
 façon souvent très satisfaisante les clotoïdes.  De façon générale les splines d'ordre 2 suffisent pour tracer les pinces de côté des jupes ou les courbes de tailles, les splines d'ordre 3 sont nécessaires pour les têtes de manches qui présentent des points d'inflexions et certaines courbes de pantalon. Les splines d'ordre supérieur sont à peu de choses près inutiles en coupe à plat. La méthode pour utiliser des b-spline est ```pistolet```.
 
-### Utiliser des sous-patrons
+### Utiliser des sous-patrons <a class="anchor" id="utiliser-des-sous-patrons"></a>
 
 Il est fréquent de créer un patron à partir de plusieurs bases
 différentes, buste et pantalon pour les salopettes par, buste et jupe
@@ -636,7 +669,7 @@ dessine avec un remplissage plus léger dans le but de pouvoir dessiner
 les altérations par dessus (ou dessous) ultérieurement dans la teinte de
 gris classique.
 
-### Utiliser des mensurations
+### Utiliser des mensurations <a class="anchor" id="utiliser-des-mensurations"></a>
 
 *Bespoke my dear !* l'intérêt de la classe `pattern` c'est qu'elle peut
 faire appel à des mensurations c'est à dire un ensemble de mesures
@@ -798,12 +831,12 @@ Manque juste la ceinture que vous pourriez réaliser très facilement
 maintenant (on y viendra plus tard rassurez-vous) !
 
 
-## Charger des mesures dans la base
+## Charger des mesures dans la base <a class="anchor" id="charger-de-mesures-dans-la-base"></a>
 
 
-## Pour aller plus loin
+## Pour aller plus loin <a class="anchor" id="pour-aller-plus-loin"></a>
 
-### Les tailles
+### Les tailles <a class="anchor" id="les-tailles"></a>
 
 Le tableau suivant recense l'état des mesures que contient la
 base sql d'OpenPattern.
@@ -867,10 +900,9 @@ correspondrait plutôt de mon point de vue  à un 40 Donnanno).
 
 |Mesure| FG | HG | FD | HD | HW | FiC | GaC | HC|
 |---|---|---|---|---|---|---|---|---|
-|carrure devant|||X||||||
-|carrure_devant|X|X|||X|X||X|
+|carrure_devant|X|X|X||X|X||X|
 |carrure_dos|X|X|X||X|X|X|X|
-|cheville_terre||||||X|X|X|
+|cheville_terre|||X|||X|X|X|
 |crane||||||X|X|X|
 |ecart_poitrine|X||X||||||
 |encolure_dos|||X||||||
@@ -884,12 +916,14 @@ correspondrait plutôt de mon point de vue  à un 40 Donnanno).
 |hauteur_carrure|X||||||||
 |hauteur_corps|||||X|||X|
 |hauteur_coude|X|X||X||X|X||
+|hauteur_cou_dessous_bras|||X||||||
 |hauteur_emmanchure|X||||||||
 |hauteur_petites_hanches|X||||||||
 |hauteur_poitrine|X||||||||
 |hauteur_taille_genou|X||X|X|X|X|||
 |hauteur_taille_terre|||X||X||||
 |hauteur_tete|||||X||||
+|largeur_bras|||X||||||
 |largeur_encolure|X||||||||
 |largeur_epaule||X||X|||||
 |largeur_secteur||||X|||||
@@ -910,13 +944,15 @@ correspondrait plutôt de mon point de vue  à un 40 Donnanno).
 |profondeur_encolure_dos|X||||||||
 |profondeur_poitrine|||X||||||
 |stature|||X|X|||||
+|tour_abdomen|||X||||||
 |tour_bassin|X|X|X|X|X|X|X|X|
 |tour_bras|X|X|X|||X|X|X|
-|tour_cheville|X|||||X|X|X|
+|tour_cheville|X||X|||X|X|X|
 |tour_cou|||X||||||
-|tour_cuisse|X|X|||X|||X|
+|tour_coude|||X||||||
+|tour_cuisse|X|X|X||X|||X|
 |tour_encolure|X|X||X|X|X|X|X|
-|tour_genou|X|||||X|X|X|
+|tour_genou|X||X|||X|X|X|
 |tour_jarret|||||X||||
 |tour_mollet|||||X|X|X|X|
 |tour_petites_hanches|X||||||||
@@ -929,7 +965,7 @@ correspondrait plutôt de mon point de vue  à un 40 Donnanno).
 *Répartition des mesures par source*
 
 
-### Déplier un patron
+### Déplier un patron <a class="anchor" id="deplier-un-patron"></a>
 
 
 Déplier un patron peut-être utile pour des transformations. En effet
@@ -1004,14 +1040,14 @@ plt.show()
 déplié](./samplePatterns/simple_scripts_5__FullSize.svg)
 
 
-## Participer
+## Participer <a class="anchor" id="patriciper"></a>
 
-### Ajouter des patrons
+### Ajouter des patrons <a class="anchor" id="ajouter-des-patrons"></a>
 La façon la plus simple de participer est d'intégrer des patrons dans la librairie. Il suffit de vous inspirer de la façon dont sont créés des patrons existant pour savoir comment écrire le code. Il est important de référencer l'origine du patron (s'agit-il d'un patron publié ou est-ce votre création).
 Il faut ensuite vérifier que votre patron est compatible avec le mesures existantes.
 
-### Ajouter des fonctionnalités
-Plus compliqué.  Il reste des dizaines de choses à faire comme par exemple, pour celles et ceux qui le souhaite, intégrer les marges de couure. Je ne le fais pas par choix mais il se trouve que cela simplifie pas mal l'écriture car les marges ne sont pas une simple homothétie du patron fini.
+### Ajouter des fonctionnalités <a class="anchor" id="ajouter-des-fonctionnalités"></a>
+Plus compliqué.  Il reste des dizaines de choses à faire comme par exemple, pour celles et ceux qui le souhaite, intégrer une option permettant le tracé des marges de couture. Je ne le fais pas d'abord par choix --- je les trace directement sur le tissus après avoir tracé le patron ---, mais il se trouve que cela simplifie pas mal l'écriture car les marges ne sont pas une simple homothétie du patron fini.
 
 
 ## Commentaires (pour moi surtout !)

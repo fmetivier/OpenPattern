@@ -1,0 +1,66 @@
+Nom,Esther,,,,,,,,,
+Genre,W,,,,,,,,,
+Mdate,2022-07-04,,Styliste/Stylist,,,,,,,
+Commentaires/comments,mesures prises le 14 juillet 2022,,,,,,,,,
+Val Mesure (cm),Nom Mesure,English names for info, WG , WG , WD , MD , MW , GC , BC , MC
+34,carrure_devant,Front Torso Width,X,X,X,,X,X,,X
+35,carrure_dos,Back shoulder width,X,X,X,,X,X,X,X
+8,cheville_terre,,,,X,,,X,X,X
+,crane,,,,,,,X,X,X
+16,ecart_poitrine,Divergence,X,,X,,,,,
+,encolure_dos,,,,X,,,,,
+,enfourchure,,,,,,X,,,
+79,entrejambe,,,X,X,,X,,,
+,entrejambe_terre,,,,,,,,X,X
+,fourche,,X,,,,,,,
+,genou_sol,,,,,,,,,X
+,genou_terre,,,,,,,,X,
+,hauteur_bassin,,X,X,X,X,X,X,,
+,hauteur_carrure,,X,,,,,,,
+,hauteur_corps,,,,,,X,,,X
+34,hauteur_coude,,X,X,,X,,X,X,
+17,hauteur_cou_dessous_bras,,,,X,,,,,
+,hauteur_emmanchure,,X,,,,,,,
+,hauteur_petites_hanches,,X,,,,,,,
+,hauteur_poitrine,,X,,,,,,,
+60,hauteur_taille_genou,Knee depth,X,,X,X,X,X,,
+102,hauteur_taille_terre,,,,X,,X,,,
+,hauteur_tete,,,,,,X,,,
+9,largeur_bras,Width sector,,,,,,,,
+,largeur_encolure,,X,,,,,,,
+12,largeur_epaule,Shoulder length,,X,,X,,,,
+,largeur_secteur,,,,,X,,,,
+,longueur_7cerv_enc,,,,,,,,,X
+,longueur_col_devant,,X,,,,,,,X
+,longueur_col_dos,,X,,,,,,,X
+37,longueur_devant,Front waist lenght,X,X,X,X,X,X,,
+,longueur_devant_7c,,,,,,X,,,
+37,longueur_dos,Back waist length,X,X,X,X,X,X,X,X
+,longueur_emmanchure_devant,,X,,,X,,,,X
+,longueur_emmanchure_dos,,X,,,X,,,,X
+,longueur_epaule,,X,X,X,X,X,X,X,X
+60,longueur_manche,,X,X,X,X,X,X,X,X
+,longueur_taille_terre,,X,X,,X,,X,,
+23,montant,Seat Depth,X,X,X,X,X,X,X,X
+,profondeur_emmanchure,,X,,,X,,,,
+,profondeur_encolure_devant,,X,,,,,,,
+,profondeur_encolure_dos,,X,,,,,,,
+,profondeur_poitrine,,,,X,,,,,
+,stature,,,,X,X,,,,
+67,tour_abdomen,Abdomen Circumference,,,X,,,,,
+87,tour_bassin,,X,X,X,X,X,X,X,X
+23,tour_bras,,X,X,X,,,X,X,X
+19,tour_cheville,Ankle circumference,X,,X,,,X,X,X
+31,tour_cou,,,,X,,,,,
+21,tour_coude,,,,X,,,,,
+47,tour_cuisse,Thigh Circumference,X,X,X,,X,,,X
+,tour_encolure,,X,X,,X,X,X,X,X
+34,tour_genou,,X,,X,,,X,X,X
+,tour_jarret,,,,,,X,,,
+,tour_mollet,,,,,,X,X,X,X
+,tour_petites_hanches,,X,,,,,,,
+15,tour_poignet,,X,X,X,,X,X,X,X
+80,tour_poitrine,Bust Circumference,X,X,X,X,X,X,X,X
+78,tour_poitrine_haute,Torso Circumference,,,X,,,,,
+62,tour_taille,Waist Circumference,X,X,X,X,X,X,X,X
+,tour_tete,,,,,,X,,,

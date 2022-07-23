@@ -87,6 +87,7 @@ class Basic_Bodice(Pattern):
 
             elif self.gender == "w":
                 self.Donnanno_bodice_without_dart_w(bust_ease=ease)
+                self.Donnanno_basic_fitted_sleeve()
 
         elif self.style == "Gilewska":
             print("style Gilewska selected")
@@ -326,7 +327,9 @@ class Basic_Bodice(Pattern):
         G = D - [self.m["carrure_dos"] / 2 + 1, 0]
         H1 = Point([G.x, H.y])
 
-        I1 = H1 - [(self.m["tour_poitrine"] + bust_ease) / 10 + 1.5, 0]
+        self.section = (self.m["tour_poitrine"] + bust_ease) / 10 + 1.5
+        I1 = H1 - [self.section, 0]
+
         J1 = Point([I1.x, A.y])
 
         #################################################
@@ -503,6 +506,115 @@ class Basic_Bodice(Pattern):
         self.add_comment(self.middle(I, I1) + Point([0, 5]), "FRONT")
         self.add_comment(self.middle(H1, H) + Point([0, 5]), "BACK")
         self.set_grainline(self.middle(H, H1) + Point([0, -10]))
+
+    def Donnanno_basic_fitted_sleeve(self, straight=True):
+        """Fitted seeve for Donnano bodice without dart
+
+        params: straight: if true draws a straight sleeve
+                          if false draws a waist fitted sleeve (NOT DONE YET)
+
+        """
+
+        ###############################
+        # Frame
+        ###############################
+        B = Point([0, 0])
+        A = B + [0, self.m["longueur_manche"]]
+        E = A + [self.section * 1.5, 0]
+        F = B + [self.section * 1.5, 0]
+        C = self.mirror_point(B, F)
+        D = self.mirror_point(A, E)
+
+        L = self.middle(A, E)
+        Lb = self.mirror_point(L, E)
+
+        G = A + [
+            0,
+            -self.distance(self.Front_dic["L1"], self.Front_dic["P1"]) - 1,
+        ]  # approximation car je ne calcule pas la courbe
+        X = Point([E.x, G.y])
+        Gb = self.mirror_point(G, X)
+
+        N = Point([0, self.distance(A, B) / 2 + 2])
+        P = Point([E.x, N.y])
+        Nb = self.mirror_point(N, P)
+
+        L2 = Point([L.x, 0.5 * (L.y + G.y)])
+        L2b = Point([Lb.x, 0.5 * (Lb.y + Gb.y)])
+
+        if straight:
+            B1 = B + [0, 2]
+            B1b = C + [0, 2]
+            L1 = self.middle(B, F)
+            L1b = self.mirror_point(L1, F)
+            L3 = L1 + [0, 1.5]  # 2 cela n'a pas de sens puis que B1 est à 2
+        else:
+            pass
+
+        ###############################
+        # Control points for the head
+        ###############################
+        Cf1 = self.middle(L2, E)
+        Cf2 = self.middle(G, L2)
+        Cf1.move([-np.sqrt(1.5), np.sqrt(1.5)])
+        Cf2.move([np.sqrt(1.5), -np.sqrt(1.5)])
+
+        L2t = self.middle(L2b, Gb)
+        Cf1b = self.middle(E, L2b)
+        Cf2b = self.middle(L2t, Gb)
+        Cf1b.move([np.sqrt(1.5), np.sqrt(1.5)])
+        Cf2b.move([-np.sqrt(0.5), -np.sqrt(0.5)])
+
+        ###################################
+        # curves
+        # b-splines for inflexion points
+        ###################################
+        points_emmanchure_devant = [G, Cf2, L2, Cf1, E]
+        demf, emmanchure_devant = self.pistolet(points_emmanchure_devant, 3, tot=True)
+
+        points_emmanchure_dos = [E, Cf1b, L2t, Cf2b, Gb]
+        demf, emmanchure_dos = self.pistolet(points_emmanchure_dos, 3, tot=True)
+
+        points_bas_manche = [B1b, L1b, F, L3, B1]
+        dbm, bas_manche = self.pistolet(points_bas_manche, 3, tot=True)
+
+        #########################################
+        # dics and vertices
+        #########################################
+        key_list = [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "Gb",
+            "L2",
+            "L2b",
+            "X",
+            "P",
+            "N",
+            "Nb",
+            "L1",
+            "L1b",
+            "L3",
+            "B1",
+            "B1b",
+        ]
+        val_list = [A, B, C, D, E, F, G, Gb, L2, L2b, X, P, N, Nb, L1, L1b, L3, B1, B1b]
+
+        for key, val in zip(key_list, val_list):
+            self.Sleeve_points_dic[key] = val
+
+        self.Sleeve_vertices = (
+            [B1.pos(), G.pos()]
+            + emmanchure_devant
+            + emmanchure_dos
+            + [B1b.pos()]
+            + bas_manche
+            + [G.pos()]
+        )
 
     def Donnanno_bodice_without_dart_m(self, bust_ease=24):
         """Calculation of bodice with no dart
@@ -940,8 +1052,9 @@ class Basic_Bodice(Pattern):
         """Calculation of the basic bodice for men
 
         Chiappetta has it (as always)!
-        front left, back right as always in Chiappetta
+        front to the left, back to the right as always in Chiappetta
 
+        params: BF_space: distance between front and back 1/2 bodices
 
         """
 

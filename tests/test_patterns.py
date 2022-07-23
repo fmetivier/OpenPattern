@@ -6,8 +6,6 @@ import sys
 sys.path.append("../")
 import matplotlib.pyplot as plt
 
-# ~ from OpenPattern.Points import Point
-
 import OpenPattern as OP
 import numpy as np
 
@@ -40,16 +38,21 @@ import numpy as np
 #     pname="Esther", gender="w", style="Gilewska", dbPATH="../measurements/"
 # )
 # p.draw_bodice()
+# p.draw_sleeves()
 #
 # p = OP.Basic_Bodice(
 #     pname="Esther", gender="w", style="Donnanno", dbPATH="../measurements/"
 # )
 # p.draw_bodice()
+# p.draw_sleeves()
 
-# p = OP.Basic_Bodice(
-#     pname="Esther", gender="w", style="Chiappetta", age=99, dbPATH="../measurements/"
-# )
-# p.draw_bodice()
+p = OP.Basic_Bodice(
+    pname="Esther", gender="w", style="Chiappetta", age=99, dbPATH="../measurements/"
+)
+p.chiappetta_armhole_sleeve_m()
+
+p.draw_bodice()
+p.draw_sleeves()
 
 # p.add_bust_dart()
 # p.add_waist_dart()
@@ -114,18 +117,18 @@ import numpy as np
 
 
 # Grégoire's pans
-pans = OP.Basic_Trousers(
-    pname="M44D",
-    gender="m",
-    style="Donnanno",
-    darts=True,
-    dbPATH="../measurements/",
-    figPATH="../docs/samplePatterns/",
-    frmt="svg",
-)
+# pans = OP.Basic_Trousers(
+#     pname="M44D",
+#     gender="m",
+#     style="Donnanno",
+#     darts=True,
+#     dbPATH="../measurements/",
+#     figPATH="../docs/samplePatterns/",
+#     frmt="svg",
+# )
 # pans.Donnanno_add_darts()
 
-pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=True)
+# pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=True)
 
 # Grégoire's bermudas BUGGED
 # b = OP.Bermudas(pname="gregoire", gender="m", dbPATH="../measurements/")

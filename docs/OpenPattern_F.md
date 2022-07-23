@@ -18,8 +18,8 @@
   * [Le Body](###le-body)
   * [Les transformations](###les-transformations)
 * [OpenPattern from scratch](##pour-aller-plus-loin:Openpattern-from-scratch)
-  * [Dessines moi un carré](###dessines-moi-un-carre)
-  * [Dessines moi une pince](###dessines-moi-une-pince)
+  * [Dessine-moi un carré](###dessines-moi-un-carre)
+  * [Dessine-moi une pince](###dessine-moi-une-pince)
   * [Les annotations: légendes, marques et commentaires](###annotations)
   * [Les courbes et le pistolet](###les-courbes-et-le-pistolet)
   * [Utiliser des sous-patrons](###utiliser-des-sous-patrons)
@@ -297,7 +297,7 @@ Collars(pname="sophie", gender='w', style='Gilewska', collar_style = 'Officer',\
 ## OpenPattern from scratch <a class="anchor" id="openpattern-from-scratch"></a>
 
 
-### Dessines moi un carré <a class="anchor" id="dessines-moi-un-carre"></a>
+### Dessine-moi un carré <a class="anchor" id="dessines-moi-un-carre"></a>
 
 Le script suivant montre comment dessiner un carré (de tissus :=)). les
 opérations consistent en
@@ -374,7 +374,7 @@ souhaité. On verra plus tard, à mesure que la forme du patron et donc de
 son contour se complexifie que cet ordre est important et conditionne la
 façon dont on incluera une pince ou tracera une courbe.
 
-### Dessines moi une pince <a class="anchor" id="dessines-moi-une-pince"></a>
+### Dessine-moi une pince <a class="anchor" id="dessines-moi-une-pince"></a>
 
 Imaginons que nous allons transformer notre carré un peu pour en faire
 un demi-trapèze et lui ajouter une pince (Attention ça va faire jupe !).

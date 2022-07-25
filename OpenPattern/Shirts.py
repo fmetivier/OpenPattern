@@ -10,6 +10,14 @@ from OpenPattern.Bodices import *
 
 
 class Shirt(Basic_Bodice):
+    """Shirt class inherits from bodice
+    can be used to draw shirt dresses by ajusting the value of lower_lenght
+
+    for now only Basinc_shirt method
+    the method has to be called
+
+    """
+
     def __init__(
         self,
         pname="M40mC",
@@ -17,7 +25,8 @@ class Shirt(Basic_Bodice):
         style="Chiappetta",
         age=99,
         ease=8,
-        hip=True,
+        lower_length=25,
+        hip=False,
         Back_Front_space=12,
         collar_ease=1,
         sleeve_lowering=3,
@@ -26,9 +35,35 @@ class Shirt(Basic_Bodice):
         button_overlap=2,
         **kwargs
     ):
+        """Init for shirt
+
+        :param pname: size key
+        :param gender: gender
+        :param stype: stylist
+        :param age: age for Chiappetta kids
+        :param ease: ease around bust
+        :param lower_length: length of shirt from the waist
+        :param hip: if true length of shirt is to the base of hip.
+        :param Back_Front_space: distance between the two half patterns
+        :param collar_ease: ease around neck !
+        :param sleeve_lowering: ease of the armhole
+        :param side_ease: ease to be applied to the side
+        I need to check but beware this one is added to ease
+        :param shoulder_ease: length added to shoulder length
+        :param button_overlap: width of the button overlap band
+
+        """
 
         Basic_Bodice.__init__(
-            self, pname, gender, style, age, ease, hip, Back_Front_space, **kwargs
+            self,
+            pname=pname,
+            gender=gender,
+            style=style,
+            age=age,
+            ease=ease,
+            hip=hip,
+            Back_Front_space=Back_Front_space,
+            **kwargs
         )
 
         self.collar_ease = collar_ease
@@ -36,13 +71,24 @@ class Shirt(Basic_Bodice):
         self.side_ease = side_ease
         self.shoulder_ease = shoulder_ease
         self.button_overlap = button_overlap
+        self.lower_length = lower_length  # length from waist to shirt bottom
+
+        #################################################
         # keep track of the original bodice
+        #################################################
         Ori = self.copy()
         self.add_pattern(Ori)
 
     def basic_shirt_bodice(self, style="Chiappetta"):
+        """transformation of the bodice into a shirt
+
+        :param  style: stylist
+        """
         if style == "Chiappetta":
+            #################################################
             # Transformation of the Bodice
+            #################################################
+
             # armhole
             self.Front_dic["ShF1"] += Point([self.shoulder_ease, 0.5])
             self.Front_dic["SlF1"] += Point([self.side_ease, -self.sleeve_lowering])
@@ -127,17 +173,17 @@ class Shirt(Basic_Bodice):
 
             # shirt's lower part
             self.Front_dic["HiF"] = self.Front_dic["WF"] + Point(
-                [0, -self.m["montant"]]
+                [0, -self.lower_length]
             )
             self.Front_dic["HiF1"] = self.Front_dic["WF1"] + Point(
-                [self.side_ease, -self.m["montant"] + 5]
+                [self.side_ease, -self.lower_length + 3]
             )
-            self.Back_dic["HiB"] = self.Back_dic["WB"] + Point([0, -self.m["montant"]])
+            self.Back_dic["HiB"] = self.Back_dic["WB"] + Point([0, -self.lower_length])
             self.Back_dic["HiB1"] = self.Back_dic["WB1"] + Point(
-                [-self.side_ease, -self.m["montant"] + 5]
+                [-self.side_ease, -self.lower_length + 3]
             )
 
-            # Oh my good points with fixes values added... no good
+            # Oh my god ! points with fixes values added... no good
             ClHiF = self.Front_dic["HiF"] + Point([4, 0])
             ClHiF1 = self.Front_dic["HiF1"] + Point([-3, 0])
             ClHiB = self.Back_dic["HiB"] + Point([-4, 0])
@@ -156,7 +202,7 @@ class Shirt(Basic_Bodice):
 
             # move collar
             self.Front_dic["CF2"] += Point([-0.5, 0])
-            self.Front_dic["ClCF2"] += Point([-0.5, 0])
+            self.Front_dic["ClCF"] += Point([-0.5, 0])
 
             self.m["longueur_col_devant"], self.front_collar_curve = self.pistolet(
                 [self.Front_dic["CF"], self.Front_dic["ClCF"], self.Front_dic["CF2"]],
@@ -216,7 +262,10 @@ class Shirt(Basic_Bodice):
             self.Front_vertices.append(sparure)
 
         elif style == "Gilewska":
+            #################################################
             # Transformation of the Bodice
+            #################################################
+
             # armhole
             fsh_a = self.segment_angle(self.Front_dic["CF2"], self.Front_dic["ShF1"])
             self.Front_dic["ShF1"] += Point(
@@ -310,14 +359,14 @@ class Shirt(Basic_Bodice):
 
             # shirt's lower part
             self.Front_dic["HiF"] = self.Front_dic["WF"] + Point(
-                [0, -self.m["montant"]]
+                [0, -self.lower_length]
             )
             self.Front_dic["HiF1"] = self.Front_dic["WF1"] + Point(
-                [self.side_ease, -self.m["montant"] + 10]
+                [self.side_ease, -self.lower_length + 10]
             )
-            self.Back_dic["HiB"] = self.Back_dic["WB"] + Point([0, -self.m["montant"]])
+            self.Back_dic["HiB"] = self.Back_dic["WB"] + Point([0, -self.lower_length])
             self.Back_dic["HiB1"] = self.Back_dic["WB1"] + Point(
-                [-self.side_ease, -self.m["montant"] + 10]
+                [-self.side_ease, -self.lower_length + 10]
             )
 
             ClHiF = self.Front_dic["HiF"] + Point([4, 0])
@@ -414,6 +463,8 @@ class Shirt(Basic_Bodice):
         self.save_measurements_sql()
 
     def yoked_shirt_bodice(self):
+        """yoked shirt but not finished..."""
+
         if self.style == "Chiappetta":
             # Transformation of the Bodice
 
@@ -446,7 +497,7 @@ class Shirt(Basic_Bodice):
 
             # move collar
             self.Front_dic["CF2"] += Point([-0.5, 0])
-            self.Front_dic["ClCF2"] += Point([-0.5, 0])
+            self.Front_dic["ClCF"] += Point([-0.5, 0])
 
             # redraw collar
             self.m["longueur_col_devant"], self.front_collar_curve = self.pistolet(
@@ -631,32 +682,3 @@ class Shirt(Basic_Bodice):
             self.Front_vertices.append(self.front_yoke)
 
             self.save_measurements_sql()
-
-    def shirt_sleeve_m(self, ease=3, Slit_length=12, fold_number=3, fold_length=1):
-        pass
-
-        # ~ if fold_number > 0:
-        # ~ S = np.array([self.m["tour_poignet"]/2 + ease/2 + 0.5, 0])
-        # ~ V = np.array([-(self.m["tour_poignet"]/2 + ease/2 + fold_number*fold_length - 0.5), 0])
-
-        # slit
-        # Stb Slit bottom
-        # ~ Stb = self.middle(np.array([0,0]),V)
-        # ~ #Stt Slit top
-        # ~ Stt = Stb + [0,Slit_length]
-
-        # ~ if fold_number >= 1:
-        # ~ f1 = np.array([0,0])+[0.5,0]
-        # ~ self.Sleeve_points_dic['f1']=f1
-        # ~ if fold_number >= 2:
-        # ~ f2 = self.middle(np.array([0,0]),Stb)
-        # ~ self.Sleeve_points_dic['f2']=f2
-        # ~ if fold_number >= 3:
-        # ~ f3 = self.middle(V,Stb)
-        # ~ self.Sleeve_points_dic['f3']=f3
-
-        # ~ self.Sleeve_segments = [[Stt,Stb],[f1,f1-[1,0]],[f2,f2-[1,0]],[f3,f3+[1,0]]]
-
-        # draw method
-        # ~ for seg in self.Sleeve_segments:
-        # ~ self.segment(seg[0],seg[1],ax,{'color':'0.1','linestyle':'solid'})

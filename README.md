@@ -66,6 +66,6 @@ The result looks like
 ![Result](./docs/samplePatterns/Gilewska_Basic_Bodice_W36G_FullSize.svg)
 
 ## Documentation <a class="anchor" id="documentation"></a>
-for more informations on the use of the library see the <a target="_blank" href="./docs/OpenPattern_D.md">French</a> Documentation.
+for more informations on the use of the library see the <a target="_blank" href="./fdocs/OpenPattern_D.md">French</a> Documentation.
 
 typical samples of scripts and patterns can be found in the sampleScripts and samplePatterns section in the docs.

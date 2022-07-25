@@ -137,8 +137,8 @@ class Pattern:
         :param    dic: 'front' or back' dictionnary from which to extrac the point
 
 
-        :returns: the chosen point or the list of coordinates of a curve
-        :rtype: Point or list
+        :return the chosen point or the list of coordinates of a curve
+        :rtype Point or list
         """
         if dic == "front":
             return self.Front_dic[pname]
@@ -197,7 +197,7 @@ class Pattern:
 
         :param    pname: name of json file as str
 
-         :returns: a dictionnary of size measurments
+        :return a dictionnary of size measurements
         :rtype: dic
         """
 
@@ -346,8 +346,8 @@ class Pattern:
         :param    B: point given as Point or array([x,y])
 
 
-        :returns: distance
-        :rtype: float
+        :return distance
+        :rtype float
         """
 
         if isinstance(A, Point) and isinstance(B, Point):
@@ -366,8 +366,8 @@ class Pattern:
         :param    D: Point or  array([x,y])
 
 
-        :returns: x,y coordinates
-        :rtype:    Point or tuple
+        :return x,y coordinates
+        :rtype    Point or tuple
         """
         if isinstance(A, Point) and isinstance(B, Point) and isinstance(C, Point):
             # coefficient de AB
@@ -410,7 +410,7 @@ class Pattern:
         :param    C: Point or  array([x,y])
         :param    theta: angle in degrees
 
-        :returns: Point([x,y]) or    (x,y) tuple of coordinates
+        :return Point([x,y]) or    (x,y) tuple of coordinates
         """
 
         if isinstance(A, Point) and isinstance(B, Point) and isinstance(C, Point):
@@ -451,7 +451,7 @@ class Pattern:
         :param    A: Point or array([x,y])
         :param    B: Point or array([x,y])
 
-        :returns: x,y as an array
+        :return x,y as an array
         """
         if isinstance(A, Point) and isinstance(B, Point):
             return Point([0.5 * (A.x + B.x), 0.5 * (A.y + B.y)])
@@ -555,8 +555,8 @@ class Pattern:
         :param    d: offset distance in m
 
 
-        :returns:    olist list of [x,y] offset points positions
-        :rtype: list of [x, y] coordinates
+        :return    olist list of [x,y] offset points positions
+        :rtype list of [x, y] coordinates
         """
         plist = deepcopy(ilist)
         olist = []
@@ -695,12 +695,6 @@ class Pattern:
         designed primarily for sleeve holes
         but can do for any three point curve.
 
-        args:
-            point_list: list of three points
-
-        returns:
-            xs, ys: coordinates of clothoid curve points
-
         à adapter au différents types de courbures
         emmanchures, tour de col etc...
 
@@ -716,6 +710,12 @@ class Pattern:
         et faire une Transformation de sorte à ce que la convexité soit
         bien orientée
         puis revenir au point initial
+
+
+        :param: point_list: list of three points
+
+        :return    xs, ys: coordinates of clothoid curve points
+
         """
 
         if len(point_list) > 3:
@@ -941,7 +941,7 @@ class Pattern:
         :param    opening: float width of the dart
 
 
-        :returns:    dart1, dart2 points of the dart.
+        :return    dart1, dart2: points of the dart.
         :rtype: Points
         """
 
@@ -1104,8 +1104,8 @@ class Pattern:
         :param A: Point to mirror
         :param M: center of symetry
 
-        :returns: mirrored point
-        :rtype: Point
+        :return mirrored point
+        :rtype Point
         """
 
         # print(type(A.x),type(M.x))
@@ -1192,7 +1192,7 @@ class Pattern:
         :param    vertices_list: list of vertices list to be plotted as lines
 
 
-        :returns:    fig, ax
+        :return    fig, ax
         """
 
         ####################################################
@@ -1460,7 +1460,7 @@ class Pattern:
         dic={"Pattern": "My beautiful pattern"},
         save=False,
         fname=None,
-        info=False,
+        info=True,
         legends=True,
         paper="FullSize",
         scale_val=5,
@@ -1475,11 +1475,13 @@ class Pattern:
         :param    paper: paper size on which to save (for cuts)
         :param    scale_val: length of scale (in cm)
         :param    overlay: does the figure plot on an existing pattern
-        :param    PATH: path to the directory where the pattern is to be saved
-        :param    fmrt: file extension that is compatible with matplotlib pdf by default note that format will
-        always be pdf if you want the pattern to be cut in A4 or A3.
 
-        :returns:    fig, ax
+        file format must always be pdf if you want the pattern to be cut in A4 or A3.
+
+        :return fig:
+        :rtype matplotlib figure
+        :return ax:
+        :rtype matplotlib axis
         """
 
         dl, vl = self.generate_lists()
@@ -1498,6 +1500,8 @@ class Pattern:
         # 3 print specific drawings
         if legends:
             self.add_legends(self.ax)
+
+        self.add_scales(self.ax, val=scale_val)
 
         if save:
             self.add_scales(self.ax, scale_val)
@@ -1542,7 +1546,8 @@ class Pattern:
                 print("Nothing exists")
                 self.fig, self.ax = self.draw_pattern(dl, vl, [], None, None, overlay)
 
-    def set_grainline(self, A=Point([0, 0]), length=10, angle=np.pi / 2):
+    # def set_grainline(self, A=Point([0, 0]), length=10, angle=np.pi / 2.0):
+    def set_grainline(self, A=Point([0, 0]), length=10, angle=3.14159 / 2.0):
         """sets the droit-fil list porperty to be added to legends.
 
         :param A: origin of the segment

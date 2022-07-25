@@ -11,7 +11,7 @@ from OpenPattern.Points import *
 class Basic_Bodice(Pattern):
     """
     Class to calculate and draw a basic Bodice pattern.
-    For male its more a shirt than a Bodice.
+    For men it's traditionnally more a shirt than a Bodice.
     Inherits from Pattern
 
     Attributes
@@ -43,7 +43,7 @@ class Basic_Bodice(Pattern):
         style="Gilewska",
         age=99,
         ease=8,
-        hip=True,
+        hip=False,
         Back_Front_space=4,
         **kwargs
     ):
@@ -52,13 +52,13 @@ class Basic_Bodice(Pattern):
         launches the calculation of bodice and sleeve
         saves measurements performed like armscye depth in the json measurements file for further processing in other classes
 
-        Args:
-                pname: size measurements
-                gender: ..
-                style: style to be used for drafting
-                age: used if for a child and style = Chiappetta.
-                ease: ease in cm; used in Donnanno patterns
-                hip: True/False use to decide for men whether to draw a fullbodice
+
+        :param  pname: size measurements
+        :param  gender: ..
+        :param  style: style to be used for drafting
+        :param  age: used if for a child and style = Chiappetta.
+        :param  ease: ease in cm; used in Donnanno patterns
+        :param  hip: True/False use to decide for men whether to draw a fullbodice
         """
         Pattern.__init__(self, pname, gender, **kwargs)
 
@@ -103,7 +103,7 @@ class Basic_Bodice(Pattern):
         elif self.style == "Chiappetta":
             print("style Chiappetta selected")
             if age != 99:
-                self.chiappetta_basic_bodice(self.age, d_FB=Back_Front_space)
+                self.chiappetta_basic_bodice(self.age, d_FB=self.Back_Front_space)
             else:
                 self.chiappetta_basic_bodice_m()
                 self.chiappetta_basic_sleeve_m()
@@ -125,14 +125,16 @@ class Basic_Bodice(Pattern):
     ):
         """Draws Basic Bodice with legends and save it if asked for
 
-        Args:
-                dic: dictionnary of informations to be printed
-                save: if true save to file
-                fname: filename
-                paper: paper size on which to save (for cuts)
+        :param dic: dictionnary of informations to be printed
+        :param save: if true save to file
+        :param fname: filename
+        :param paper: paper size on which to save (for cuts)
 
-        Returns:
-                fig, ax
+
+        :return fig
+        :rtype matplotlib.figure
+        :return ax
+        :rtype matplotlib.axis
         """
 
         dl, vl = self.generate_lists()
@@ -153,7 +155,8 @@ class Basic_Bodice(Pattern):
                 fname = "Basic_Bodice"
 
             of = (
-                "../patterns/"
+                self.figPATH
+                + "/"
                 + self.style
                 + "_"
                 + fname
@@ -172,13 +175,15 @@ class Basic_Bodice(Pattern):
     def draw_sleeves(self, save=False, fname=None, paper="FullSize"):
         """draws the basic sleeve
 
-        Args:
-                save: if true save to file
-                fname: filename
-                paper: paper size on which to save (for cuts)
 
-        Returns:
-                fig, ax
+        :param save: if true save to file
+        :param fname: filename
+        :param paper: paper size on which to save (for cuts)
+
+        :return fig
+        :rtype matplotlib figure
+        :return ax
+        :rtype matplotlib axis
         """
 
         # 1 draw
@@ -228,6 +233,8 @@ class Basic_Bodice(Pattern):
         # 3 add Heading
         # ax = self.print_info(ax, {"Sleeve length": round(spd['A'].y,1), "Sleeve width": round(width,1)})
 
+        self.add_scales(self.ax)
+
         if save:
             if fname:
                 pass
@@ -235,7 +242,8 @@ class Basic_Bodice(Pattern):
                 fname = "Basic_Sleeve"
 
             of = (
-                "../patterns/"
+                self.figPATH
+                + "/"
                 + self.style
                 + "_"
                 + fname
@@ -296,8 +304,8 @@ class Basic_Bodice(Pattern):
                 TODO: I haven't had time to normalize the point labelling
                 so it can not be mixed with Chiappetta or Gilewsa
 
-        Args:
-                ease: ease to be applied.
+
+        :param bust_ease: ease to be applied.
 
         """
 
@@ -510,8 +518,8 @@ class Basic_Bodice(Pattern):
     def Donnanno_basic_fitted_sleeve(self, straight=True):
         """Fitted seeve for Donnano bodice without dart
 
-        params: straight: if true draws a straight sleeve
-                          if false draws a waist fitted sleeve (NOT DONE YET)
+        param: straight: if true draws a straight sleeve
+         if false draws a waist fitted sleeve (NOT DONE YET)
 
         """
 
@@ -624,8 +632,7 @@ class Basic_Bodice(Pattern):
         NOT READY THERE ARE PROBLEMS FOR BUST CALCULATIONS
         AND DONNANNO MAKES ARMHOLES THAT ARE VERY FLAT
 
-        Args:
-                ease: ease to be applied.
+        :param bust_ease: ease to be applied.
         """
 
         #################################################
@@ -883,9 +890,9 @@ class Basic_Bodice(Pattern):
                 differences arise with age and sex on the shoulder angle and the use
                 of carrure devant for the girls.
 
-        Args:
-                age: age of the child, the pattern drafting depends on the age
-                d_FB: distance between front and back patterns on the draft
+
+        :param age: age of the child, the pattern drafting depends on the age
+        :param d_FB: distance between front and back patterns on the draft
 
         """
 
@@ -1054,7 +1061,7 @@ class Basic_Bodice(Pattern):
         Chiappetta has it (as always)!
         front to the left, back to the right as always in Chiappetta
 
-        params: BF_space: distance between front and back 1/2 bodices
+        :param BF_space: distance between front and back 1/2 bodices
 
         """
 
@@ -1365,10 +1372,22 @@ class Basic_Bodice(Pattern):
     def chiappetta_armhole_sleeve_m(
         self, plot=False, ease=3, folds=1, fold_width=1, fente=11, wrist=5
     ):
-        """Sleeve drawn from armhole curves
-        Often used for shirts
-        a bit complex because we need
+        """Sleeve drawn from armhole curves using the method for men
+        works for women too
+
+        This sleeve patter is often used for shirts
+
+        Its drafting is a  bit complex because we need
         some rotations and translations but normally it works
+
+        :param plot: whether to plot the sleeve. Do not remember why I added this option
+        :param ease: ease at waist for cuff and folds
+        :param folds: number of folds on the waist
+        :param fold_width: with of each fold
+        :param fente: waist cut length (frenglish)
+        :param wrist: ??
+
+
         """
 
         bc = []
@@ -1736,8 +1755,8 @@ class Basic_Bodice(Pattern):
         """Calculation of bodice with no dart
                 for Men using Gilewska technique
 
-        Args:
-                BF_space: distance between front and back patterns on the draft
+
+        :param BF_space: distance between front and back patterns on the draft
         """
 
         #################################################
@@ -2237,8 +2256,8 @@ class Basic_Bodice(Pattern):
 
         CP: Control Point
 
-        Args:
-                sep: distance between front and back patterns on draft
+
+        :param sep: distance between front and back patterns on draft
         """
 
         ########################################

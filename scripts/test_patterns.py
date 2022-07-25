@@ -17,14 +17,21 @@ import numpy as np
 # p = OP.Basic_Skirt(
 #     pname="W6C",
 #     style="Chiappetta",
+# dbPATH="../measurements/",
+# figPATH="../samplePatterns/",
+# frmt="svg",
+# )
+# p.draw(save=True, paper="A4", fname="skirt")
+
+# p = OP.Culotte(
+#     pname="sophie",
+#     style="Donnanno",
+#     ease=1,
 #     dbPATH="../measurements/",
-#     figPATH="../docs/samplePatterns/",
+#     figPATH="../samplePatterns/",
 #     frmt="svg",
 # )
-# p.draw()
-
-# p = OP.Culotte(pname="sophie", style="Donnanno", ease=1)
-# p.draw(save=True, paper="A4", fname="culotte")
+# p.draw(save=True, fname="culotte")
 
 
 ##################
@@ -46,13 +53,29 @@ import numpy as np
 # p.draw_bodice()
 # p.draw_sleeves()
 
-p = OP.Basic_Bodice(
-    pname="Esther", gender="w", style="Chiappetta", age=99, dbPATH="../measurements/"
-)
-p.chiappetta_armhole_sleeve_m()
+##############################
+# Esther shirt dress:
+##############################
 
-p.draw_bodice()
-p.draw_sleeves()
+p = OP.Shirt(
+    pname="Esther",
+    gender="w",
+    style="Chiappetta",
+    age=16,
+    dbPATH="../measurements/",
+    figPATH="../samplePatterns/",
+    overlay=True,
+    hip=True,
+    lower_length=60 - 12,  # waist-knee depth
+)
+
+p.basic_shirt_bodice()
+p.chiappetta_armhole_sleeve_m()
+#
+p.draw({"Pattern": "Robe-chemise"}, paper="A4", save=True)
+p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
+# p.draw_bodice()
+# p.draw_sleeves()
 
 # p.add_bust_dart()
 # p.add_waist_dart()
@@ -60,7 +83,9 @@ p.draw_sleeves()
 # p.draw_sleeves()
 
 # Men
-# p = OP.Basic_Bodice(pname="Me", gender="m", style="Chiappetta")
+# p = OP.Basic_Bodice(
+#     pname="Me", gender="m", style="Chiappetta", dbPATH="../measurements/"
+# )
 # p.draw_bodice()
 # p = OP.Basic_Bodice(pname="M40G", gender="m", style="Gilewska")
 # p.draw_bodice()

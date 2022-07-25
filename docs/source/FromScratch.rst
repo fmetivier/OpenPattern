@@ -4,19 +4,19 @@ OpenPattern from scratch
 Draw me a square
 ~~~~~~~~~~~~~~~~
 
-The following script shows how to draw a square (of fabrics :=)). them
-operations consist of
+The following script shows how to draw a square (of fabrics :=)). the
+operations consist in
 
 1. creating the pattern by creating an instance of the class
    pattern,
 
-2. the creation of four points,
+2. creating four points,
 
-3. adding these stitches to the patterns,
+3. adding these points to the patterns,
 
-4. the definition of the order in which the lines must be made,
+4. defining the order in which the lines must be drawn,
 
-5. finally the graphical representation.
+5. finally making the graphical representation.
 
 .. code:: python
 
@@ -61,19 +61,19 @@ And the result looks like
 
 The pattern here consists of a gray square delimited by four
 segments whose four vertices are marked by a red dot with
-her name. The grid, which gives the scale and allows the connections,
+its name. The grid, which gives the scale and allows the connections,
 is 1 cm when the pattern is printed in real size. The masterpiece is
 finally surrounded by a 5cm band on all sides. You will notice that a
 scale appears in this band. It is automatically added with
 the option ``save = True`` ie when your pattern deserves
 impression. This will allow you to quickly verify that your pattern
-is well to scale [3]_. You will therefore have understood the basic unit
-of OpenPattern is the centimeter (oh why?).
+is well to scale. You will therefore have understood the basic unit
+of OpenPattern is the centimeter (oh my god why?).
 
 You will notice in line (27) that the drawing order of the polygon is defined
 A-B-C-D-A. We could have put A-D-C-B-A for the same result as
-first sight. We are talking here about a closed polygon. the order indicated goes
-allow the graphics library to draw the segments in the order you
+first sight. We are talking here about a closed polygon. the order indicated
+asks the graphics library to draw the segments in the order you
 wish. We will see later, as the shape of the pattern and therefore of
 its outline becomes more complex that this order is important and conditions the
 way we may add a dart or draw a curve.
@@ -138,7 +138,7 @@ after the definition of the points of the segment impacted by this addition.
 As we see here, the creation of the dart is done in two steps. We
 first define the position of the vertex of the dart (line 21) then we call the
 ``add_dart`` function by passing four arguments (line 22; there are
-a more that we will see later) the vertex, the two points
+more that we will see later) the vertex, the two points
 defining the segment to be pinched and the width of the pinch. the
 function returns the position of the two points which, together with the vertex,
 will constitute the dart on the pattern. All that remains then is to
@@ -172,7 +172,8 @@ before the ``draw`` command).
 
 
 It should be noted  that, at present, an assembly notch is placed
-as a comment consisting of V in series (beurk).
+as a comment consisting of V in series
+(beurk it's ugly and I really apologize for this hack).
 
 French curves
 ~~~~~~~~~~~~~
@@ -293,7 +294,7 @@ Use sub-patterns
 
 It is common to create a pattern from several bases bust and pants for overalls,
 bust and skirt for some dresses, or even bust, sleeve, collar and cuff for a
-shirt [4]_.
+shirt.
 
 the ``pattern`` class can contain other ``pattern`` which are
 saved in the ``pattern_list`` pattern list. We're going
@@ -488,13 +489,13 @@ The measurements are recorded in an sqlite3 database accessed by the
 ``pattern`` class. When creating the master object, you can
 call up one of the measurements saved in the database. Default class
 is instantiated by loading the female measurements of 38 given by
-`Gilewska <#Gilewska1>`__. These measurements are loaded into a
-dictionary named ``m``.
+Gilewska. These measurements are loaded into a
+dictionary named ``m`` (What an imagination !).
 
 Now that you know how to do everything, the easiest way is to make a
 real skirt. We are therefore going to trace the pattern of a half-skirt before a
-8-year-old girl using `Jacqueline's method
-Chiappetta <#Chiappetta1999>`.
+8-year-old girl using
+Chiappetta's method.
 
 .. code:: python
 
@@ -536,7 +537,7 @@ Chiappetta <#Chiappetta1999>`.
    G = A + OP.Point([mfs.m["tour_taille"]/4  + 2, 0])
    H = B + OP.Point([-mfs.m["tour_taille"]/4  - 2, 0])
 
-   # we need two control points for the french curve because we need at lease three
+   # we need two control points for the french curve because we need at least three
    # add one point between A1 and B1
    C1 = mfs.middle(A1, B1)
    # add a second just upp by one cm to control the tangents
@@ -594,39 +595,41 @@ Chiappetta <#Chiappetta1999>`.
 
 
 A few comments are in order. In general, and even if
-many variations exist the clothing patterns are presented
-with a frontal part and a dorsal part. Our skirt will therefore have a
-pattern for the front (front) and the back (back). This explains the
+many variations exist, the clothing patterns are presented
+with a frontal part  and a dorsal part.
+Our skirt will therefore have a
+pattern for the front and the back. This explains the
 presence of two dictionaries and two lists of points for the
 polygon of each of the elements of the pattern (lines 55 to 72).
 
 Note how the measurements are called
-``mfs.m["knee_height_height"]`` for example which returns the height
-knee size corresponding to the size called when creating the
+``mfs.m["hauteur_taille_genou"]`` for example which returns the length between waist and knees
+corresponding to the size called when creating the
 ``mfs`` pattern. The list of measures available according to the sizes
-and sources is discussed in more detail in §\`4.1 <#par:sizes>`__
+and sources is discussed in more detail in the Size section.
 
 A garment is designed with an ease that must be given in
 beginning of drawing. Here we take an ease of 8cm for the whole of the
-boss (17). The toe depth often also depends on the size and
+pattern (17). The toe depth often also depends on the size and
 the age of the model. For 8 years at Chiappetta [@Chiappetta1999] we have
 a 7.25 cm clamp (16). The lines from 19 to 35 make it possible to draw
 the main points of the outline of the skirt. Lines 39 and 41
 allow you to create two points that will not appear but are
-important. these are control points for drawing the curve of the
-side. Indeed the curve goes from the waist line to the hip line.
+important. These are control points for drawing the skirt  side curve.
+Indeed the curve goes from the waist line to the hip line.
 Chiappetta doesn't bother to say how to do it because with a
-pistol it is obvious (try to see and you will understand). By
-cons for a spline and in general in computer science you need everything
-explain to the program which only does what it is told to do (this
-is not a neural network!). We must therefore define the midpoint
+*pistolet*  it is obvious (try to see and you will understand). By
+contrast for a spline and in general in computer science you need to explain everything
+to the program which only does what it is told to do.
+We must therefore define the midpoint
 from the hip line (39) then a point located 1 cm above which
 will allow a vertical fall of the curve at the point of the hips (41). These
 two points added to the point of size H or G are enough to draw a
 curve for the half front and half back (43-46). The sequel does not pose
-no problem now: added pliers, saved points
+any further problem now: added pliers, saved points
 and positions that define each half-skirt polygon, adding the
-comments and finally drawing! This pattern can be printed in size
-real and directly used for a straight skirt of an 8 year old girl.
-Just missing the belt that you could achieve very easily
-now (we'll come to that later don't worry)!
+comments and finally drawing! This pattern can be printed in real size
+and directly used for a straight skirt of an 8 year old girl.
+
+Only the belt is missing but that you can achieve very easily
+now !

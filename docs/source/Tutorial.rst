@@ -87,6 +87,13 @@ Donnanno are actually simple shirts without the sleeves. Sleeves
 precisely are part of the body class because they are calculated at
 from the armhole depths measured on the bodysuits.
 
+.. warning::
+
+  Note the 1cm squares on the figure. You should always check on a print
+  that the scale is ok because more often then not printers automatically adjust the size of print (you do not want your nice 40 to become a small 36 do you ?).
+  Furthermore, at the request from a friend, I added the scale bar
+  (to be sure that everything is fine !).
+
 Skirt
 ~~~~~
 

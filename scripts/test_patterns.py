@@ -10,10 +10,32 @@ import OpenPattern as OP
 import numpy as np
 
 
+####################################################
+#
+# check the database
+#
+#####################################################
+
+p = OP.Pattern(pname="W38G", dbPATH="../measurements/")
+for key, val in p.m.items():
+    print(key, val)
+
+####################################################
+#
+# load measurements
+#
+#####################################################
+
 # p = OP.Pattern(dbPATH="../measurements/")
 # p.load_measurements("../measurements/measurement_sheet_Esther.csv")
 
-# # Skirts
+####################################################
+#
+# Skirt
+#
+#####################################################
+
+
 # p = OP.Basic_Skirt(
 #     pname="W6C",
 #     style="Chiappetta",
@@ -22,6 +44,12 @@ import numpy as np
 # frmt="svg",
 # )
 # p.draw(save=True, paper="A4", fname="skirt")
+
+####################################################
+#
+# Culotte
+#
+#####################################################
 
 # p = OP.Culotte(
 #     pname="sophie",
@@ -34,11 +62,15 @@ import numpy as np
 # p.draw(save=True, fname="culotte")
 
 
-##################
-
 # w = OP.Waistband(pname="sophie", ease=2)
 # w.draw(save=True, paper="A4", fname="culotte_waist")
 
+
+####################################################
+#
+# Bodice
+#
+#####################################################
 
 # Women
 # p = OP.Basic_Bodice(
@@ -54,26 +86,28 @@ import numpy as np
 # p.draw_sleeves()
 
 ##############################
+#
 # Esther shirt dress:
+#
 ##############################
 
-p = OP.Shirt(
-    pname="Esther",
-    gender="w",
-    style="Chiappetta",
-    age=16,
-    dbPATH="../measurements/",
-    figPATH="../samplePatterns/",
-    overlay=True,
-    hip=True,
-    lower_length=60 - 12,  # waist-knee depth
-)
-
-p.basic_shirt_bodice()
-p.chiappetta_armhole_sleeve_m()
+# p = OP.Shirt(
+#     pname="Esther",
+#     gender="w",
+#     style="Chiappetta",
+#     age=16,
+#     dbPATH="../measurements/",
+#     figPATH="../samplePatterns/",
+#     overlay=True,
+#     hip=True,
+#     lower_length=60 - 12,  # waist-knee depth
+# )
 #
-p.draw({"Pattern": "Robe-chemise"}, paper="A4", save=True)
-p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
+# p.basic_shirt_bodice()
+# p.chiappetta_armhole_sleeve_m()
+# #
+# p.draw({"Pattern": "Robe-chemise"}, paper="A4", save=True)
+# p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
 # p.draw_bodice()
 # p.draw_sleeves()
 
@@ -82,7 +116,12 @@ p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
 # p.draw({"Pattern":"Bodice with darts"},save=True)
 # p.draw_sleeves()
 
-# Men
+####################################################
+#
+# Men Bodice
+#
+#####################################################
+
 # p = OP.Basic_Bodice(
 #     pname="Me", gender="m", style="Chiappetta", dbPATH="../measurements/"
 # )
@@ -114,6 +153,12 @@ p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
 #
 
 
+####################################################
+#
+# Hospital Gown
+#
+#####################################################
+
 # p = OP.Hospital_Gown()
 # p.draw_gown()
 # p.draw_sleeves()
@@ -124,6 +169,12 @@ p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
 # p.save_measurements()
 # p.draw_sleeves()
 
+####################################################
+#
+# Cuffs, collars and plackets
+#
+#####################################################
+
 # c = OP.Cuffs(pname = 'M44G', gender = 'm', style = 'Gilewska', cuff_style = 'Simple')
 # c.draw_cuffs(save=True)
 
@@ -133,12 +184,12 @@ p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
 # p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
 # p.draw_placket()
 
-# waist_fit_dic={'sides': 1.5, 'center_front': 0.5, 'front_left': 0, 'front_right': 0, 'center_back': 0, 'back':0}
-# pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno', darts=False, wfd = waist_fit_dic)
-# pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
-# #
-# b = OP.Bermudas(pname="sophie", gender='w' ,wfd = waist_fit_dic)
-# b.draw()
+
+####################################################
+#
+# Pans
+#
+#####################################################
 
 
 # Grégoire's pans
@@ -160,10 +211,17 @@ p.draw_sleeves(paper="A4", fname="manche_esther", save=True)
 # b.draw()
 
 
+# waist_fit_dic={'sides': 1.5, 'center_front': 0.5, 'front_left': 0, 'front_right': 0, 'center_back': 0, 'back':0}
+# pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno', darts=False, wfd = waist_fit_dic)
+# pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
+# #
+# b = OP.Bermudas(pname="sophie", gender='w' ,wfd = waist_fit_dic)
+# b.draw()
+
 # bp = OP.Pants_block(pname="sophie",gender="w", overlay=False)
 #
 # bp = OP.Pants_block(pname="M46D",gender="m", overlay=False, save=True, paper='A4')
 
 # pans = OP.Flared_pants( pname="sophie", gender='w')
 
-plt.show()
+# plt.show()

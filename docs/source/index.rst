@@ -3,8 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to OpenPattern's documentation!
-=======================================
+Welcome to OpenPattern's documentation, a python library for sewing geeks !
+===========================================================================
+
+
 
 .. note::
 
@@ -22,17 +24,18 @@ What is it ?
 
 OpenPattern is a python library consisting of a set of classes
 designed to draft 1:1 scale bespoke sewing patterns and save them as pdf (or matplotlib compatible)
-files for printing of further processing.
-
-Printing can be performed at fullscale on a tracer but OpenPattern can also cut the pattern in as many pieces as needed in order to print them on an A4 printer at home.
+files for printing of further processing. Printing can be performed at fullscale on a tracer but OpenPattern can also cut the pattern in as many pieces as needed in order to print them on an A4 printer at home.
 
 OpenPattern can be used to draft patterns from scratch but also
 includes a set of predefined patterns from basics (or bases in French)
 such as bodices  to more elaborate patterns such as shirts.
+
 The patterns are drafted following instructions from three
-main stylists: <a href="https://lespressesdumidi.com/content/18-jacqueline-chiappetta">Jacqueline Chiappetta</a>,
-<a href="https://www.editions-eyrolles.com/Auteur/86662/teresa-gilewska">Theresa Gilewska</a>
-and <a href="https://www.euromodeschool.it/index.html">Antonnio Donnano </a>.
+main stylists: Jacqueline Chiappetta [1]_, Theresa Gilewska,
+and Antonnio Donnano.
+
+
+
 Sizes are stored in a ``sqlite3`` database. By default they
 include a series of standard (French and Italian) sizes for Women,
 Men, Girls and Boys given by these authors.
@@ -40,7 +43,9 @@ Men, Girls and Boys given by these authors.
 Why ?
 -----
 
-I developped OpenPattern to draft bespoke patterns for my family.
+I developped OpenPattern to draft bespoke patterns for my family. I wanted a  programmable, reusable, and scalable way of doing things as
+I rapidly get fed up with trying to precisely position  points and curves on a figure using classical GUI base drawing softwares.
+
 In the end the results look like This
 
 .. code-block:: python
@@ -106,3 +111,9 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. [1]
+   Ces livres peuvent apparaitre un peu peu ringards de prime abord. Ne
+   vous y fiez pas ! ok le dessin est vieillot et les modèles ultra
+   classiques mais ils sont remarquables par la clareté des explications
+   et leur reproductibilité. Ce sont mes préférés.

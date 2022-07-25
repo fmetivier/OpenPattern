@@ -1,22 +1,23 @@
 Participate
------------
+===========
 
-Ajouter des patrons
-~~~~~~~~~~~~~~~~~~~
+Add patterns
+------------
 
-La façon la plus simple de participer est d’intégrer des patrons dans la
-librairie. Il suffit de vous inspirer de la façon dont sont créés des
-patrons existant pour savoir comment écrire le code. Il est important de
-référencer l’origine du patron (s’agit-il d’un patron publié ou est-ce
-votre création). Il faut ensuite vérifier que votre patron est
-compatible avec le mesures existantes.
+The easiest way to participate is to embed patterns in the
+library. Just take inspiration from how
+existing patterns where drafted to write the code. It's important to
+reference the origin of the pattern (is it a published pattern or is it
+your creation). You must then check that your masterpiece is
+compatible with existing measures (or add new ones).
 
-Ajouter des fonctionnalités
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Plus compliqué. Il reste des dizaines de choses à faire comme par
-exemple, pour celles et ceux qui le souhaite, intégrer une option
-permettant le tracé des marges de couture. Je ne le fais pas d’abord par
-choix — je les trace directement sur le tissus après avoir tracé le
-patron —, mais il se trouve que cela simplifie pas mal l’écriture car
-les marges ne sont pas une simple homothétie du patron fini.
+Add Functionalities
+-------------------
+
+More complicated. There are dozens of things left to do like
+example, for those who wish, integrate an option
+allowing the drawing of the seam allowances. I don't do it first by
+choice — I trace them directly on the fabric after tracing the
+pattern — but it happens to make writing quite a bit easier because
+the margins are not a simple dilation of the finished pattern.

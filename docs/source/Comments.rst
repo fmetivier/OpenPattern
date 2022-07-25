@@ -2,7 +2,7 @@ Free comments
 -------------
 
 .. note::
-  For me mostly so in *french*
+  For me mostly so in *French* for now... 
 
 Ligne d’épaule
 ~~~~~~~~~~~~~~
@@ -94,11 +94,9 @@ Styles availabel from Gilewska men : Simple and French
 
 |Cuff styles| |Cuff styles|
 
-Pantalons
-~~~~~~~~~
 
 Pants Block
-^^^^^^^^^^^
+~~~~~~~~~~~
 
 Incohérence du modèle chez Donnanno. La mesure de la ceinture est
 

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to OpenPattern's documentation, a python library for sewing geeks !
+Welcome to OpenPattern's documentation: a python library for sewing geeks !
 ===========================================================================
 
 
@@ -31,7 +31,7 @@ includes a set of predefined patterns from basics (or bases in French)
 such as bodices  to more elaborate patterns such as shirts.
 
 The patterns are drafted following instructions from three
-main stylists: Jacqueline Chiappetta [1]_, Theresa Gilewska,
+main stylists: Jacqueline Chiappetta, Theresa Gilewska,
 and Antonnio Donnano.
 
 
@@ -72,7 +72,7 @@ In the end the results look like This
 
 .. image:: ../../samplePatterns/Donnanno_culotte_sophie_FullSize.svg
 
-
+If you like the result then give it a try :=)
 
 
 Content
@@ -111,9 +111,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. [1]
-   Ces livres peuvent apparaitre un peu peu ringards de prime abord. Ne
-   vous y fiez pas ! ok le dessin est vieillot et les modèles ultra
-   classiques mais ils sont remarquables par la clareté des explications
-   et leur reproductibilité. Ce sont mes préférés.

@@ -690,7 +690,7 @@ class Pattern:
 
         return xc, yc, sm, bm, xm, ym
 
-    def True_pistolet(self, point_list):
+    def true_pistolet(self, point_list):
         """Fits a TRUE 100pt clothoid to three points
         designed primarily for sleeve holes
         but can do for any three point curve.

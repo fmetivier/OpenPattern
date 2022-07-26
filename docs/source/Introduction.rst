@@ -30,17 +30,14 @@ geometric 3D (the finished garment after sewing).
 
 I used the works of four main authors. In
 first place I used the four volumes of the series *The model of
-fashion* by `Teresa Gilewska <#Gilewska1>`__ for women and for men.
+fashion* by *Teresa Gilewska* for women and for men.
 I also used the first two volumes of the works of
 Antonnio Donnano's *Fashion paterning techniques* collection
-`Donnanno <#Donnanno2005>`__ for women and men also. For
+*Donnanno* for women and men also. For
 children and men I used volumes 3 and 4 of *The flat cut* of
-`Jacqueline Chiappetta <#Chiappetta1998>`__\ [1]_. Finally for men
-I also made incidental use of the book by `Claire
-Wargnier <#Wargnier2012>`__ on *male clothing*. These works
-are all worded similarly. They expose, by proceeding step by step,
-the empirical techniques to draw bodysuits, trousers,
-shirts etc
+*Jacqueline Chiappetta*. Finally for men
+I also made incidental use of the book by *Claire Wargnier* on *Male clothing* (See the references section for a complete bibliography).
+These works are all worded similarly. They expose, by proceeding step by step, the empirical techniques to draw bodysuits, trousers, shirts etc
 
 
 The creation of a pattern can be broken down into a series of instructions such as
@@ -54,11 +51,11 @@ The creation of a pattern can be broken down into a series of instructions such 
 OpenPattern takes these techniques almost literally and their
 principle of construction by translating them into the form of
 instructions in python and adapting them when it turns out
-necessary [2]_.
+necessary.
 
 Unlike paid or free patronage software, the
 choice here is to create a pattern by means of a script, i.e.
 of a series of instructions, and not to draw it with an interface
 graphic users. What may seem daunting at first glance
 actually offers all the flexibility of a programming language like
-python. I will be very happy if you are convinced of it for its use.
+python.

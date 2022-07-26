@@ -360,7 +360,7 @@ class Basic_Bodice(Pattern):
         controle_2 = Point([N.x + 1, N.y + 1])
         points_col_dos = [D, controle_1, controle_2, P]
         dbcol, col_dos = self.pistolet(points_col_dos, 3, tot=True)
-        # dbcol, col_dos = self.True_pistolet(points_col_dos)
+        # dbcol, col_dos = self.true_pistolet(points_col_dos)
 
         #################################################
         # Shoulder
@@ -385,7 +385,7 @@ class Basic_Bodice(Pattern):
             [A.x + U.x * np.cos(-np.pi / 4), A.y + U.x * np.sin(-np.pi / 4)]
         )  ### CHECK !
         dfcol, col_devant = self.pistolet([U1, U2, U], 2, tot=True)
-        # dfcol, col_devant = self.True_pistolet([U1, U2, U])
+        # dfcol, col_devant = self.true_pistolet([U1, U2, U])
 
         Z = Point([J1.x, J1.y - 5])
         a = self.segment_angle(U, Z)
@@ -410,7 +410,7 @@ class Basic_Bodice(Pattern):
         self.m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet(
             [P1, L1, controle, Q], 2, tot=True
         )
-        # self.m["longueur_emmanchure_dos"], emmanchure_dos = self.True_pistolet(
+        # self.m["longueur_emmanchure_dos"], emmanchure_dos = self.true_pistolet(
         #     [P1, L1, Q]
         # )
         print("Longueur emmanchure dos: %4.0f" % (self.m["longueur_emmanchure_dos"]))
@@ -422,7 +422,7 @@ class Basic_Bodice(Pattern):
         self.m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet(
             [Z2, J, controle, Q], 2, tot=True
         )
-        # self.m["longueur_emmanchure_devant"], emmanchure_devant = self.True_pistolet(
+        # self.m["longueur_emmanchure_devant"], emmanchure_devant = self.true_pistolet(
         #     [Z2, J, Q]
         # )
         print(
@@ -730,7 +730,7 @@ class Basic_Bodice(Pattern):
         controle = H1 + [-bd, bd]
 
         # self.m["longueur_emmanchure_dos"], emmanchure_dos = self.pistolet([P1, L1, controle, Q], 2, tot=True)
-        self.m["longueur_emmanchure_dos"], emmanchure_dos = self.True_pistolet(
+        self.m["longueur_emmanchure_dos"], emmanchure_dos = self.true_pistolet(
             [P1, L1, Q]
         )
         print("Longueur emmanchure dos: %4.0f" % (self.m["longueur_emmanchure_dos"]))
@@ -740,7 +740,7 @@ class Basic_Bodice(Pattern):
         controle = I1 + [fd, fd]
 
         # self.m["longueur_emmanchure_devant"], emmanchure_devant = self.pistolet([Z2, J, controle, Q], 2, tot=True)
-        self.m["longueur_emmanchure_devant"], emmanchure_devant = self.True_pistolet(
+        self.m["longueur_emmanchure_devant"], emmanchure_devant = self.true_pistolet(
             [Z2, J, Q]
         )
         print(
@@ -942,7 +942,7 @@ class Basic_Bodice(Pattern):
             (
                 self.m["longueur_emmanchure_dos"],
                 self.back_sleeve_curve,
-            ) = self.True_pistolet([ShB1, BB1, SlB1])
+            ) = self.true_pistolet([ShB1, BB1, SlB1])
 
             # Front bodice
             WF = Point([0, 0])
@@ -994,7 +994,7 @@ class Basic_Bodice(Pattern):
             (
                 self.m["longueur_emmanchure_devant"],
                 self.front_sleeve_curve,
-            ) = self.True_pistolet(sleeve_front_points)
+            ) = self.true_pistolet(sleeve_front_points)
 
             front_points_keys = [
                 "WF",
@@ -1288,7 +1288,7 @@ class Basic_Bodice(Pattern):
         # ClBF1 = Point([BF1.x,SlF1.y]) + Point([2*np.cos(np.pi/4),2*np.sin(np.pi/4)])
 
         # self.m["longueur_emmanchure_dos"], self.back_sleeve_curve =  self.pistolet([ShB1,ClShB,BB1,ClBB,SlB1], 3, tot=True) #b-splines
-        self.m["longueur_emmanchure_dos"], self.back_sleeve_curve = self.True_pistolet(
+        self.m["longueur_emmanchure_dos"], self.back_sleeve_curve = self.true_pistolet(
             [ShB1, BB1, SlB1]
         )  # clothoids
         print("emmanchure dos", self.m["longueur_emmanchure_dos"])
@@ -1296,7 +1296,7 @@ class Basic_Bodice(Pattern):
         (
             self.m["longueur_emmanchure_devant"],
             self.front_sleeve_curve,
-        ) = self.True_pistolet([ShF1, BF1, SlF1])
+        ) = self.true_pistolet([ShF1, BF1, SlF1])
         print("emmanchure devant", self.m["longueur_emmanchure_devant"])
 
         # armhole depth
@@ -1861,10 +1861,10 @@ class Basic_Bodice(Pattern):
 
         # if CPSlB.x < SlB1.x:
         # 	# self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.pistolet([ShB1, BB1, CPSlB, SlB1], 2, tot=True)
-        # 	self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.True_pistolet([ShB1, BB1, SlB1])
+        # 	self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.true_pistolet([ShB1, BB1, SlB1])
         # else:
         # 	self.m["longueur_emmanchure_dos"], sleeve_back_points =  self.pistolet([ShB1, BB1, SlB1], 2, tot=True)
-        self.m["longueur_emmanchure_dos"], sleeve_back_points = self.True_pistolet(
+        self.m["longueur_emmanchure_dos"], sleeve_back_points = self.true_pistolet(
             [ShB1, BB1, SlB1]
         )
         print("Longueur emmanchure dos: %4.0f" % (self.m["longueur_emmanchure_dos"]))
@@ -1922,7 +1922,7 @@ class Basic_Bodice(Pattern):
         # ~ CPSlF3 = self.middle(BF1, ShF1) #point added to ensure correct tangents.
 
         # self.m["longueur_emmanchure_devant"], sleeve_front_points  =   self.pistolet( [ShF1, CPShF1, BF1,  CPSlF, CPSlF1, SlF1], 2, tot=True)
-        self.m["longueur_emmanchure_devant"], sleeve_front_points = self.True_pistolet(
+        self.m["longueur_emmanchure_devant"], sleeve_front_points = self.true_pistolet(
             [ShF1, BF1, SlF1]
         )
         print(
@@ -2387,14 +2387,14 @@ class Basic_Bodice(Pattern):
         # points_emmanchure_dos = [ShB1, BB1, CPSlB, SlB1]
         # dsb, sleeve_back_points = self.pistolet(points_emmanchure_dos, 2, tot=True)
         points_emmanchure_dos = [ShB1, BB1, SlB1]
-        dsb, sleeve_back_points = self.True_pistolet(points_emmanchure_dos)
+        dsb, sleeve_back_points = self.true_pistolet(points_emmanchure_dos)
         print("Longueur emmanchure dos: %4.0f" % (dsb))
         self.m["longueur_emmanchure_dos"] = dsb
 
         # points_emmanchure_devant = [ShF1, BF1, CPSlF, SlF1]
         # dsf, sleeve_front_points = self.pistolet(points_emmanchure_devant, 2, tot=True)
         points_emmanchure_devant = [ShF1, BF1, SlF1]
-        dsf, sleeve_front_points = self.True_pistolet(points_emmanchure_devant)
+        dsf, sleeve_front_points = self.true_pistolet(points_emmanchure_devant)
         print("Longueur emmanchure devant: %4.0f" % (dsf))
         self.m["longueur_emmanchure_devant"] = dsf
 

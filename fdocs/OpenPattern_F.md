@@ -2,10 +2,6 @@
 # OpenPattern
 **F. Métivier**
 
-<img src="/home/metivier/Nextcloud/Personnel/couture/Sewing/Daniel_bw.jpg" height="200">
-<img src="/home/metivier/Nextcloud/Personnel/couture/Sewing/Sophie_bw.jpg" height="200">
-<img src="/home/metivier/Nextcloud/Personnel/couture/Sewing/Greg_bw.jpg" height="200">
-
 ## Sommaire
 * [Introduction](##introduction)
   * [Ques aquo](###ques-aquo)
@@ -160,7 +156,7 @@ plt.show()
 C'est simple non ? On obtient alors la figure 1  enregistrée par defaut à l'échelle 1:1 dans
 un fichier pdf.
 <figure>
-<img src="./samplePatterns/Gilewska_myPattern_W36G_FullSize.svg">
+<img src="../samplePatterns/Gilewska_myPattern_W36G_FullSize.svg">
 <figurecaption> Figure 1: Basic bodice with darts.
 </figure>
 
@@ -204,7 +200,7 @@ p.draw()
 ```
 
 <figure>
-<img src="./samplePatterns/Chiappetta_myPattern_W6C_FullSize.svg">
+<img src="../samplePatterns/Chiappetta_myPattern_W6C_FullSize.svg">
 <figurecaption> Figure 2: jupe fuseau (ou jupe de base) d'une fille de 6 ans. Modèle de J. Chiappetta.
 </figure>
 
@@ -252,7 +248,7 @@ pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=True)
 ```
 
 <figure>
-<img src="./samplePatterns/Donnanno_myPattern_M44D_FullSize.svg">
+<img src="../samplePatterns/Donnanno_myPattern_M44D_FullSize.svg">
 <figurecaption> Figure 3: Pantalon à pinces selon le modèle d'A. Donnanno.
 </figure>
 
@@ -351,7 +347,7 @@ plt.show()
 
 la figure suivante montre le résultat.
 
-![Mon beau carré](./samplePatterns/simple_scripts_0__FullSize.svg)
+![Mon beau carré](../samplePatterns/simple_scripts_0__FullSize.svg)
 
 Le patron du carré est constitué d'un carré grisé
 délimité par quatres segments dont les quatre sommets sont marqués par
@@ -425,7 +421,7 @@ plt.show()
 # done !
 ```
 
-![Mon beau trapèze](./samplePatterns/simple_scripts_1__FullSize.svg)
+![Mon beau trapèze](../samplePatterns/simple_scripts_1__FullSize.svg)
 
 Comme on le voit ici la création de la pince se fait en deux étapes. On
 définit la position du sommet de la pince (ligne 21) puis on appelle la
@@ -537,7 +533,7 @@ plt.show()
 ```
 
 ![Ma belle
-jupe](./samplePatterns/simple_scripts_2-2__FullSize.svg)
+jupe](../samplePatterns/simple_scripts_2-2__FullSize.svg)
 
 Les lignes nouvelles sont les 25,29,39 et 42. La 25 donne la déclaration
 du point de hanche H (hip en anglais). La 39 déclare ce point en
@@ -656,7 +652,7 @@ plt.show()
 ```
 
 ![Patron composite: mon beau trapèze et ses trois
-avatars](./samplePatterns/simple_scripts_3__FullSize.svg)
+avatars](../samplePatterns/simple_scripts_3__FullSize.svg)
 
 La partie qui nous intéresse ici débute à la ligne 47. Il s'agit de
 copier le patron de départ dans P2, P3 et P4 puis de le translater ou
@@ -789,7 +785,7 @@ plt.show()
 ```
 
 ![Jupe droite, 8 ans, avec pinces, méthode de Jacqueline
-Chiappetta](./samplePatterns/simple_scripts_4__FullSize.svg)
+Chiappetta](../samplePatterns/simple_scripts_4__FullSize.svg)
 
 Quelques commentaires s'imposent. De façon générale et même si de
 nombreuses variations existent les patrons de vêtements sont présentés
@@ -831,7 +827,6 @@ Manque juste la ceinture que vous pourriez réaliser très facilement
 maintenant (on y viendra plus tard rassurez-vous) !
 
 
-## Charger des mesures dans la base <a class="anchor" id="charger-de-mesures-dans-la-base"></a>
 
 
 ## Pour aller plus loin <a class="anchor" id="pour-aller-plus-loin"></a>
@@ -1037,7 +1032,7 @@ plt.show()
 ```
 
 ![Mon beau trapèze
-déplié](./samplePatterns/simple_scripts_5__FullSize.svg)
+déplié](../samplePatterns/simple_scripts_5__FullSize.svg)
 
 
 ## Participer <a class="anchor" id="patriciper"></a>

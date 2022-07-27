@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# if python setup.py install goes well these two lines are not needed 
+# if python setup.py install goes well these two lines are not needed
 #
 # import sys
 # sys.path.append("../")

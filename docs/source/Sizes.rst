@@ -155,6 +155,14 @@ Gilewska measurement
 .. figure:: ../../measurements/Gilewska.svg
   :alt: Size measurements for women proposed by Gilewska
 
+.. figure:: ../../measurements/Gilewska_m.svg
+    :alt: Size measurements for men proposed by Gilewska
+
+Chiappetta measurement
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. figure:: ../../measurements/Chiappetta_m.svg
+  :alt: Size measurements for men proposed by Chiappetta
 
 
 To go further (Discussion)

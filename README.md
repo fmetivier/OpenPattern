@@ -63,7 +63,7 @@ p.draw({"Pattern":"Bodice with darts"},save=True)
 plt.show()
 ```
 The result looks like
-![Result](../../samplePatterns/Gilewska_Basic_Bodice_W36G_FullSize.svg)
+![Result](./samplePatterns/Gilewska_Basic_Bodice_W36G_FullSize.svg)
 
 ## Documentation <a class="anchor" id="documentation"></a>
 for more informations on the use of the library see the <a target="_blank" href="https://openpattern.readthedocs.io/en/latest/index.html">Documentation on read the docs</a>.

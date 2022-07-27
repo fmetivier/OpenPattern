@@ -43,10 +43,13 @@ autodoc_mock_imports = [
     "sqlalchemy",
     "numpy",
     "scipy",
+    "json",
     "mpl_toolkits",
     "datetime",
     "dateutil",
     "MySQLdb",
+    "sqlite3",
+    "copy"
 ]
 
 # Add any paths that contain templates here, relative to this directory.

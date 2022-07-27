@@ -49,7 +49,7 @@ autodoc_mock_imports = [
     "dateutil",
     "MySQLdb",
     "sqlite3",
-    "copy"
+    "copy",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

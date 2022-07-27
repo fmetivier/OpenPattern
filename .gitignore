@@ -100,8 +100,7 @@ ENV/
 #json
 *.json
 
-#sqlite db
-.db
+
 
 # Rope project settings
 .ropeproject

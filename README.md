@@ -2,9 +2,9 @@
 
 ----
 * [Introduction](##introduction)
-* [Installation and Requirements](##Installation-and-Requirements)
-* [Example](##Example)
-* [Documentation](##Documentation)
+* [Installation and Requirements](##installation-and-Requirements)
+* [Example](##example)
+* [Documentation](##documentation)
 
 -----------
 ## Introduction <a class="anchor" id="introduction"></a>
@@ -40,7 +40,7 @@ OpenPattern comes with an sqlite3 ```measurements.db``` database. This base cont
 By default OpenPattern assumes that this file resides in the *same directory* as your scripts. This is the simplest way to start rapidly. Yet you can place it anywhere and tell OpenPattern where to search for it (see the doc for more informations).
 
 
-## Example <a class="anchor" id="Example"></a>
+## Example <a class="anchor" id="example"></a>
 
 The most simple way to use OpenPattern is to take advantage one of its predefined patterns. In the example script we plot the bodice  of a women size 36 (French) with bust and waist darts.
 

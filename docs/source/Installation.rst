@@ -22,7 +22,11 @@ Installation
 To install the library you must first
 * clone the directory somewhere on your computer
 * open a terminal in the root directory
-* run ``python3 setup.py install``.
+* run the follwin code
+
+.. code-block:: command
+
+  python3 setup.py install.
 
 .. warning::
   sudo / administrator rights may be needed depending on your computer configuration.

@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys
-
-sys.path.append("../")
+#
+# if python setup.py install goes well these two lines are not needed 
+#
+# import sys
+# sys.path.append("../")
 import matplotlib.pyplot as plt
 
 import OpenPattern as OP

@@ -25,7 +25,7 @@ Installation
 
 To install the library you must first
 
-- clone the directory somewhere on your computer
+- clone the Github directory https://github.com/fmetivier/OpenPattern.git somewhere on your computer
 - open a terminal in the root directory
 - run the follwing code
 

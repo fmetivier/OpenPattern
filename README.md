@@ -2,7 +2,7 @@
 
 -----------
 
-OpenPattern is a python library consisting of a set of classes designed to draft 1:1 scale bespoke sewing patterns and save them as pdf (or matplotlib compatible) files for printing of further processing.
+OpenPattern is a python library consisting of a set of classes designed to draft 1:1 scale bespoke sewing patterns and save them as pdf (or matplotlib compatible) files for printing or further processing.
 
 Printing can be performed at fullscale on a tracer but OpenPattern can also cut the pattern in as many pieces as needed in order to print them on an A4 printer at home.
 

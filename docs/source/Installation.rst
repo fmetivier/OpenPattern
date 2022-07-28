@@ -13,6 +13,9 @@ OpenPattern also requires the following libraries to work properly.
 * json
 * sqlite3
 
+The two last libraries are embedded in the standard library so they should be installed with any python
+installation
+
 If you want to have a direct access the measurements
 database from the terminal you'll have to install the sqlite3 engine.
 
@@ -22,7 +25,7 @@ Installation
 To install the library you must first
 * clone the directory somewhere on your computer
 * open a terminal in the root directory
-* run the follwin code
+* run the follwing code
 
 .. code-block:: command
 

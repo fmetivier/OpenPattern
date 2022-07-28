@@ -62,6 +62,6 @@ The result looks like
 ## Documentation <a class="anchor" id="documentation"></a>
 for more informations on the use of the library see the <a target="_blank" href="https://openpattern.readthedocs.io/en/latest/index.html">Documentation on read the docs</a>.
 
-For an introduction in French see OpenPattern_F.md in the fdoc section.
+For an introduction in French see [OpenPattern_F.md](./fdocs/OpenPattern_F.md) in the fdoc section.
 
 typical samples of scripts and patterns can be found in the sampleScripts and samplePatterns section in the docs.

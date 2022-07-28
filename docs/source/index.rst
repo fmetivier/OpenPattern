@@ -35,7 +35,6 @@ main stylists: Jacqueline Chiappetta, Theresa Gilewska,
 and Antonnio Donnano.
 
 
-
 Sizes are stored in a ``sqlite3`` database. By default they
 include a series of standard (French and Italian) sizes for Women,
 Men, Girls and Boys given by these authors.

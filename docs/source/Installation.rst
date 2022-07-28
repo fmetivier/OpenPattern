@@ -7,11 +7,12 @@ Requirements
 OpenPattern is a python 3 library, hence works on any machine as long as you have a working distribution.
 
 OpenPattern also requires the following libraries to work properly.
-* matplotlib
-* numpy
-* scipy
-* json
-* sqlite3
+
+- matplotlib
+- numpy
+- scipy
+- json
+- sqlite3
 
 The two last libraries are embedded in the standard library so they should be installed with any python
 installation
@@ -23,9 +24,10 @@ Installation
 ------------
 
 To install the library you must first
-* clone the directory somewhere on your computer
-* open a terminal in the root directory
-* run the follwing code
+
+- clone the directory somewhere on your computer
+- open a terminal in the root directory
+- run the follwing code
 
 .. code-block:: command
 

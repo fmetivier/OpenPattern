@@ -2591,7 +2591,13 @@ class Basic_Bodice(Pattern):
                 [CBD.pos(), self.Back_dic["SlB"].pos(), self.Back_dic["CB"].pos()]
                 + self.curves_dic["Back_Collar"]
                 + self.curves_dic["Back_Sleeve"]
-                + [self.Back_dic["SlB1"].pos(), SBD.pos(), BD1.pos(), BDs.pos(), BD0.pos()]
+                + [
+                    self.Back_dic["SlB1"].pos(),
+                    SBD.pos(),
+                    BD1.pos(),
+                    BDs.pos(),
+                    BD0.pos(),
+                ]
             )
             # ~ print(self.Back_vertices)
 
@@ -2633,14 +2639,26 @@ class Basic_Bodice(Pattern):
                         self.Front_dic["ShF2"].pos(),
                     ]
                     + self.curves_dic["Front_Sleeve"]
-                    + [self.Front_dic["SlF1"].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
+                    + [
+                        self.Front_dic["SlF1"].pos(),
+                        SFD.pos(),
+                        FD0.pos(),
+                        OP.pos(),
+                        FD1.pos(),
+                    ]
                 )
             else:
                 self.Front_vertices = (
                     [self.Front_dic["WF"].pos(), self.Front_dic["CF"].pos()]
                     + self.curves_dic["Front_Collar"]
                     + self.curves_dic["Front_Sleeve"]
-                    + [self.Front_dic["SlF1"].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
+                    + [
+                        self.Front_dic["SlF1"].pos(),
+                        SFD.pos(),
+                        FD0.pos(),
+                        OP.pos(),
+                        FD1.pos(),
+                    ]
                 )
 
         else:

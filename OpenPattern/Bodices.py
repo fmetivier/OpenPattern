@@ -233,7 +233,8 @@ class Basic_Bodice(Pattern):
         # 3 add Heading
         # ax = self.print_info(ax, {"Sleeve length": round(spd['A'].y,1), "Sleeve width": round(width,1)})
 
-        self.add_scales(self.ax)
+        # self.add_scales(self.ax)
+        self.add_scales(ax)
 
         if save:
             if fname:
@@ -2472,19 +2473,18 @@ class Basic_Bodice(Pattern):
 
     def add_bust_dart(self):
         """Add darts to dartless Bodice"""
-        bfd = self.Bodice_points_dic
 
         if self.style in ("Gilewska", "Chiappetta"):
             # Apex of dart
             OP = Point(
                 [
-                    bfd["WF"].x - self.m["ecart_poitrine"] / 2,
-                    bfd["CF1"].y - self.m["hauteur_poitrine"],
+                    self.Front_dic["WF"].x - self.m["ecart_poitrine"] / 2,
+                    self.Front_dic["CF1"].y - self.m["hauteur_poitrine"],
                 ]
             )
 
             # Cut point on the middle of the shoulder
-            MShF = self.middle(bfd["ShF1"], bfd["CF1"])
+            MShF = self.middle(self.Front_dic["ShF1"], self.Front_dic["CF1"])
 
             # Dart width
             dw = self.m["tour_poitrine"] / 20
@@ -2503,7 +2503,7 @@ class Basic_Bodice(Pattern):
             K = MShF - OP
             K2 = K.mat_out(A) + OP
 
-            S = bfd["ShF1"] - OP
+            S = self.Front_dic["ShF1"] - OP
             ShF2 = S.mat_out(A) + OP
 
             # Extension of the bust
@@ -2520,14 +2520,14 @@ class Basic_Bodice(Pattern):
 			logically point F should be rotated as well
 			 and not just translated."""
 
-            F1 = bfd["BF1"] - OP
+            F1 = self.Front_dic["BF1"] - OP
             F2 = (
                 F1.mat_out(A) + OP
             )  # here the point is rotated around OP with the exact angle of the dart. :=)
 
             # redraw the arm curve
             dsf, new_sleeve_front_points = self.pistolet(
-                [ShF2, F2, bfd["CPSlF"], bfd["SlF1"]], 2, tot=True
+                [ShF2, F2, self.Front_dic["CPSlF"], self.Front_dic["SlF1"]], 2, tot=True
             )
             self.curves_dic[
                 "Front_Sleeve"
@@ -2539,15 +2539,15 @@ class Basic_Bodice(Pattern):
             val = [MShF, K2, ShF2, F2, OP]
 
             for i in range(len(key)):  # add new points to the dictionnary
-                self.Bodice_points_dic[key[i]] = val[i]
+                self.Front_dic[key[i]] = val[i]
 
             # redraw the front bodice with the added dart
             self.Front_vertices = (
-                [bfd["WF"].pos(), bfd["CF"].pos()]
+                [self.Front_dic["WF"].pos(), self.Front_dic["CF"].pos()]
                 + self.curves_dic["Front_Collar"]
                 + [MShF.pos(), OP.pos(), K2.pos(), ShF2.pos()]
                 + new_sleeve_front_points
-                + [bfd["SlF1"].pos(), bfd["WF1"].pos()]
+                + [self.Front_dic["SlF1"].pos(), self.Front_dic["WF1"].pos()]
             )
 
             # recalculate the sleeve
@@ -2562,7 +2562,7 @@ class Basic_Bodice(Pattern):
     def add_waist_dart(self):
         """Add waist darts to basic Bodice"""
 
-        sbp = self.Bodice_points_dic
+        # sbp = self.Bodice_points_dic
 
         if self.style == "Gilewska":
             pince_dos = 1
@@ -2571,16 +2571,16 @@ class Basic_Bodice(Pattern):
 
             # start with the back
             # central back dart CBD
-            CBD = sbp["WB"] + [1, 0]
+            CBD = self.Back_dic["WB"] + [1, 0]
 
             # Back Dart BD
-            BDc = sbp["WB"] + [self.m["carrure_dos"] / 4, 0]
+            BDc = self.Back_dic["WB"] + [self.m["carrure_dos"] / 4, 0]
             BD0 = BDc - [pinces / 2, 0]
             BD1 = BDc + [pinces / 2, 0]
-            BDs = BDc + [0, sbp["SlB"].y]
+            BDs = BDc + [0, self.Back_dic["SlB"].y]
 
             # Side Back Dart SBD
-            SBD = sbp["WB1"] - [pinces, 0]
+            SBD = self.Back_dic["WB1"] - [pinces, 0]
 
             key = ["CBD", "BD0", "BD1", "BDs", "SBD"]
             val = [CBD, BD0, BD1, BDs, SBD]
@@ -2588,25 +2588,25 @@ class Basic_Bodice(Pattern):
                 self.Bodice_points_dic[k] = v
 
             self.Back_vertices = (
-                [CBD.pos(), sbp["SlB"].pos(), sbp["CB"].pos()]
+                [CBD.pos(), self.Back_dic["SlB"].pos(), self.Back_dic["CB"].pos()]
                 + self.curves_dic["Back_Collar"]
                 + self.curves_dic["Back_Sleeve"]
-                + [sbp["SlB1"].pos(), SBD.pos(), BD1.pos(), BDs.pos(), BD0.pos()]
+                + [self.Back_dic["SlB1"].pos(), SBD.pos(), BD1.pos(), BDs.pos(), BD0.pos()]
             )
             # ~ print(self.Back_vertices)
 
             # The Front
             # Apex of dart
-            if "OP" not in sbp.keys():
+            if "OP" not in self.Front_dic.keys():
                 OP = Point(
                     [
-                        sbp["WF"].x - self.m["ecart_poitrine"] / 2,
-                        sbp["CF1"].y - self.m["hauteur_poitrine"],
+                        self.Front_dic["WF"].x - self.m["ecart_poitrine"] / 2,
+                        self.Front_dic["CF1"].y - self.m["hauteur_poitrine"],
                     ]
                 )
                 bust_dart = False
             else:
-                OP = sbp["OP"]
+                OP = self.Front_dic["OP"]
                 bust_dart = True
 
             # Front dart FD
@@ -2615,32 +2615,32 @@ class Basic_Bodice(Pattern):
             FD1 = WMF + [pinces / 2, 0]
 
             # Side Front Dart SFD
-            SFD = sbp["WF1"] + [pinces, 0]
+            SFD = self.Front_dic["WF1"] + [pinces, 0]
 
             key = ["FD0", "FD1", "SFD", "OP"]
             val = [FD0, FD1, SFD, OP]
             for k, v in zip(key, val):
-                self.Bodice_points_dic[k] = v
+                self.Front_dic[k] = v
 
             if bust_dart:
                 self.Front_vertices = (
-                    [sbp["WF"].pos(), sbp["CF"].pos()]
+                    [self.Front_dic["WF"].pos(), self.Front_dic["CF"].pos()]
                     + self.curves_dic["Front_Collar"]
                     + [
-                        sbp["MShF"].pos(),
-                        sbp["OP"].pos(),
-                        sbp["K2"].pos(),
-                        sbp["ShF2"].pos(),
+                        self.Front_dic["MShF"].pos(),
+                        self.Front_dic["OP"].pos(),
+                        self.Front_dic["K2"].pos(),
+                        self.Front_dic["ShF2"].pos(),
                     ]
                     + self.curves_dic["Front_Sleeve"]
-                    + [sbp["SlF1"].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
+                    + [self.Front_dic["SlF1"].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
                 )
             else:
                 self.Front_vertices = (
-                    [sbp["WF"].pos(), sbp["CF"].pos()]
+                    [self.Front_dic["WF"].pos(), self.Front_dic["CF"].pos()]
                     + self.curves_dic["Front_Collar"]
                     + self.curves_dic["Front_Sleeve"]
-                    + [sbp["SlF1"].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
+                    + [self.Front_dic["SlF1"].pos(), SFD.pos(), FD0.pos(), OP.pos(), FD1.pos()]
                 )
 
         else:

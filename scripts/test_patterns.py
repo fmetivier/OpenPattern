@@ -5,6 +5,7 @@
 # if python setup.py install goes well these two lines are not needed
 #
 # import sys
+#
 # sys.path.append("../")
 import matplotlib.pyplot as plt
 
@@ -18,9 +19,9 @@ import numpy as np
 #
 #####################################################
 
-p = OP.Pattern(pname="W38G", dbPATH="../measurements/")
-for key, val in p.m.items():
-    print(key, val)
+# p = OP.Pattern(pname="W38G", dbPATH="../measurements/")
+# for key, val in p.m.items():
+#     print(key, val)
 
 ####################################################
 #
@@ -86,6 +87,16 @@ for key, val in p.m.items():
 # )
 # p.draw_bodice()
 # p.draw_sleeves()
+
+p = OP.Basic_Bodice(
+    pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
+)
+p.add_bust_dart()
+p.add_waist_dart()
+
+p.draw_bodice()
+p.draw_sleeves()
+
 
 ##############################
 #
@@ -226,4 +237,4 @@ for key, val in p.m.items():
 
 # pans = OP.Flared_pants( pname="sophie", gender='w')
 
-# plt.show()
+plt.show()

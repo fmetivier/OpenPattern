@@ -57,7 +57,7 @@ to be necessary.
 
 Unlike existing commercial or free patronage softwares, the
 choice made here is to create patterns by means of a script, i.e.
-of a series of instructions, and not to draw it with agraphical user interface (GUI).
+of a series of instructions, and not to draw it with graphical user interface (GUI).
 What may seem daunting at first glance
 actually offers all the flexibility of a programming language like
 python.

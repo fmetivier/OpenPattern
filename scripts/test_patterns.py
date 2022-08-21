@@ -95,7 +95,7 @@ p.add_bust_dart()
 p.add_waist_dart()
 
 p.draw_bodice()
-p.draw_sleeves()
+# p.draw_sleeves()
 
 
 ##############################

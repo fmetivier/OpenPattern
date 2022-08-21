@@ -4,7 +4,8 @@ Installation
 Requirements
 ------------
 
-OpenPattern is a python 3 library, hence works on any machine as long as you have a working distribution.
+OpenPattern is a python 3 library, hence works on any machine as
+long as you have a working distribution.
 
 OpenPattern also requires the following libraries to work properly.
 
@@ -14,10 +15,10 @@ OpenPattern also requires the following libraries to work properly.
 - json
 - sqlite3
 
-The two last libraries are embedded in the standard library so they should be installed with any python
-installation
+The two last libraries are embedded in the standard library so
+they should be installed with any python installation.
 
-If you want to have a direct access the measurements
+If you want to have a direct access to the `̀ measurements`̀
 database from the terminal you'll have to install the sqlite3 engine.
 
 Installation
@@ -34,9 +35,10 @@ To install the library you must first
   python3 setup.py install.
 
 .. warning::
-  sudo / administrator rights may be needed depending on your computer configuration.
+  sudo / administrator rights may be needed depending on your  computer configuration.
 
-As said before OpenPattern comes with an sqlite3 ``measurements.db`` database. This base contains a set of standard French and Italian sizes.
+As said before OpenPattern comes with an sqlite3 ``measurements.db`` database.
+This base contains a set of standard French and Italian sizes.
 
 By default OpenPattern assumes that this file resides in the *same directory*
 as your scripts. This is the simplest way to start rapidly.

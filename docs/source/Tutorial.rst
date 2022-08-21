@@ -8,14 +8,14 @@ To draw a pattern you need to
 
 1. create an instance of the corresponding class,
 
-2. call different methods of altering or modifying,
+2. call different methods of alteration or transformation,
 
 3. draw and, if necessary, save the pattern.
 
-The drawing of the pattern can also be done directly from the classes
-``Pattern`` and ``Point`` as we will see later. To start, however, I recommend that you use the
-existing library patterns. I will add patterns as I go.
-extent of my free time.
+Pattern drawing  can also be done directly from the classes
+``Pattern`` and ``Point`` as we will see later. To start, however,
+I recommend that you use the
+existing pattern libraries. I will add patterns depending of my free time.
 
 
 The Basic Pattern
@@ -39,10 +39,10 @@ a straight skirt or basic trousers for example) or
 Bodice
 ~~~~~~
 
-The following script shows the principle of using the library
-OpenPattern taking the example of a Body. We will draw and
-save a pattern for a woman's bodysuit without darts in 36 (size
-French) according to Gilewska's method.
+The following script shows how to draw a Basic Bodice.
+We will draw and
+save a pattern for a woman's bodice without darts in 36 (French size)
+according to Gilewska's method.
 
 
 .. code:: python
@@ -62,15 +62,15 @@ French) according to Gilewska's method.
 
    plt.show()
 
-It's easy isn't it? We then obtain the following figure saved by default at 1:1 scale in a pdf file.
+We then obtain the following figure saved by default at 1:1 scale in a pdf file.
 
 .. image:: ../../samplePatterns/Gilewska_myPattern_W36G_FullSize.svg
 
-The different options are passed in the arguments of the different
+Different options are passed in the arguments of the different
 class methods (``draw_bodice``) or when instantiating
 class (``Basic_Bodice`` in this example).
 
-The list of body bases currently available is given
+The list of bases currently available is given
 below We are going to see in detail each of the bases and
 their options.
 
@@ -82,10 +82,10 @@ Donnanno   x      x
 Gilewska   x      x
 ========== ====== ====== =======
 
-Note that as far as the men are concerned, the bodysuits by Gilewska and
-Donnanno are actually simple shirts without the sleeves. Sleeves
-precisely are part of the body class because they are calculated at
-from the armhole depths measured on the bodysuits.
+Note that as far as men are concerned, the bodice by Gilewska and
+Donnanno are actually simple shirts without sleeves. Sleeves
+are part of the body class because their shape is calculated
+from the armhole depths measured on the bodice once it has been drawn.
 
 .. warning::
 

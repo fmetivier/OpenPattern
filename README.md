@@ -19,6 +19,7 @@ OpenPattern requires the following libraries to work properly.
 * json
 * sqlite3
 
+The last two are embedded in the standard library so you do not need to install them.
 If you want to access the measurements database from the terminal or some GUI you'll have to install the sqlite3 engine
 
 ### Installation

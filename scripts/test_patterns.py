@@ -19,9 +19,9 @@ import numpy as np
 #
 #####################################################
 
-# p = OP.Pattern(pname="W38G", dbPATH="../measurements/")
-# for key, val in p.m.items():
-#     print(key, val)
+p = OP.Pattern(pname="sophie", dbPATH="../measurements/")
+for key, val in p.m.items():
+    print(key, val)
 
 ####################################################
 #
@@ -88,13 +88,13 @@ import numpy as np
 # p.draw_bodice()
 # p.draw_sleeves()
 
-p = OP.Basic_Bodice(
-    pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
-)
-p.add_bust_dart()
-p.add_waist_dart()
-
-p.draw_bodice()
+# p = OP.Basic_Bodice(
+#     pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
+# )
+# p.add_bust_dart()
+# p.add_waist_dart()
+#
+# p.draw_bodice()
 # p.draw_sleeves()
 
 
@@ -237,4 +237,4 @@ p.draw_bodice()
 
 # pans = OP.Flared_pants( pname="sophie", gender='w')
 
-plt.show()
+# plt.show()

@@ -20,8 +20,8 @@ import numpy as np
 # Check the database
 #
 #####################################################
-
-# p = OP.Pattern(pname="M40W")
+#
+# p = OP.Pattern(pname="M40mC")
 # for key, val in p.m.items():
 #     print(key, val)
 
@@ -40,9 +40,9 @@ import numpy as np
 #
 #####################################################
 #
-p = OP.Bowtie(pname="M42W", width=5, pointe=1, figPATH="../samplePatterns/")
-p.draw(save=True, fname="diamond_42")
-plt.show()
+# p = OP.Bowtie(pname="M42W", width=5, pointe=1, figPATH="../samplePatterns/")
+# p.draw(save=True, fname="diamond_42")
+# plt.show()
 
 ####################################################
 #
@@ -213,25 +213,23 @@ plt.show()
 #
 # Pans
 #
-#####################################################
+####################################################
 
 
-# Grégoire's pans
 # pans = OP.Basic_Trousers(
 #     pname="M44D",
 #     gender="m",
 #     style="Donnanno",
 #     darts=True,
-#     dbPATH="../measurements/",
 #     figPATH="../docs/samplePatterns/",
 #     frmt="svg",
 # )
 # pans.Donnanno_add_darts()
-
-# pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=True)
+#
+# pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=False)
 
 # Grégoire's bermudas BUGGED
-# b = OP.Bermudas(pname="gregoire", gender="m", dbPATH="../measurements/")
+# b = OP.Bermudas(pname="gregoire", gender="m")
 # b.draw()
 
 
@@ -248,4 +246,6 @@ plt.show()
 
 # pans = OP.Flared_pants( pname="sophie", gender='w')
 
-# plt.show()
+wc = OP.Waist_Coat(overlap=False)
+wc.draw()
+plt.show()

@@ -261,7 +261,7 @@ class Pattern:
         :param    str ofname: output wkey for measurements.db database
 
         """
-        conn = sqlite3.connect(self.dbPATH + "measurements.db")
+        conn = sqlite3.connect(self.dbPATH)
         c = conn.cursor()
 
         if ofname:

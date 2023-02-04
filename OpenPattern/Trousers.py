@@ -88,12 +88,15 @@ class Basic_Trousers(Pattern):
         if "longueur_tot" in self.m:
             pass
         else:
-            if "hauteur_taille_terre" in self.m:
+            if "hauteur_taille_terre" in self.m.keys():
                 self.m["longueur_tot"] = self.m["hauteur_taille_terre"]
-            elif "longueur_taille_terre" in self.m:
+            elif "longueur_taille_terre" in self.m.keys():  # Wargnier
                 self.m["longueur_tot"] = self.m["longueur_taille_terre"]
+            elif "entrejambe_terre" in self.m.keys():  # Chiappetta
+                self.m["longueur_tot"] = self.m["entrejambe_terre"] + self.m["montant"]
 
         if self.style == "Donnanno":
+            # Donnano style can also be used with Wargnier measurements
             print("style Donnanno selected")
             self.Donnanno_front_trousers()
             self.Donnanno_back_trousers()

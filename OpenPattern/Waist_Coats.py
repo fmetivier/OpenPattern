@@ -50,11 +50,12 @@ class Waist_Coat(Basic_Bodice):
         """
         if self.wc_style == "Classical":
 
-            BB = deepcopy(self.Bodice_points_dic)
+            BB = deepcopy(self.Back_dic)
+            BF = deepcopy(self.Front_dic)
 
             # ease
             BB["SlB1"] = BB["SlB1"] + [2, -7]
-            BB["SlF1"] = BB["SlF1"] + [-2, -7]
+            BF["SlF1"] = BF["SlF1"] + [-2, -7]
 
             # shoulders
             a = self.segment_angle(BB["CB1"], BB["ShB1"])
@@ -63,13 +64,13 @@ class Waist_Coat(Basic_Bodice):
             d = 7  # between 7 and 9
             BB["ShB1"] = BB["CB1"] + [d * np.cos(a), d * np.sin(a)]
 
-            b = self.segment_angle(BB["CF1"], BB["ShF1"])
-            BB["CF1"] = BB["CF1"] + [-3 * np.cos(b), -3 * np.sin(b)]
-            BB["ShF1"] = BB["CF1"] + [-d * np.cos(b), -d * np.sin(b)]
+            b = self.segment_angle(BF["CF1"], BF["ShF1"])
+            BF["CF1"] = BF["CF1"] + [-3 * np.cos(b), -3 * np.sin(b)]
+            BF["ShF1"] = BF["CF1"] + [-d * np.cos(b), -d * np.sin(b)]
 
-            CPF = BB["SlF1"] + [2, 0]
+            CPF = BF["SlF1"] + [2, 0]
             l_emmanchure_dev, sleeve_front_points = self.pistolet(
-                [BB["ShF1"], CPF, BB["SlF1"]], 2, tot=True
+                [BF["ShF1"], CPF, BF["SlF1"]], 2, tot=True
             )
 
             CPB = BB["SlB1"] + [-2, 0]
@@ -86,72 +87,72 @@ class Waist_Coat(Basic_Bodice):
             )
 
             croisure = 2
-            BB["CF"] = BB["CF"] + [croisure, (BB["SlF1"].y + 1) - BB["CF"].y]
+            BF["CF"] = BF["CF"] + [croisure, (BF["SlF1"].y + 1) - BF["CF"].y]
 
             # Hip line
             hwc = 5  # between 5 and 7
             BB["HipB1"] = BB["WB1"] + [2, -hwc]
             BB["HipB"] = BB["WB"] + [0.5, -hwc]
-            BB["HipF1"] = BB["WF1"] + [-2, -hwc]
+            BF["HipF1"] = BF["WF1"] + [-2, -hwc]
 
             # waist
-            BB["WF1"] = BB["WF1"] + [-1, 0]
-            BB["WF"] = BB["WF"] + [croisure, 0]
+            BF["WF1"] = BF["WF1"] + [-1, 0]
+            BF["WF"] = BF["WF"] + [croisure, 0]
             BB["WB1"] = BB["WB1"] + [0.5, 0]
 
             # Front tip
-            BB["TipF"] = BB["WF"] + [-6, -hwc - 4]
+            BF["TipF"] = BF["WF"] + [-6, -hwc - 4]
 
             # darts
-            PwF = BB["WF"] + [-self.m["tour_poitrine"] / 8, -hwc]
+            PwF = BF["WF"] + [-self.m["tour_poitrine"] / 8, -hwc]
             PwFr = PwF + [1, 0]
             PwFl = PwF + [-1, 0]
-            BB["OPwF"] = PwF + [0, 15]
+            BF["OPwF"] = PwF + [0, 15]
             # find the intersection with the hip front line
-            BB["PwFl"] = self.intersec_lines(BB["OPwF"], PwFl, BB["TipF"], BB["HipF1"])
-            BB["PwFr"] = self.intersec_lines(BB["OPwF"], PwFr, BB["TipF"], BB["HipF1"])
+            BF["PwFl"] = self.intersec_lines(BF["OPwF"], PwFl, BF["TipF"], BF["HipF1"])
+            BF["PwFr"] = self.intersec_lines(BF["OPwF"], PwFr, BF["TipF"], BF["HipF1"])
 
             # patte de serrage dos
             BB["PSB"] = BB["WB"] + [15, 0]
 
             # Pockets
-            BB["UPr"] = BB["SlF"] + [-6, 0]
-            BB["UPl"] = BB["SlF"] + [-14, 1.5]
+            BF["UPr"] = BF["SlF"] + [-6, 0]
+            BF["UPl"] = BF["SlF"] + [-14, 1.5]
 
-            BB["WPr"] = BB["WF"] + [-8, 0]
-            BB["WPl"] = BB["WF"] + [-20, 1.5 * (12 / 8)]
+            BF["WPr"] = BF["WF"] + [-8, 0]
+            BF["WPl"] = BF["WF"] + [-20, 1.5 * (12 / 8)]
 
             # do some cleaning
-            del BB["CPCF"]
+            del BF["CPCF"]
             del BB["HB1"]
-            del BB["HF1"]
+            del BF["HF1"]
             del BB["BB1"]
-            del BB["BF1"]
+            del BF["BF1"]
             del BB["CPSlB"]
-            del BB["CPSlF"]
+            del BF["CPSlF"]
 
             """
 			the use of self.overlap enables to stack patterns in order to see the difference between an original and an altered pattern
 			for example waistcoat on top of basic bodice
 			"""
             if self.overlap:
-                self.dic_list.append(BB)
+                self.dic_list = [BF, BB]
 
                 self.vertices_list.append(
                     [
-                        BB["TipF"].pos(),
-                        BB["WF"].pos(),
-                        BB["CF"].pos(),
-                        BB["CF1"].pos(),
-                        BB["ShF1"].pos(),
+                        BF["TipF"].pos(),
+                        BF["WF"].pos(),
+                        BF["CF"].pos(),
+                        BF["CF1"].pos(),
+                        BF["ShF1"].pos(),
                     ]
                     + sleeve_front_points
                     + [
-                        BB["WF1"].pos(),
-                        BB["HipF1"].pos(),
-                        BB["PwFl"].pos(),
-                        BB["OPwF"].pos(),
-                        BB["PwFr"].pos(),
+                        BF["WF1"].pos(),
+                        BF["HipF1"].pos(),
+                        BF["PwFl"].pos(),
+                        BF["OPwF"].pos(),
+                        BF["PwFr"].pos(),
                     ]
                 )
                 self.vertices_list.append(
@@ -163,38 +164,38 @@ class Waist_Coat(Basic_Bodice):
 
             else:
 
-                self.Bodice_points_dic = BB
-                self.dic_list = [BB]
+                self.Back_dic = BB
+                self.Front_dic = BF
+                self.dic_list = [BF, BB]
 
-                self.Bodice_Front_vertices = (
+                self.Front_vertices = (
                     [
-                        BB["TipF"].pos(),
-                        BB["WF"].pos(),
-                        BB["CF"].pos(),
-                        BB["CF1"].pos(),
-                        BB["ShF1"].pos(),
+                        BF["TipF"].pos(),
+                        BF["WF"].pos(),
+                        BF["CF"].pos(),
+                        BF["CF1"].pos(),
+                        BF["ShF1"].pos(),
                     ]
                     + sleeve_front_points
                     + [
-                        BB["WF1"].pos(),
-                        BB["HipF1"].pos(),
-                        BB["PwFl"].pos(),
-                        BB["OPwF"].pos(),
-                        BB["PwFr"].pos(),
+                        BF["WF1"].pos(),
+                        BF["HipF1"].pos(),
+                        BF["PwFl"].pos(),
+                        BF["OPwF"].pos(),
+                        BF["PwFr"].pos(),
                     ]
                 )
 
-                self.Bodice_Back_vertices = (
+                self.Back_vertices = (
                     [BB["HipB"].pos(), BB["SlB"].pos(), BB["HB"].pos()]
                     + collar_back_points
                     + sleeve_back_points
                     + [BB["WB1"].pos(), BB["HipB1"].pos()]
                 )
 
-                self.dic_list = [BB]
                 self.vertices_list = [
-                    self.Bodice_Front_vertices,
-                    self.Bodice_Back_vertices,
+                    self.Front_vertices,
+                    self.Back_vertices,
                 ]
 
             self.draw_bodice(dic={"Pattern": "Classical Waistcoat"})
@@ -211,33 +212,32 @@ class Waist_Coat(Basic_Bodice):
         This method is overloaded As some legends to change. There is probably a means to escape overloading
         """
 
-        if len(self.dic_list) > 1:
-            bpd = self.dic_list[1]
-        else:
-            bpd = self.dic_list[0]
+        bfd = self.dic_list[0]
+        bbd = self.dic_list[1]
+
         fs = 14
         ldic = {"color": "blue", "alpha": 0.4, "linestyle": "dashed"}
 
-        pos = self.middle(bpd["WB"], bpd["SlB"])
+        pos = self.middle(bbd["WB"], bbd["SlB"])
         ax.text(pos.x + 0.5, pos.y, "FOLD LINE", fontsize=fs, rotation=90)
 
-        pos = self.middle(bpd["WF"], bpd["SlF"])
+        pos = self.middle(bfd["WF"], bfd["SlF"])
         ax.text(pos.x - 0.5, pos.y, "OVERLAP", fontsize=fs, rotation=90)
 
-        pos = self.middle(bpd["HF"], bpd["TipF"] + [4, 0])
-        self.segment(bpd["HF"], bpd["TipF"] + [4, 0], ax, ldic)
+        pos = self.middle(bfd["HF"], bfd["TipF"] + [4, 0])
+        self.segment(bfd["HF"], bfd["TipF"] + [4, 0], ax, ldic)
         ax.text(pos.x - 1.5, pos.y + 10, "MIDDLE FRONT", fontsize=fs, rotation=90)
 
-        self.segment(bpd["WF"], bpd["WB"], ax, ldic)
-        pos = self.middle(bpd["WF"], bpd["WB"])
+        self.segment(bfd["WF"], bbd["WB"], ax, ldic)
+        pos = self.middle(bfd["WF"], bbd["WB"])
         ax.text(pos.x, pos.y + 0.5, "WAIST LINE", fontsize=fs, ha="center")
 
-        self.segment(bpd["SlF"], bpd["SlB"], ax, ldic)
-        pos = self.middle(bpd["SlF"], bpd["SlB"])
+        self.segment(bfd["SlF"], bbd["SlB"], ax, ldic)
+        pos = self.middle(bfd["SlF"], bbd["SlB"])
         ax.text(pos.x, pos.y + 0.5, "SLEEVE LINE", fontsize=fs, ha="center")
 
-        self.segment(bpd["BF"], bpd["BB"], ax, ldic)
-        pos = self.middle(bpd["BF"], bpd["BB"])
+        self.segment(bfd["BF"], bbd["BB"], ax, ldic)
+        pos = self.middle(bfd["BF"], bbd["BB"])
         ax.text(pos.x, pos.y + 0.5, "BUST LINE", fontsize=fs, ha="center")
 
         return ax

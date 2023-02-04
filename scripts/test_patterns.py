@@ -40,8 +40,9 @@ import numpy as np
 #
 #####################################################
 #
-# p = OP.Bowtie(pname="M42W", width=5, pointe=1)
-# plt.show()
+p = OP.Bowtie(pname="M42W", width=5, pointe=1, figPATH="../samplePatterns/")
+p.draw(save=True, fname="diamond_42")
+plt.show()
 
 ####################################################
 #

@@ -88,4 +88,3 @@ class Bowtie(Pattern):
 
         diamond = Point([-self.pointe, 0])
         self.Front_vertices = fcurve + [E.pos(), F.pos()] + bcurve + [diamond.pos()]
-        self.draw()

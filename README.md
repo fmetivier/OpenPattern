@@ -32,8 +32,6 @@ sudo rights may be needed depending on your computer configuration.
 
 OpenPattern comes with an sqlite3 ```measurements.db``` database. This base contains a set of standard French and Italian sizes.
 
-By default OpenPattern assumes that this file resides in the *same directory* as your scripts. This is the simplest way to start rapidly. Yet you can place it anywhere and tell OpenPattern where to search for it (see the doc for more informations).
-
 
 ## Example <a class="anchor" id="example"></a>
 

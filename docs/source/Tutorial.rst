@@ -190,6 +190,8 @@ Ancillary classes are also added  for cuffs, plackets, and collars
 
 -  Collars
 
+-  Bowties (butterfly and diamond)
+
 - Gowns
 
   - Hospital_Gown (done during the first COVID confinement)

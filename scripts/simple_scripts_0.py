@@ -7,8 +7,7 @@ import OpenPattern as OP
 import numpy as np
 
 # 1 create a pattern instance
-dbPATH = "../../OpenPattern/"  # put here the path to the measurements.db file
-myPattern = OP.Pattern(dbPATH=dbPATH)
+myPattern = OP.Pattern(figPATH="../samplePatterns", frmt="svg")
 
 # 2 define points
 A = OP.Point([0, 0])
@@ -26,9 +25,7 @@ myPattern.add_point("D", D)
 myPattern.Front_vertices = [A.pos(), B.pos(), C.pos(), D.pos(), A.pos()]
 
 # 5 draw
-myPattern.draw(
-    save=True, fname="simple_scripts_0", figPATH="../samplePatterns", frmt="svg"
-)
+myPattern.draw(save=True, fname="simple_scripts_0")
 plt.show()
 
 # done !

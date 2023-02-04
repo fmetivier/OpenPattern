@@ -7,8 +7,7 @@ import OpenPattern as OP
 import numpy as np
 
 # create a pattern instance
-dbPATH = "../../OpenPattern/"  # put here the path to the measurements.db file
-myPattern = OP.Pattern(dbPATH=dbPATH)
+myPattern = OP.Pattern(figPATH="../samplePatterns", frmt="svg")
 
 # define points
 A = OP.Point([0, 0])
@@ -73,9 +72,7 @@ myPattern.add_comment(
     a * np.pi / 180,
 )
 # draw
-myPattern.draw(
-    save=True, fname="simple_scripts_2-2", figPATH="../samplePatterns", frmt="svg"
-)
+myPattern.draw(save=True, fname="simple_scripts_2-2")
 plt.show()
 
 # done !

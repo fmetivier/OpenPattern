@@ -7,7 +7,7 @@ OpenPattern
 __author__ = "François Métivier"
 __copyright__ = "Copyright 2020"
 __license__ = "GPL"
-__version__ = "0.2"
+__version__ = "1.0"
 
 __all__ = [
     "OpenPattern",
@@ -19,6 +19,8 @@ __all__ = [
     "Skirts",
     "Shirts",
     "Points",
+    "Waist Coats",
+    "Ties",
 ]
 
 from .Points import *
@@ -35,3 +37,5 @@ from .Shirts import *
 from .Skirts import *
 from .Trousers import *
 from .Waist_Coats import *
+
+from .Ties import *

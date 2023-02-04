@@ -9,8 +9,9 @@ import numpy as np
 # create a pattern instance
 # mfs = my first skirt
 # W8C  = Women / 8 year / Chiappetta
-dbPATH = "../../OpenPattern/"
-mfs = OP.Pattern("W8C", dbPATH=dbPATH)
+frmt = "svg"
+figPATH = "../samplePatterns"
+mfs = OP.Pattern("W8C", figPATH=figPATH, frmt=frmt)
 
 # size of the dart and ease to be applied
 pince = 7.25
@@ -89,7 +90,7 @@ mfs.add_comment(mfs.middle(C, E) + [0, 2], "BACK", 0)
 mfs.add_comment(mfs.middle(E, D) + [0, 2], "FRONT", 0)
 
 # draw  the pattern
-mfs.draw(save=True, fname="simple_scripts_4", figPATH="../samplePatterns", frmt="svg")
+mfs.draw(save=True, fname="simple_scripts_4")
 plt.show()
 
 # done !

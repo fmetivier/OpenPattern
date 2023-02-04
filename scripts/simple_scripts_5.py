@@ -7,8 +7,7 @@ import OpenPattern as OP
 import numpy as np
 
 # create a pattern instance
-dbPATH = "../../OpenPattern/"
-P1 = OP.Pattern(dbPATH=dbPATH)
+P1 = OP.Pattern(figPATH="../samplePatterns", frmt="svg")
 
 # define points
 A = OP.Point([0, 0])
@@ -45,7 +44,7 @@ for key, val in du.items():
 
 
 # draw the unfolded pattern
-P1.draw(save=True, fname="simple_scripts_5", figPATH="../samplePatterns", frmt="svg")
+P1.draw(save=True, fname="simple_scripts_5")
 plt.show()
 
 # done !

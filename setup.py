@@ -13,7 +13,7 @@ with open("LICENSE") as f:
 
 setup(
     name="OpenPattern",
-    version="0.1.0",
+    version="0.2.0",
     description="Pattern drafting libraries",
     long_description=readme,
     author="François Métivier",
@@ -21,4 +21,6 @@ setup(
     url="http://github.com/fmetivier/OpenPattern",
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
+    include_package_data=True,
+    package_data={"": ["data/*.db"]},
 )

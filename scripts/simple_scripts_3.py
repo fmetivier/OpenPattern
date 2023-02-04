@@ -7,8 +7,7 @@ import OpenPattern as OP
 import numpy as np
 
 # create a pattern instance
-dbPATH = "../../OpenPattern/"
-myPattern = OP.Pattern(dbPATH=dbPATH)
+myPattern = OP.Pattern(figPATH="../samplePatterns", frmt="svg")
 
 # define points
 A = OP.Point([0, 0])
@@ -92,9 +91,7 @@ myPattern.add_pattern(P4)
 # draw the subpatterns onf fig,ax
 myPattern.draw_subpatterns(overlay=True)
 # in the end draw mypattern on top of it
-myPattern.draw(
-    save=True, fname="simple_scripts_3", figPATH="../samplePatterns", frmt="svg"
-)
+myPattern.draw(save=True, fname="simple_scripts_3")
 
 plt.show()
 

@@ -5,7 +5,6 @@
 # if python setup.py install goes well these two lines are not needed
 #
 # import sys
-#
 # sys.path.append("../")
 import matplotlib.pyplot as plt
 
@@ -19,9 +18,9 @@ import numpy as np
 #
 #####################################################
 
-p = OP.Pattern(pname="sophie", dbPATH="../measurements/")
-for key, val in p.m.items():
-    print(key, val)
+# p = OP.Pattern(pname="gregoire")
+# for key, val in p.m.items():
+#     print(key, val)
 
 ####################################################
 #
@@ -34,19 +33,27 @@ for key, val in p.m.items():
 
 ####################################################
 #
+# Bow tie
+#
+#####################################################
+
+# p = OP.Bowtie(width=5, pointe=1)
+# plt.show()
+
+####################################################
+#
 # Skirt
 #
 #####################################################
 
 
-# p = OP.Basic_Skirt(
-#     pname="W6C",
-#     style="Chiappetta",
-# dbPATH="../measurements/",
-# figPATH="../samplePatterns/",
-# frmt="svg",
-# )
-# p.draw(save=True, paper="A4", fname="skirt")
+p = OP.Basic_Skirt(
+    pname="W6C",
+    style="Chiappetta",
+    figPATH="../samplePatterns/",
+    frmt="svg",
+)
+p.draw()
 
 ####################################################
 #
@@ -237,4 +244,5 @@ for key, val in p.m.items():
 
 # pans = OP.Flared_pants( pname="sophie", gender='w')
 
-# plt.show()
+
+plt.show()

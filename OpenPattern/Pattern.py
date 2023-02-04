@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # librairies
 import sys
+import pkg_resources
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -51,9 +52,12 @@ class Pattern:
 
         self.pattern_name = pattern_name
 
-        self.dbPATH = "./"  # default
+        # some default values
+        self.style = ""
         self.figPATH = "./"
         self.frmt = "pdf"
+        stream = pkg_resources.resource_filename(__name__, "data/measurements.db")
+        self.dbPATH = stream
 
         for k in kwargs.keys():
             if k == "dbPATH":
@@ -217,7 +221,7 @@ class Pattern:
         :rtype: dic
         """
 
-        conn = sqlite3.connect(self.dbPATH + "measurements.db")
+        conn = sqlite3.connect(self.dbPATH)
         c = conn.cursor()
 
         dic = {}

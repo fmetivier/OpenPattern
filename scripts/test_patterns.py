@@ -211,7 +211,7 @@ import numpy as np
 
 ####################################################
 #
-# Pans
+# Trousers
 #
 ####################################################
 
@@ -228,24 +228,37 @@ import numpy as np
 #
 # pans.draw_basic_trousers(dic={"Pattern": "Basic trousers with dart"}, save=False)
 
-# Grégoire's bermudas BUGGED
+# Grégoire's bermudas
 # b = OP.Bermudas(pname="gregoire", gender="m")
 # b.draw()
 
+# pans = OP.Flared_pants(pname="sophie", gender="w")
+
+# bp = OP.Pants_block(pname="M46D",gender="m", overlay=False, save=True, paper='A4')
+
+####################################################
+#
+# In test
+# Bespoke adjustments
+#
+####################################################
 
 # waist_fit_dic={'sides': 1.5, 'center_front': 0.5, 'front_left': 0, 'front_right': 0, 'center_back': 0, 'back':0}
+
 # pans = OP.Basic_Trousers( pname="sophie", gender='w', style='Donnanno', darts=False, wfd = waist_fit_dic)
 # pans.draw_basic_trousers(dic = {"Pattern":"Basic Trousers"}, save = False, fname = 'Trousers')
 # #
 # b = OP.Bermudas(pname="sophie", gender='w' ,wfd = waist_fit_dic)
 # b.draw()
 
-# bp = OP.Pants_block(pname="sophie",gender="w", overlay=False)
+
+####################################################
 #
-# bp = OP.Pants_block(pname="M46D",gender="m", overlay=False, save=True, paper='A4')
+# Waist coat (incomplete)
+#
+####################################################
 
-# pans = OP.Flared_pants( pname="sophie", gender='w')
 
-wc = OP.Waist_Coat(overlap=False)
-wc.draw()
-plt.show()
+# wc = OP.Waist_Coat(overlap=False)
+# wc.draw()
+# plt.show()

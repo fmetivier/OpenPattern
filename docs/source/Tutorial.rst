@@ -160,7 +160,6 @@ To create trousers with darts we use the class
        gender="m",
        style="Donnanno",
        darts=True,
-       dbPATH="../measurements/",
        figPATH="../docs/samplePatterns/",
        frmt="svg",
    )

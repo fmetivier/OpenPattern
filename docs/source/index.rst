@@ -69,7 +69,6 @@ In the end the results look like This
       pname="sophie",
       style="Donnanno",
       ease=1,
-      dbPATH="../measurements/",
       figPATH="../samplePatterns/",
       frmt="svg",
   )

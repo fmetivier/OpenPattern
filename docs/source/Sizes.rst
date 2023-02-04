@@ -105,7 +105,7 @@ An exemple spreadsheet with Donnanno style measurements is given in the measurem
 
 .. code:: python
 
-  p = OP.Pattern(dbPATH="../measurements/")
+  p = OP.Pattern()
   p.load_measurements("../measurements/measurement_sheet_Esther.csv")
 
 .. warning::
@@ -116,7 +116,7 @@ If you want to look at your measurements just use
 
 .. code:: python
 
-  p = OP.Pattern(pname="Esther", dbPATH="../measurements/")
+  p = OP.Pattern(pname="Esther")
   for key, val in p.m.items():
       print(key, val)
 

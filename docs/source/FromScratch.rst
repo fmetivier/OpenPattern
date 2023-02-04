@@ -23,8 +23,6 @@ operations consist in
    #!/usr/bin/env python3
    # -*- coding: utf-8 -*-
 
-   import sys
-   sys.path.append('/home/metivier/Nextcloud/Personnel/couture/OpenPattern')
 
    import matplotlib.pyplot as plt
    import OpenPattern as OP
@@ -91,8 +89,6 @@ after the definition of the points of the segment impacted by this addition.
    #!/usr/bin/env python3
    # -*- coding: utf-8 -*-
 
-   import sys
-   sys.path.append('/home/metivier/Nextcloud/Personnel/couture/OpenPattern')
 
    import matplotlib.pyplot as plt
    import OpenPattern as OP
@@ -190,8 +186,6 @@ understand what it is all about.
    #!/usr/bin/env python3
    # -*- coding: utf-8 -*-
 
-   import sys
-   sys.path.append('/home/metivier/Nextcloud/Personnel/couture/OpenPattern')
 
    import matplotlib.pyplot as plt
    import OpenPattern as OP
@@ -307,8 +301,6 @@ translation and rotation then copy properties of the class
    #!/usr/bin/env python3
    # -*- coding: utf-8 -*-
 
-   import sys
-   sys.path.append('/home/metivier/Nextcloud/Personnel/couture/OpenPattern')
 
    import matplotlib.pyplot as plt
    import OpenPattern as OP
@@ -419,8 +411,6 @@ the projection distance is
    #!/usr/bin/env python3
    # -*- coding: utf-8 -*-
 
-   import sys
-   sys.path.append('/home/metivier/Nextcloud/Personnel/couture/OpenPattern')
 
    import matplotlib.pyplot as plt
    import OpenPattern as OP
@@ -502,8 +492,6 @@ Chiappetta's method.
    #!/usr/bin/env python3
    # -*- coding: utf-8 -*-
 
-   import sys
-   sys.path.append('/home/metivier/Nextcloud/Personnel/couture/OpenPattern')
 
    import matplotlib.pyplot as plt
    import OpenPattern as OP

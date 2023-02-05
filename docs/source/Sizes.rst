@@ -5,8 +5,8 @@ Use existing measurements
 -------------------------
 
 OpenPattern comes with a set of standard sizes for women,  men and kids. For women and men the sizes
-exist in french (Gilewska and Chiappetta) or Italian (Donnanno) sizes.
-These measuremnts are stored in the ``measurement.db`` file which is an ``sqlite 3`` database.
+exist in french (Chiappetta, Gilewska and Wargnier) or Italian (Donnanno) sizes.
+These measurements are stored in the ``measurement.db`` file which is an ``sqlite 3`` database.
 
 The following table lists the status of the measures contained in the sql database
 from OpenPattern.
@@ -34,7 +34,7 @@ Hence it is quite simple to see how they look like using the following code
 .. code:: python
 
   # Check the content of Gilewska 38 for women
-  p = OP.Pattern(pname="W38G", dbPATH="../measurements/")
+  p = OP.Pattern(pname="W38G")
   for key, val in p.m.items():
       print(key, val)
 
@@ -208,11 +208,11 @@ heights are given 170,175 and 180 cm).
 
 Finally, the cherry on the cake, the correspondences of sizes vary from one
 country to another so a 38 from Gilewska is not a 38 from Donnanno...
-Officially it is necessary to add 4 to the Italian sizes to find,
+Officially it is necessary to sbstract 4 to the Italian sizes to find,
 approximately, the French size. A 36 from Gilewska matches
-approximately a 40 from Donnanno. Except that in fact when we compare the
-values ​​we are rather on a difference of 2 (a 38 Gilewska
-would rather correspond from my point of view to a 40 Donnanno).
+approximately a 40 from Donnanno. One should compare though as,
+depending on the measurements needed to draft a pattern, one may be rather closer to a
+difference of 2 (a 38 Gilewska would rather correspond from my point of view to a 40 Donnanno).
 
 ========================== == == == == == === === ==
 Mesure                     WG MG WD MD MW GiC BoC MC

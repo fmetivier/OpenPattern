@@ -31,7 +31,7 @@ import numpy as np
 #
 #####################################################
 
-# p = OP.Pattern(dbPATH="../measurements/")
+# p = OP.Pattern()
 # p.load_measurements("../measurements/measurement_sheet_Esther.csv")
 
 ####################################################
@@ -66,17 +66,16 @@ import numpy as np
 #####################################################
 
 # p = OP.Culotte(
-#     pname="sophie",
+#     pname="W40D",
 #     style="Donnanno",
 #     ease=1,
-#     dbPATH="../measurements/",
 #     figPATH="../samplePatterns/",
 #     frmt="svg",
 # )
 # p.draw(save=True, fname="culotte")
 
 
-# w = OP.Waistband(pname="sophie", ease=2)
+# w = OP.Waistband(pname="W4OD", ease=2)
 # w.draw(save=True, paper="A4", fname="culotte_waist")
 
 
@@ -94,13 +93,13 @@ import numpy as np
 # p.draw_sleeves()
 #
 # p = OP.Basic_Bodice(
-#     pname="Esther", gender="w", style="Donnanno", dbPATH="../measurements/"
+#     pname="Esther", gender="w", style="Donnanno"
 # )
 # p.draw_bodice()
 # p.draw_sleeves()
 
 # p = OP.Basic_Bodice(
-#     pname="W36G", gender="w", style="Gilewska", dbPATH="../measurements/"
+#     pname="W36G", gender="w", style="Gilewska"
 # )
 # p.add_bust_dart()
 # p.add_waist_dart()
@@ -120,7 +119,6 @@ import numpy as np
 #     gender="w",
 #     style="Chiappetta",
 #     age=16,
-#     dbPATH="../measurements/",
 #     figPATH="../samplePatterns/",
 #     overlay=True,
 #     hip=True,
@@ -135,11 +133,6 @@ import numpy as np
 # p.draw_bodice()
 # p.draw_sleeves()
 
-# p.add_bust_dart()
-# p.add_waist_dart()
-# p.draw({"Pattern":"Bodice with darts"},save=True)
-# p.draw_sleeves()
-
 ####################################################
 #
 # Men Bodice
@@ -150,8 +143,10 @@ import numpy as np
 #     pname="Me", gender="m", style="Chiappetta", dbPATH="../measurements/"
 # )
 # p.draw_bodice()
+
 # p = OP.Basic_Bodice(pname="M40G", gender="m", style="Gilewska")
 # p.draw_bodice()
+
 # p = OP.Basic_Bodice(pname="M44D", gender="m", style="Donnanno", ease=10)
 # p.draw_bodice()
 # p.chiappetta_armhole_sleeve_m()
@@ -159,10 +154,11 @@ import numpy as np
 # p.draw_sleeves()
 
 
-# p = OP.Shirt(pname="Me", gender='m', style = "Gilewska")
-# p.basic_shirt_bodice(style="Gilewska")
+# p = OP.Shirt(pname="Me", gender="m", style="Chiappetta")
+# p.basic_shirt_bodice(style="Chiappetta")
 # p.chiappetta_basic_sleeve_m()
 # p.draw_sleeves()
+# p.draw()
 # p.chiappetta_armhole_sleeve_m(ease=3,folds=1,fold_width=1,fente=11, wrist=5)
 # p.draw_sleeves()
 # p.draw(save=True,paper='A4')
@@ -261,4 +257,4 @@ import numpy as np
 
 # wc = OP.Waist_Coat(overlap=False)
 # wc.draw()
-# plt.show()
+plt.show()

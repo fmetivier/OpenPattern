@@ -1875,7 +1875,7 @@ class Basic_Bodice(Pattern):
         #################################################
         # 17
         CF = HF + [0, -self.m["tour_encolure"] / 6 - 1]
-        CPCF = CF + [-1, 0]  # slightly different from Gilewska
+        CPCF = CF + [-1, 0]
         self.m["longueur_col_devant"], collar_front_points = self.pistolet(
             [CF, CPCF, CF1], 2, tot=True
         )

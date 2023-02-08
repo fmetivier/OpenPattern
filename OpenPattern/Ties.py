@@ -33,7 +33,7 @@ class Bowtie(Pattern):
 
     """
 
-    def __init__(self, pname="gregoire", width=5, pointe=0, **kwargs):
+    def __init__(self, pname="gregoire", width=5, pointe=0, ease=2, **kwargs):
         """
         Initilizes parent class &  attributes
         launches the calculation of the tie
@@ -42,13 +42,15 @@ class Bowtie(Pattern):
         :param  pname: size measurements
         :param  width: width of the tie
         :param pointe: length of the diamond if pointe=0 then draws a butterfly tie
-        :param style: just for drawing
+        :param ease: ease to be applied.
+
 
         """
         Pattern.__init__(self, pname, **kwargs)
 
         self.width = width
         self.pointe = pointe
+        self.ease = ease
         if pointe == 0:
             self.style = "Butterfly"
         else:
@@ -68,11 +70,11 @@ class Bowtie(Pattern):
 
     def calculate_tie(self):
 
-        tc = self.m["tour_encolure"]
+        tc = self.m["tour_encolure"] + self.ease
 
         w = 1.5  # width of the neck strip
 
-        lam = tc / np.pi  # wave length of the neck diameter
+        lam = tc / np.pi  # wave length ~ neck diameter
 
         x = np.linspace(0, 1.5 * lam, 100)
         y = 0.25 * (self.width - w) * (np.cos(x * 2 * np.pi / lam) + 1) + w / 2

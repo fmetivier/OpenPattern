@@ -21,9 +21,9 @@ import numpy as np
 #
 #####################################################
 #
-# p = OP.Pattern(pname="M40mC")
-# for key, val in p.m.items():
-#     print(key, val)
+p = OP.Pattern(pname="M40G")
+for key, val in p.m.items():
+    print(key, val)
 
 ####################################################
 #
@@ -74,36 +74,30 @@ import numpy as np
 # )
 # p.draw(save=True, fname="culotte")
 
-
+# create a waist band
 # w = OP.Waistband(pname="W4OD", ease=2)
 # w.draw(save=True, paper="A4", fname="culotte_waist")
 
 
 ####################################################
 #
-# Bodice
+# Bodices
+# Women
 #
 #####################################################
 
-# Women
-# p = OP.Basic_Bodice(
-#     pname="Esther", gender="w", style="Gilewska", dbPATH="../measurements/"
-# )
+
+# p = OP.Basic_Bodice(pname="Esther", gender="w", style="Donnanno")
 # p.draw_bodice()
 # p.draw_sleeves()
 #
-# p = OP.Basic_Bodice(
-#     pname="Esther", gender="w", style="Donnanno"
-# )
+# p = OP.Basic_Bodice(pname="Esther", gender="w", style="Chiappetta")
 # p.draw_bodice()
 # p.draw_sleeves()
-
-# p = OP.Basic_Bodice(
-#     pname="W36G", gender="w", style="Gilewska"
-# )
+#
+# p = OP.Basic_Bodice(pname="W36G", gender="w", style="Gilewska")
 # p.add_bust_dart()
 # p.add_waist_dart()
-#
 # p.draw_bodice()
 # p.draw_sleeves()
 
@@ -139,16 +133,15 @@ import numpy as np
 #
 #####################################################
 
-# p = OP.Basic_Bodice(
-#     pname="Me", gender="m", style="Chiappetta", dbPATH="../measurements/"
-# )
-# p.draw_bodice()
+p = OP.Basic_Bodice(pname="M44mC", gender="m", style="Chiappetta")
+p.draw_bodice()
+#
+p = OP.Basic_Bodice(pname="M40G", gender="m", style="Gilewska")
+p.draw_bodice()
+#
+p = OP.Basic_Bodice(pname="M44D", gender="m", style="Donnanno", ease=10)
+p.draw_bodice()
 
-# p = OP.Basic_Bodice(pname="M40G", gender="m", style="Gilewska")
-# p.draw_bodice()
-
-# p = OP.Basic_Bodice(pname="M44D", gender="m", style="Donnanno", ease=10)
-# p.draw_bodice()
 # p.chiappetta_armhole_sleeve_m()
 # p.draw()
 # p.draw_sleeves()

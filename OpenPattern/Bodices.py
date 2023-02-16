@@ -1768,7 +1768,16 @@ class Basic_Bodice(Pattern):
         WB1 = Point([self.m["tour_poitrine"] / 4, 0])  # A1
         # 3
         HB = Point([0, self.m["longueur_dos"]])  # B
-        HB1 = Point([self.m["largeur_epaule"] / 2, HB.y])  # B1
+        try:
+            HB1 = Point([self.m["largeur_epaule"] / 2, HB.y])  # B1
+        except:
+            print(
+                "did not find largeur_epaule in the database, using carrure_dos instead"
+            )
+            HB1 = Point(
+                [(self.m["carrure_dos"] + 10) / 2, HB.y]
+            )  # B1 +10 = missing tour de bras
+
         # 4
         SlB = Point([0, HB.y / 2 + 1])  # ligne d'emmanchure C
         SlB1 = Point([WB1.x, SlB.y])  # C1
@@ -1788,7 +1797,16 @@ class Basic_Bodice(Pattern):
         WF1 = Point([x_dev, 0])  # E1
         # 10
         HF = Point([WF.x, self.m["longueur_devant"]])  # F
-        HF1 = HF + [-self.m["largeur_epaule"] / 2, 0]  # F1
+        try:
+            HF1 = HF + [-self.m["largeur_epaule"] / 2, 0]  # F1
+        except:
+            print(
+                "did not find largeur_epaule in the database, using carrure_dos instead"
+            )
+            HF1 = HF + [
+                -(self.m["carrure_dos"] + 10) / 2,
+                0,
+            ]  # F1 +10 = missing tour de bras
         # 11
         SlF = Point([WF.x, SlB.y])  # G
         SlF1 = Point([x_dev, SlF.y])  # G1

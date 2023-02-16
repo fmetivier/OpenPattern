@@ -2,14 +2,14 @@ Free comments
 -------------
 
 .. note::
-  For me mostly so in *French* for now... 
+  For me mostly so in *French* for now...
 
 Ligne d’épaule
 ~~~~~~~~~~~~~~
 
 Pour les femmes de style G, la construction des épaules repose sur des
 angles fixes. Pour les hommes de style G, cela dépend des distances par
-rapport à la ligne des épaules comme podonc ur le style D. Pourquoi ce
+rapport à la ligne des épaules comme pour le style D. Pourquoi ce
 changement? Cela pose un problème car, si l’on suit les instructions,
 l’épaule est plus longue que les mesures (si elles existent) et les
 épaules avant et arrière n’ont pas la même longueur. Dans le cas où la
@@ -28,7 +28,7 @@ angles différents pour le dos (22 :math:`^ o`) et le devant (25
 Emmanchure et col
 ~~~~~~~~~~~~~~~~~
 
-à noter que, encore une fois, pour l’homme tout est un peu fait par
+Encore une fois, pour l’homme tout est un peu fait par
 dessus la jambe. Ok des chemises des pantalons et des costumes c’est pas
 folichon mais quand même !
 

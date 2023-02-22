@@ -29,7 +29,7 @@ Emmanchure et col
 ~~~~~~~~~~~~~~~~~
 
 Encore une fois, pour l’homme tout est un peu fait par
-dessus la jambe. Ok des chemises des pantalons et des costumes c’est pas
+dessus la jambe. Ok des chemises, des pantalons et des costumes c’est pas
 folichon mais quand même !
 
 Donnano: pour les femmes le buste de base présente un problème
@@ -37,10 +37,10 @@ d’ajustement car il ne fournit pas de points de contrôles. J’ai repris
 ceux de Gilweska.
 
 Pour l’homme: pas de buste de base j’en au créé un à partir de la
-chemise de base. relativement simple à faire. Par contre problème
+chemise de base. Relativement simple à faire. Par contre problème
 (toujours) pour les longueurs d’épaule. La largeur d’épaule est donnée
 mais pas la longueur (qui d’ailleurs n’est que très rarement donnée pour
-les hommes). or on demande la longueur d’épaule (j’adore le e.g. 17cm
+les hommes). Or on demande la longueur d’épaule (j’adore le e.g. 17cm
 mis dans l’exemple dont on ne sait pas d’où il sort)
 
 Gilewska : pour le buste homme j’ai ajouté deux points de contrôle en
@@ -54,7 +54,7 @@ devant. Le collier arrière a besoin d’un deuxième point de contrôle près
 de la ligne de pliage pour assurer la planéité de la cannelure.
 
 Pour l’enfant Chiapetta changer l’angle, la longueur des points de
-contrôle et la carrure devant. de 2 à 8 ans les angles d’épaule devant
+contrôle et la carrure devant. De 2 à 8 ans les angles d’épaule devant
 et derrière sont les même, les longueurs plus petites et la carrure
 devant et dos sont les mêmes.
 
@@ -62,9 +62,10 @@ L’emmanchure et l’encolure sont faites avec des splines de second ordre.
 J’ai fini par jouer sur le fit des splines et les points de contrôle. À
 développer.
 
-Bon mais comme d’hab Chiapetta ça à l’air un peu ringard sur les bords
-mais ça marche tout seul. je pense que je vais investir dans les
-bouquins adultes notamment pour l’homme...
+.... note::
+
+	Comme d’habitude Chiapetta semble un peu ringarde sur les bords
+mais ça marche tout seul !!!
 
 Manches
 ~~~~~~~
@@ -76,7 +77,7 @@ Les splines ici sont du troisième ordre car il y a un point d’inflexion.
 
 De façon générale je trouve que les bustes hommes ne sont pas très
 ressemblant aux dessins des livres et je suis dubitatif car le programme
-reproduit exactement les instruction sauf quand c’est problématique de
+reproduit exactement les instructions sauf quand c’est faux de
 façon évidente (genre les largeur d’épaules de Donnanno).
 
 Cols
@@ -90,7 +91,7 @@ collar)
 Cuffs
 ~~~~~
 
-Styles availabel from Gilewska men : Simple and French
+Styles available from Gilewska men : Simple and French
 
 |Cuff styles| |Cuff styles|
 
@@ -100,23 +101,23 @@ Pants Block
 
 Incohérence du modèle chez Donnanno. La mesure de la ceinture est
 
-AV = Hip + 6.
+:math:`AV = Hip + 6.`
 
 Or la somme
 
-ceinture avant + ceinture arriere = Hip +2.
+:math:`ceinture avant + ceinture arriere = Hip +2.`
 
 Donanno indique qu’il faut séparer les patrons avant et arrière de 6cm
 soit
 
-ceinture avant + ceinture arriere + 6 = Hip +8 = AV,
+:math:`ceinture avant + ceinture arriere + 6 = Hip +8 = AV,`
 
 d’où l’incohérence.
 
 skirts
 ^^^^^^
 
-jupe de base une pince. position de la pince.
+Jupe de base une pince: position de la pince.
 
 Chiappetta: à mi-distance jusqu’à 12 ans. 2 pince au 1/3 et 2/3 de
 distance pour 14 et 16 car l’écart entre taille est bassin est trop
@@ -130,7 +131,7 @@ imaginera être le téton— que je comprends comme le demi écart poitrine.
 Gilewska: confirme l’utilisation du 1/2 écart poitrine. Si la différence
 taille/bassin est trop importante alors Gilewska recommande deux pinces
 devant une au 1/2 écart poitrine et une à mi distance entre la première
-pince et la pince de côté (le côté de fait). utlise une pince de milieu
+pince et la pince de côté (le côté de fait). Utilise une pince de milieu
 dos
 
 la bande de taille chez Donnanno est donnée à 5cm

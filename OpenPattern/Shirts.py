@@ -24,7 +24,7 @@ class Shirt(Basic_Bodice):
         gender="m",
         style="Chiappetta",
         age=99,
-        ease=8,
+        ease=0,
         lower_length=25,
         hip=False,
         Back_Front_space=12,
@@ -100,7 +100,7 @@ class Shirt(Basic_Bodice):
             )
             self.Front_dic["ClBF"] = self.Front_dic["BF1"] + Point([0, -1])
 
-            if np.abs(self.Front_dic["ShF1"].x - self.Front_dic["BF1"].x) > 2:
+            if (self.Front_dic["ShF1"].x - self.Front_dic["BF1"].x) > 2:
                 (
                     self.m["longueur_emmanchure_devant"],
                     self.front_sleeve_curve,
@@ -141,7 +141,7 @@ class Shirt(Basic_Bodice):
             )
             self.Back_dic["ClBB"] = self.Back_dic["BB1"] + Point([0, -1])
 
-            if np.abs(self.Back_dic["ShB1"].x - self.Back_dic["BB1"].x) > 2:
+            if (self.Back_dic["ShB1"].x - self.Back_dic["BB1"].x) < -2:
                 (
                     self.m["longueur_emmanchure_dos"],
                     self.back_sleeve_curve,
@@ -283,7 +283,7 @@ class Shirt(Basic_Bodice):
             )
             self.Front_dic["ClBF"] = self.Front_dic["BF1"] + Point([0, -1])
 
-            if np.abs(self.Front_dic["ShF1"].x - self.Front_dic["BF1"].x) > 2:
+            if (self.Front_dic["ShF1"].x - self.Front_dic["BF1"].x) > 2:
                 (
                     self.m["longueur_emmanchure_devant"],
                     self.front_sleeve_curve,
@@ -328,7 +328,7 @@ class Shirt(Basic_Bodice):
             )
             self.Back_dic["ClBB"] = self.Back_dic["BB1"] + Point([0, -1])
 
-            if np.abs(self.Back_dic["ShB1"].x - self.Back_dic["BB1"].x) > 2:
+            if (self.Back_dic["ShB1"].x - self.Back_dic["BB1"].x) < -2:
                 (
                     self.m["longueur_emmanchure_dos"],
                     self.back_sleeve_curve,

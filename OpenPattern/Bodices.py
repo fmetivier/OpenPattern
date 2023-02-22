@@ -1386,7 +1386,7 @@ class Basic_Bodice(Pattern):
         :param folds: number of folds on the waist
         :param fold_width: with of each fold
         :param fente: waist cut length (frenglish)
-        :param wrist: ??
+        :param wrist: wrist height (basically wrist ~ cuff height)
 
 
         """

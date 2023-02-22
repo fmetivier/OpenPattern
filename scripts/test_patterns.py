@@ -21,9 +21,10 @@ import numpy as np
 #
 #####################################################
 #
-p = OP.Pattern(pname="M40G")
+p = OP.Pattern(pname="Me")
 for key, val in p.m.items():
     print(key, val)
+
 
 ####################################################
 #
@@ -133,37 +134,41 @@ for key, val in p.m.items():
 #
 #####################################################
 
-p = OP.Basic_Bodice(pname="M44mC", gender="m", style="Chiappetta")
-p.draw_bodice()
+# p = OP.Basic_Bodice(pname="Me", gender="m", style="Chiappetta")
+# p.draw_bodice()
 #
-p = OP.Basic_Bodice(pname="M40G", gender="m", style="Gilewska")
-p.draw_bodice()
+# p = OP.Basic_Bodice(pname="M44G", gender="m", style="Gilewska")
+# p.draw_bodice()
 #
-p = OP.Basic_Bodice(pname="M44D", gender="m", style="Donnanno", ease=10)
-p.draw_bodice()
+# p = OP.Basic_Bodice(pname="Me", gender="m", style="Donnanno", ease=10)
+# p.draw_bodice()
 
 # p.chiappetta_armhole_sleeve_m()
 # p.draw()
 # p.draw_sleeves()
 
 
-# p = OP.Shirt(pname="Me", gender="m", style="Chiappetta")
-# p.basic_shirt_bodice(style="Chiappetta")
+p = OP.Shirt(pname="Me", gender="m", style="Chiappetta", ease=0, side_ease=3)
+p.basic_shirt_bodice(style="Chiappetta")
 # p.chiappetta_basic_sleeve_m()
+
 # p.draw_sleeves()
 # p.draw()
-# p.chiappetta_armhole_sleeve_m(ease=3,folds=1,fold_width=1,fente=11, wrist=5)
-# p.draw_sleeves()
-# p.draw(save=True,paper='A4')
+
+p.chiappetta_armhole_sleeve_m(ease=3, folds=1, fold_width=1, fente=11, wrist=5)
+p.draw_sleeves(save=True, paper="A4")
+p.draw(save=True, paper="A4")
 #
 # p.draw_subpatterns(overlay=True)
 
-# cu = OP.Cuffs(pname="Me",gender='M',cuff_style='Simple',width=7,overlap=2)
+# cu = OP.Cuffs(pname="Me", gender="M", cuff_style="French", width=7, overlap=2)
 # cu.draw_cuffs()
-#
-# co = OP.Collars(pname='Me',gender='m',collar_style='TwoPieces',overlap=2)
+# #
+# co = OP.Collars(pname="Me", gender="m", collar_style="TwoPieces", overlap=2)
 # co.draw_collar()
-#
+# #
+# pl = OP.Placket(pname="Me", gender="m", placket_style="SimpleOneSide", slit_length=10)
+# pl.draw_placket()
 
 
 ####################################################
@@ -193,9 +198,6 @@ p.draw_bodice()
 
 # col = OP.Collars(pname = "M44G", gender = 'm', style = 'Gilewska',  collar_style = 'TwoPieces', overlap=2, collar_height=3)
 # col.draw_collar(save=True)
-
-# p = OP.Placket(pname = "M44G", gender = 'm', placket_style = 'SimpleOneSide', slit_length = 10)
-# p.draw_placket()
 
 
 ####################################################

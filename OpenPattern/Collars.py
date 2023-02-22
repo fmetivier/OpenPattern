@@ -42,6 +42,12 @@ class Collars(Pattern):
         self.Collar_segments = {}
         self.Collar_polylines = []
 
+        for k in kwargs.keys():
+            if k == "longueur_col_dos":
+                self.m["longueur_col_dos"] = kwargs["longueur_col_dos"]
+            if k == "longueur_col_devant":
+                self.m["longueur_col_devant"] = kwargs["longueur_col_devant"]
+
         self.calculate_collar(overlap, collar_height)
 
     def calculate_collar(self, overlap, collar_height):

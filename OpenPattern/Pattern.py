@@ -58,6 +58,7 @@ class Pattern:
         self.frmt = "pdf"
         stream = pkg_resources.resource_filename(__name__, "data/measurements.db")
         self.dbPATH = stream
+        # print(self.dbPATH)
 
         for k in kwargs.keys():
             if k == "dbPATH":
@@ -268,13 +269,14 @@ class Pattern:
             if ofname != self.pname:
                 pass
             else:
-                c.execute("delete from measurements where wkey = ?", (ofname,))
+                conn.execute("delete from measurements where wkey = ?", (ofname,))
+
         else:
             ofname = self.pname
-            c.execute("delete from measurements where wkey = ?", (ofname,))
+            conn.execute("delete from measurements where wkey = ?", (ofname,))
 
         for key, val in self.m.items():
-            c.execute("insert into measurements values (?,?,?)", (ofname, key, val))
+            conn.execute("insert into measurements values (?,?,?)", (ofname, key, val))
 
         conn.commit()
         conn.close()

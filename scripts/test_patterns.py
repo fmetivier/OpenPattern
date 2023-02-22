@@ -21,7 +21,25 @@ import numpy as np
 #
 #####################################################
 #
+# dbPATH = "/home/metivier/Nextcloud/Personnel/couture/OpenPattern/OpenPattern/data/measurements.db"
+
 p = OP.Pattern(pname="Me")
+print(p.dbPATH)
+print("ALLER")
+for key, val in p.m.items():
+    print(key, val)
+
+
+p.m["longueur_epaule"] = 14
+p.save_measurements_sql(p.pname)
+
+print("MISE A ZERO")
+p.m = {}
+for key, val in p.m.items():
+    print(key, val)
+
+print("RETOUR")
+p.m = p.get_measurements_sql(p.pname)
 for key, val in p.m.items():
     print(key, val)
 
@@ -148,24 +166,31 @@ for key, val in p.m.items():
 # p.draw_sleeves()
 
 
-p = OP.Shirt(pname="Me", gender="m", style="Chiappetta", ease=0, side_ease=3)
-p.basic_shirt_bodice(style="Chiappetta")
+# p = OP.Shirt(pname="Me", gender="m", style="Chiappetta", ease=0, side_ease=3)
+# p.basic_shirt_bodice(style="Chiappetta")
 # p.chiappetta_basic_sleeve_m()
-
-# p.draw_sleeves()
-# p.draw()
-
-p.chiappetta_armhole_sleeve_m(ease=3, folds=1, fold_width=1, fente=11, wrist=5)
-p.draw_sleeves(save=True, paper="A4")
-p.draw(save=True, paper="A4")
 #
-# p.draw_subpatterns(overlay=True)
-
+# # p.draw_sleeves()
+# # p.draw()
+#
+# p.chiappetta_armhole_sleeve_m(ease=3, folds=1, fold_width=1, fente=11, wrist=5)
+# # p.draw_sleeves(save=True, paper="A4")
+# # p.draw(save=True, paper="A4")
+# #
+# # p.draw_subpatterns(overlay=True)
+#
 # cu = OP.Cuffs(pname="Me", gender="M", cuff_style="French", width=7, overlap=2)
 # cu.draw_cuffs()
 # #
-# co = OP.Collars(pname="Me", gender="m", collar_style="TwoPieces", overlap=2)
-# co.draw_collar()
+co = OP.Collars(
+    pname="Me",
+    gender="m",
+    collar_style="TwoPieces",
+    overlap=2,
+    longueur_col_dos=9,
+    longueur_col_devant=14,
+)
+co.draw_collar()
 # #
 # pl = OP.Placket(pname="Me", gender="m", placket_style="SimpleOneSide", slit_length=10)
 # pl.draw_placket()

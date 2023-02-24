@@ -1376,7 +1376,7 @@ class Basic_Bodice(Pattern):
         """Sleeve drawn from armhole curves using the method for men
         works for women too
 
-        This sleeve patter is often used for shirts
+        This sleeve pattern is often used for shirts
 
         Its drafting is a  bit complex because we need
         some rotations and translations but normally it works
@@ -1505,7 +1505,8 @@ class Basic_Bodice(Pattern):
         i = 0
         d = 10
         P0 = bc[0]
-        while d > 0.1:
+        while d > 0.1 and i < len(alist):
+            # print(i)
             tmp_bc = []
             dlist = []
             for pos in bc:

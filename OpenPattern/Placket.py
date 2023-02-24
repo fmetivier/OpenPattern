@@ -39,12 +39,13 @@ class Placket(Pattern):
         if self.pl == "SimpleOneSide":
 
             Pbl = Point([0, 0])
-            Pbm = Pbl + [2, 0]
-            Pbr = Pbm + [2, 0]
+            Pbm = Pbl + [3, 0]
+            Pbr = Pbm + [3, 0]
             Pur = Pbr + [0, self.sll]
-            Pum = Pbm + [0, self.sll]
-            Pul = Pbl + [0, self.sll]
-            Ptip = Pul + [1, 2]
+            Purm = Pbm + [0, self.sll]
+            Pum = Pbm + [0, self.sll + 2]
+            Pul = Pbl + [0, self.sll + 2]
+            Ptip = self.middle(Pum, Pul) + Point([0, 2])
 
             self.Placket_dic.append(
                 {
@@ -52,6 +53,7 @@ class Placket(Pattern):
                     "Pbm": Pbm,
                     "Pbr": Pbr,
                     "Pur": Pur,
+                    "Purm": Purm,
                     "Pum": Pum,
                     "Pul": Pul,
                     "Ptip": Ptip,
@@ -62,6 +64,7 @@ class Placket(Pattern):
                     Pbl.pos(),
                     Pbr.pos(),
                     Pur.pos(),
+                    Purm.pos(),
                     Pum.pos(),
                     Ptip.pos(),
                     Pul.pos(),
@@ -69,7 +72,10 @@ class Placket(Pattern):
                 ]
             )
 
-            self.Placket_segments = {"Fold": [Pbm, Pum]}
+            self.Placket_segments = {"Fold": [Pbm + [1, 0], Purm + [1, 0]]}
+            self.Placket_segments["fr"] = Ptip - [0, 1], Pum - [0, 1]
+            self.Placket_segments["fl"] = Ptip - [0, 1], Pul - [0, 1]
+            self.Placket_segments["slit line"] = Pur - [0, 1], Pul - [0, 3]
 
     def draw_placket(self, save=False):
 
@@ -85,11 +91,11 @@ class Placket(Pattern):
         if save:
 
             of = (
-                "../patterns/"
+                self.figPATH
                 + "placket_"
                 + self.style
                 + "_"
-                + self.Cuff_style
+                + self.pl
                 + "_"
                 + self.pname
                 + "_FullSize.pdf"

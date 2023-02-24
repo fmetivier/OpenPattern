@@ -30,6 +30,7 @@ class Collars(Pattern):
         collar_style="Officer",
         overlap=0,
         collar_height=3,
+        up_collar_height=6.5,
         **kwargs
     ):
 
@@ -48,17 +49,21 @@ class Collars(Pattern):
             if k == "longueur_col_devant":
                 self.m["longueur_col_devant"] = kwargs["longueur_col_devant"]
 
-        self.calculate_collar(overlap, collar_height)
+        self.calculate_collar(overlap, collar_height, up_collar_height)
 
-    def calculate_collar(self, overlap, collar_height):
+    def calculate_collar(self, overlap, collar_height, up_collar_height):
 
         if self.style == "Gilewska":
             print("Style Gilewska")
             if self.gender == "m":
                 print("Men's collar")
-                self.calculate_collar_gilewska_m(overlap, collar_height)
+                self.calculate_collar_gilewska_m(
+                    overlap, collar_height, up_collar_height
+                )
 
-    def calculate_collar_gilewska_m(self, overlap=0, collar_height=3):
+    def calculate_collar_gilewska_m(
+        self, overlap=0, collar_height=3, up_collar_height=6.5
+    ):
         """
         C: collar angle points
         l,r,m: left, right, middle
@@ -97,7 +102,7 @@ class Collars(Pattern):
             sewing should be easier and the fit should be better
             """
 
-            TC_front_height = 6.5
+            TC_front_height = up_collar_height
             PT_distance = 5
 
             curve_dic = self.pied_de_col_gilewska_m(
@@ -176,7 +181,7 @@ class Collars(Pattern):
         else:
             C6 = Cru - [np.sqrt(0.5), np.sqrt(0.5)]  # 1.5 cm of offset from Cru.
 
-        A = Point([self.m["longueur_col_dos"] + self.m["longueur_col_devant"] + 1, 0])
+        A = Point([self.m["longueur_col_dos"] + self.m["longueur_col_devant"], 0])
         if overlap == 0:
             C7 = Cmu + [0.6 * dcf * np.cos(a), 0.6 * dcf * np.sin(a)]
         else:
@@ -275,7 +280,7 @@ class Collars(Pattern):
         if save:
 
             of = (
-                "../patterns/"
+                self.figPATH
                 + "collar_"
                 + self.style
                 + "_"

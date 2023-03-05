@@ -23,7 +23,7 @@ import numpy as np
 #
 # dbPATH = "/home/metivier/Nextcloud/Personnel/couture/OpenPattern/OpenPattern/data/measurements.db"
 
-p = OP.Pattern(pname="Me")
+p = OP.Pattern(pname="sophie")
 print(p.dbPATH)
 print("ALLER")
 for key, val in p.m.items():
@@ -182,18 +182,19 @@ for key, val in p.m.items():
 # cu = OP.Cuffs(pname="Me", gender="M", cuff_style="French", width=7, overlap=2)
 # cu.draw_cuffs()
 # #
-co = OP.Collars(
-    pname="Me",
-    gender="m",
-    collar_style="TwoPieces",
-    overlap=2,
-    longueur_col_dos=9.75,
-    longueur_col_devant=14,
-)
-co.draw_collar(save=True, paper="A4")
-# #
-pl = OP.Placket(pname="Me", gender="m", placket_style="SimpleOneSide", slit_length=11)
-pl.draw_placket(save=True)
+# co = OP.Collars(
+#     pname="Me",
+#     gender="m",
+#     collar_style="TwoPieces",
+#     overlap=2,
+#     longueur_col_dos=9.75,
+#     longueur_col_devant=14,
+#     up_collar_height=5,
+# )
+# co.draw_collar(save=True, paper="A4")
+# # #
+# pl = OP.Placket(pname="Me", gender="m", placket_style="SimpleOneSide", slit_length=11)
+# pl.draw_placket(save=True)
 
 
 ####################################################

@@ -1715,3 +1715,7 @@ class Pattern:
         ax.text(
             xmin + 1 + val / 2, ymin + 1.5, str(val) + " cm", ha="center", fontsize=16
         )
+
+
+if __name__ == "__main__":
+    help(Pattern.__init__)

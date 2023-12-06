@@ -142,8 +142,8 @@ class Pattern:
         :param    dic: 'front' or back' dictionnary from which to extrac the point
 
 
-        :return the chosen point or the list of coordinates of a curve
-        :rtype Point or list
+        :return: the chosen point or the list of coordinates of a curve
+        :rtype: Point or list
         """
         if dic == "front":
             return self.Front_dic[pname]

@@ -31,6 +31,15 @@ To install the library you must first
 sudo rights may be needed depending on your computer configuration.
 
 OpenPattern comes with an sqlite3 ```measurements.db``` database. This base contains a set of standard French and Italian sizes.
+In order to be able to add your own measurements to this database you need to change its permissions.
+
+On linux machines the database is stored in  your .cache directory
+
+```bash
+
+cd ~/.cache/Python-Eggs/OpenPattern-0.2.0-py3.11.egg-tmp/OpenPattern/data
+chmod 666 measurements.db
+```
 
 
 ## Example <a class="anchor" id="example"></a>

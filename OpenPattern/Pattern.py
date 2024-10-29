@@ -56,6 +56,7 @@ class Pattern:
         self.style = ""
         self.figPATH = "./"
         self.frmt = "pdf"
+
         stream = pkg_resources.resource_filename(__name__, "data/measurements.db")
         self.dbPATH = stream
         # print(self.dbPATH)

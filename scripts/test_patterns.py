@@ -23,11 +23,12 @@ import numpy as np
 #
 # dbPATH = "/home/metivier/Nextcloud/Personnel/couture/OpenPattern/OpenPattern/data/measurements.db"
 
-p = OP.Pattern(pname="sophie")
+p = OP.Pattern(pname="Esther")
 print(p.dbPATH)
 print("ALLER")
 for key, val in p.m.items():
-    print(key, val)
+    if 'tour' in key:
+        print(key, val)
 #
 #
 # p.m["longueur_epaule"] = 14
